@@ -22,14 +22,14 @@ export default function Home() {
 
   return (
     <>
-      <main className="grid md:grid-cols-12 text-gray-900 p-6 sm:p-4">
-        <section className="md:col-span-9 md:mb-8 p-6 sm:p-4">
+      <main className="grid md:grid-cols-12 text-gray-900 lg:p-6 sm:p-4">
+        <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
           <div className="icon-align p-2 bg-white shadow">
             {renderComponent()}
           </div>
         </section>
 
-        <section className="md:col-span-3 md:mb-8 p-6 sm:p-4">
+        <section className="md:col-span-3 md:mb-8 lg:p-6 sm:p-4">
           <Trending />
         </section>
       </main>
