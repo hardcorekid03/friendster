@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+body,
+html {
+  margin: 0;
+  padding: 0;
+  padding-top: 2rem;
+  background-color:#e5e7eb;
+  font-family: 'Helvetica', sans-serif !important;
+
+}
+.active-link {
+  font-weight: bold;
+}
+.editor-container {
+  height: 500px; /* Set your desired height */
+}
+
+.editor-container .ql-container {
+  height: 100%;
+}
+
+.editor-container .ql-editor {
+  height: 100%;
+  overflow-y: auto; /* Optional: Adds scroll for overflow content */
+}
+
