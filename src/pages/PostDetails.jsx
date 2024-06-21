@@ -3,7 +3,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 function PostDetails({ setActiveComponent }) {
   return (
-    <div className="items-center justify-center p-4">
+    <div className="items-center justify-center p-4 ">
       <div className="flex items-center justify-between p-4">
         <h3
           className="text-xl font-semibold "
@@ -16,13 +16,15 @@ function PostDetails({ setActiveComponent }) {
           onClick={() => setActiveComponent("Recent")}
         />
       </div>
-      <div className="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
+      <div className="container mx-auto flex  py-4 items-center justify-center flex-col ">
+      <div className=" mb-4 w-[100%] md:h-[400px] h-[250px] p-4">
         <img
-          className="lg:w-2/6 md:w-3/6 w-5/6 mb-10 object-cover object-cover"
+          className="h-full w-full object-cover"
           alt="hero"
-          src="https://dummyimage.com/720x600"
+          src="https://www.typingpal.com/en/blog/lorem-ipsum-the-ultimate-placeholder-text/lorem-ipsum@2x.png"
         />
-        <div className="">
+        </div>
+        <div className="p-4">
           <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
           What is Lorem Ipsum?
           </h1>

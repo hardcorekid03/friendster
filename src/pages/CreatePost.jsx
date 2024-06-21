@@ -20,7 +20,8 @@ function CreatePost({ setActiveComponent }) {
   console.log(value);
 
   return (
-    <div className="items-center justify-center p-4">
+    <>
+        <div className="items-center justify-center p-4 ">
       <div className="flex items-center justify-between p-4">
         <h3 className="text-xl font-semibold ">Create Post</h3>
         <ArrowLeftIcon
@@ -64,6 +65,8 @@ function CreatePost({ setActiveComponent }) {
         </button>
       </div>
     </div>
+    </>
+
   );
 }
 

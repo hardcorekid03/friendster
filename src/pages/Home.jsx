@@ -24,7 +24,7 @@ export default function Home() {
     <>
       <main className="grid md:grid-cols-12 text-gray-900 lg:p-6 sm:p-4">
         <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
-          <div className="icon-align p-2 bg-white shadow">
+          <div className="icon-align p-2 bg-white shadow ">
             {renderComponent()}
           </div>
         </section>

@@ -16,14 +16,14 @@ function Recent({ setActiveComponent }) {
         <div  className="md:flex shadow-md border-2  border-gray-200 hover:border-blue-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
         onClick={() => setActiveComponent("PostDetails")}
         >
-          <div className="blog-img mb-4">
+          <div className="blog-img mb-4 md:w-[35%] h-[200px]  sm:w-[75%] ">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr6AUdNQEWnkDe9v5tiSc7m9ihU57cweKkew&s"
-              style={{ height: 200, width: 400 }}
-              className="blog-img object-cover h-auto w-auto sm:mb-4"
+
+              className="blog-img h-full w-full object-cover "
             />
           </div>
-          <div className="blog-prev mb-4 md:ml-4">
+          <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%]">
             <h3 className="text-lg font-semibold">
               Lorem Ipsum Dolor sit Amet
             </h3>

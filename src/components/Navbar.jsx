@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid'
 import logo from "../assets/images/logo.png"
 
+
 const Navbar = () => {
 
       const [open, setOpen] = useState(false);
@@ -21,16 +22,17 @@ const Navbar = () => {
             </div>
             {/* linke items */}
             <ul className={`cursor-pointer md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-12' : 'top-[-490px]'}`}>
-
-                    <li className='text-gray-800 hover:text-blue-400 duration-2000 md:ml-8 md:my-0 my-7 font-semibold'>
+                    <li className='text-gray-800 hover:text-blue-400 duration-2000 md:ml-8 md:my-0 mt-7 font-semibold'>
                         HOME
                     </li>
                     <li className='text-gray-800 hover:text-blue-400 duration-2000 md:ml-8 md:my-0 my-2 font-semibold'>
                         PROFILE
-                    </li>.
+                    </li>
                     <li className='text-gray-800 hover:text-blue-400 duration-2000 md:ml-8 md:my-0 my-2 font-semibold'>
                         LOGOUT
                     </li>
+
+             
             </ul>
             {/* button */}
            </div>
