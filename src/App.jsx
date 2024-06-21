@@ -1,17 +1,19 @@
-import { useState } from 'react'
 import './App.css'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
-import CreatePost from './pages/CreatePost'
+import BottomNav from './components/BottomNav'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <div className="main-div">
-      <Navbar/>
-    <Home/>
-</div>
+      <Navbar />
+      <Home />
+      {/* Hidden on medium and larger screens, shown on small screens */}
+      <div className="sm:hidden">
+        <BottomNav />
+      </div>
+    </div>
   )
 }
 

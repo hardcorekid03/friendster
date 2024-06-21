@@ -24,3 +24,12 @@ html {
   overflow-y: auto; /* Optional: Adds scroll for overflow content */
 }
 
+/* Custom styles for bottom navigation buttons */
+.bottom-nav-button {
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.bottom-nav-button:hover {
+  background-color: #e2e8f0; /* Tailwind's bg-gray-200 */
+  transform: translateY(-2px);
+}

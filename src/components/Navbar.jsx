@@ -25,10 +25,12 @@ const Navbar = () => {
                     <li className='text-gray-800 hover:text-blue-400 duration-2000 md:ml-8 md:my-0 my-7 font-semibold'>
                         HOME
                     </li>
-                    <li className='text-gray-800 hover:text-blue-400 duration-2000 md:ml-8 md:my-0 my-7 font-semibold'>
+                    <li className='text-gray-800 hover:text-blue-400 duration-2000 md:ml-8 md:my-0 my-2 font-semibold'>
                         PROFILE
+                    </li>.
+                    <li className='text-gray-800 hover:text-blue-400 duration-2000 md:ml-8 md:my-0 my-2 font-semibold'>
+                        LOGOUT
                     </li>
-                <button className='btn bg-blue-600 text-white md:ml-8 font-semibold px-3 py-1 rounded duration-500 md:static'>hardcorekid03</button>
             </ul>
             {/* button */}
            </div>

@@ -13,7 +13,7 @@ function Recent({ setActiveComponent }) {
           />
         </div>
 
-        <div  className="md:flex hover:border-b-3 hover:border-gray-300 mt-4 hover:shadow-lg hover:shadow-gray-300 cursor-pointer p-4 mb-4"
+        <div  className="md:flex shadow-md border-2  border-gray-200 hover:border-blue-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
         onClick={() => setActiveComponent("PostDetails")}
         >
           <div className="blog-img mb-4">

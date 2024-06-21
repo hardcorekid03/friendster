@@ -29,7 +29,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="md:col-span-3 md:mb-8 lg:p-6 sm:p-4">
+        <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-4">
           <Trending />
         </section>
       </main>
