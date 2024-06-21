@@ -38,9 +38,9 @@ const BottomNav = () => {
               className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z"
-                clip-rule="evenodd"
+                clipRule="evenodd"
               />
             </svg>
           </div>
