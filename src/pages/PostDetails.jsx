@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 
 function PostDetails() {
   return (
-    <div className="items-center justify-center p-4 ">
-      <div className="flex items-center justify-between p-4">
+    <div className="items-center justify-center p-4 sm:p-2 ">
+      <div className="flex items-center justify-between p-4 sm:p-2">
         <h3
           className="text-xl font-semibold "
 
@@ -21,14 +21,14 @@ function PostDetails() {
           </Link>
       </div>
       <div className="container mx-auto flex  py-4 items-center justify-center flex-col ">
-      <div className=" mb-4 w-[100%] md:h-[400px] h-[250px] p-4">
+      <div className=" mb-4 w-[100%] md:h-[400px] h-[250px] p-4 sm:p-2">
         <img
           className="h-full w-full object-cover"
           alt="hero"
           src="https://www.typingpal.com/en/blog/lorem-ipsum-the-ultimate-placeholder-text/lorem-ipsum@2x.png"
         />
         </div>
-        <div className="p-4">
+        <div className="p-4 sm:p-2">
           <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
           What is Lorem Ipsum?
           </h1>

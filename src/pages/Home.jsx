@@ -6,13 +6,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 export default function Home() {
   return (
-    <main className="grid md:grid-cols-12 text-gray-900 lg:p-6 sm:p-4">
-      <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
+    <main className="grid md:grid-cols-12 text-gray-900 lg:p-6 sm:p-2">
+      <section className="md:col-span-9 md:mb-8 lg:p-2 sm:p-2">
         <div className="icon-align p-2 bg-white shadow ">
           <AppRoutes />
         </div>
       </section>
-      <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-4">
+      <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-2 sm:p-2">
         <Trending />
       </section>
     </main>

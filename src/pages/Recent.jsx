@@ -10,8 +10,8 @@ function Recent() {
   };
   return (
     <>
-      <div className="items-center justify-center p-4">
-        <div className="flex items-center justify-between p-4">
+      <div className="items-center justify-center p-2">
+        <div className="flex items-center justify-between p-4 sm:p-2">
           <h3 className="text-xl font-semibold ">Recent Posts</h3>
           <Link
             to="/createpost"
@@ -22,7 +22,7 @@ function Recent() {
         </div>
 
         <div
-          className="md:flex shadow-md border-2  border-gray-100 hover:border-blue-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
+          className="md:flex shadow-md border-2  border-gray-100 hover:border-blue-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4 sm:p-2"
         >
           <div className="blog-img mb-4 md:w-[35%] h-[200px]  sm:w-[75%] ">
             <img
