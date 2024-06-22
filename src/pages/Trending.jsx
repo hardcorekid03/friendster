@@ -13,7 +13,7 @@ function Trending() {
           />
         </div>
         <label className="block text-sm font-semibold mb-2" htmlFor="name">
-          @hardcorekid03
+        @qwerty88
         </label>
       </div>
 

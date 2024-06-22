@@ -86,7 +86,7 @@ function Recent() {
                   alt="Avatar"
                   className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                 />
-                hardcorekid03
+                qwerty88
               </span>
             </Link>
           </div>
