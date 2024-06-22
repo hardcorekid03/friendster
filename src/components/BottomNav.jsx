@@ -2,7 +2,7 @@ import React from "react";
 
 const BottomNav = () => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg ">
       <div className="flex justify-around">
         {/* Home Icon */}
         <div className="flex flex-col items-center p-2">

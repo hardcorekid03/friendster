@@ -10,7 +10,7 @@ function Recent() {
   };
   return (
     <>
-      <div className="items-center justify-center p-2">
+      <div className="items-center justify-center p-2 mb-8">
         <div className="flex items-center justify-between p-4 sm:p-2">
           <h3 className="text-xl font-semibold ">Recent Posts</h3>
           <Link
