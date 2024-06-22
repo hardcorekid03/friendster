@@ -1,20 +1,24 @@
 import React from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
-function PostDetails({ setActiveComponent }) {
+
+function PostDetails() {
   return (
     <div className="items-center justify-center p-4 ">
       <div className="flex items-center justify-between p-4">
         <h3
           className="text-xl font-semibold "
-          onClick={() => setActiveComponent("Recent")}
+
         >
           Post Details
         </h3>
-        <ArrowLeftIcon
-          className="text-xl font-semibold hover:text-gray-700 cursor-pointer h-8 w-8 justify-center"
-          onClick={() => setActiveComponent("Recent")}
-        />
+        <Link
+            to="/"
+            className="text-xl font-semibold hover:text-gray-700 cursor-pointer h-8 w-8 justify-center"
+          >
+            <ArrowLeftIcon className="h-full w-full" />
+          </Link>
       </div>
       <div className="container mx-auto flex  py-4 items-center justify-center flex-col ">
       <div className=" mb-4 w-[100%] md:h-[400px] h-[250px] p-4">

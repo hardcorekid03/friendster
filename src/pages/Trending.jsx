@@ -1,6 +1,7 @@
 import React from "react";
 
 function Trending() {
+  const user = false;
   return (
     <>
       <div className="p-4 bg-zinc-300 shadow-lg flex flex-col items-center w-full">
