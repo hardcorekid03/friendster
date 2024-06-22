@@ -6,7 +6,7 @@ const BottomNav = () => {
       <div className="flex justify-around">
         {/* Home Icon */}
         <div className="flex flex-col items-center p-2">
-          <div className="p-4  group ">
+          <div className="p-4  group border-t-2 hover:border-blue-500 ">
             <svg
               className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
               fill="currentColor"
@@ -18,7 +18,7 @@ const BottomNav = () => {
         </div>
         {/* Profile Icon */}
         <div className="flex flex-col items-center p-2">
-          <div className="p-4  group ">
+          <div className="p-4  group border-t-2 hover:border-blue-500 ">
             <svg
               className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
               fill="currentColor"
@@ -30,7 +30,7 @@ const BottomNav = () => {
         </div>
         {/* Create Icon */}
         <div className="flex flex-col items-center p-2">
-          <div className="p-4  group ">
+          <div className="p-4  group border-t-2 hover:border-blue-500  ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -48,7 +48,7 @@ const BottomNav = () => {
 
         {/* Latest Icon */}
         <div className="flex flex-col items-center p-2">
-          <div className="p-4  group ">
+          <div className="p-4  group border-t-2 hover:border-blue-500 ">
             <svg
               className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
               fill="currentColor"
@@ -60,7 +60,7 @@ const BottomNav = () => {
         </div>
         {/* Settings Icon */}
         <div className="flex flex-col items-center p-2">
-          <div className="p-4  group ">
+          <div className="p-4  group border-t-2 hover:border-blue-500 ">
             <svg
               className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
               fill="currentColor"
