@@ -1,0 +1,85 @@
+/* fonts.css */
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+/* Define other font-faces similarly */
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HarmonyOSSans';
+    src: url('assets/fonts/harmonyOS/HarmonyOS_Sans-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+}
