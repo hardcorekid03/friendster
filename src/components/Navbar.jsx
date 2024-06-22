@@ -8,9 +8,9 @@ const Navbar = () => {
 
   return (
     <div className="shadow-md w-full fixed top-0 left-0 mb-4">
-      <div className="md:flex items-center justify-between bg-white  md:px-10 px-7">
+      <div className="md:flex items-center justify-between bg-white  md:px-10 px-10">
         {/* logo section */}
-        <div className="font-bold text-2xl cursor-pointer flex items-center gap-1">
+        <div className="cursor-pointer flex items-center gap-1">
           <Link to="/">
             <img src={logo} style={{ height: 72 }} className="h-10" />
           </Link>
