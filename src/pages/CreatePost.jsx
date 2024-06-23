@@ -3,27 +3,26 @@ import { useState } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import FileUploadComponent from "../components/FileUpload";
 import { Link } from "react-router-dom";
+import FileUpload from "../components/FileUpload";
 
 function CreatePost() {
   const [value, setValue] = useState("");
 
   const containerStyle = {
-    height: "300px", // Set your desired height
+    height: "600px", // Set your desired height
   };
 
   const editorStyle = {
     height: "100%",
-    overflowY: "auto", // Optional: Adds scroll for overflow content
   };
 
   console.log(value);
 
   return (
     <>
-      <div className="items-center justify-center p-4 ">
-        <div className="flex items-center justify-between p-4">
+      <div className="items-center justify-center p-2 mb-8">
+        <div className="flex items-center justify-between p-4 sm:p-2">
           <h3 className="text-xl font-semibold ">Create Post</h3>
           <Link
             to="/"
@@ -33,29 +32,25 @@ function CreatePost() {
           </Link>
         </div>
         <form>
-          <div className="preview-img px-4">
-            <label
-              className="block text-sm font-medium text-gray-900 dark:text-white"
-              htmlFor="file_input"
-            >
-              Upload file
-            </label>
-            <input
-              className="block w-full text-sm mb-4 cursor-pointer focus:outline-none"
-              id="file_input"
-              accept=".jpg,.jpeg,.png,.gif"
-              type="file"
-            />
+          <div className="preview-img p-4">
+            <FileUpload />
             <input
               className="w-full border-2 border-gray-300 focus:border-blue-500 focus:outline-none focus:border-opacity-100 px-4 py-2"
-              placeholder="Enter title"
+              placeholder="Enter blog title"
             />
           </div>
-          <div style={containerStyle} className="p-4 mb-4">
-            <ReactQuill value={value} onChange={setValue} style={editorStyle} />
+          <div
+            style={containerStyle}
+            className="p-4 mb-4 w-[100%] md:h-[400px] h-[250px] "
+          >
+            <ReactQuill
+              value={value}
+              onChange={setValue}
+              className="h-full w-full "
+            />
           </div>
         </form>
-        <div className="px-4">
+        <div className="px-4 py-8">
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  inline-flex items-center">
             <svg
               className="fill-current w-4 h-4 mr-2"
