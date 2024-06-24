@@ -8,16 +8,24 @@ import FileUpload from '../components/FileUpload';
 import useTitleAndSlug from '../hooks/useTitleAndSlug';
 
 function CreatePost() {
-  const [value, setValue] = useState('');
+
+  const containerStyle = {
+    height: '600px', // Set your desired height
+  };
+  const editorStyle = {
+    height: '100%',
+  };
+  
+
   const [blogbody, setBlogbody] = useState('');
   const [author, setAuthor] = useState('');
   const [error, setError] = useState('');
-
   const { title, slug, handleTitleChange } = useTitleAndSlug();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const blog = { title, slug, blogbody, author };
+    const blog = { image, title, slug, blogbody, author };
     const response = await fetch('/api/blogs', {
       method: 'POST',
       body: JSON.stringify(blog),
@@ -39,13 +47,7 @@ function CreatePost() {
     console.log(slug)
   };
 
-  const containerStyle = {
-    height: '600px', // Set your desired height
-  };
-  const editorStyle = {
-    height: '100%',
-  };
-  
+
 
   return (
     <div className="items-center justify-center p-2 mb-8">
@@ -101,7 +103,7 @@ function CreatePost() {
             <span>Cancel</span>
           </button>
           {error && <div className="px-2 py-8 mt-4 border-red-500 border">Error: {error}</div>}
-          {!error && <div className="px-2 py-8 mt-4 border-green-500 border">Blog Posted</div>}
+
         </div>
       </form>
     </div>
