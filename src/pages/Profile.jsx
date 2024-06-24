@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 
 function Profile() {
   return (
-    <div className="items-center justify-center p-4 sm:p-2 ">
+<>
+<div className="items-center justify-center p-4 sm:p-2 ">
       <div className="flex items-center justify-between p-4 sm:p-2">
         <h3 className="text-xl font-semibold ">User Profile</h3>
         <Link
@@ -36,6 +37,7 @@ function Profile() {
       </div>
       
     </div>
+</>
   );
 }
 
