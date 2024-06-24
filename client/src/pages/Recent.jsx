@@ -44,7 +44,7 @@ function Recent() {
             >
               Read more...
             </p>
-            <Link to="/createpost">
+            <Link to="/profile">
               <span className="font-semibold text-blue-400 cursor-pointer flex items-center">
                 <img
                   src="https://cdn-icons-png.freepik.com/512/168/168725.png" // Replace with the actual path to your avatar image
