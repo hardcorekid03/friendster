@@ -1,60 +1,67 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const BottomNav = () => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg ">
+    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg  ">
       <div className="flex justify-around">
         {/* Home Icon */}
-        <div className="flex flex-col items-center p-2">
-          <div className="p-4  group border-t-2 border-white hover:border-blue-500 ">
-            <svg
-              className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-            </svg>
+        <Link to="/">
+          <div className="flex flex-col items-center p-2">
+            <div className="p-4  group border-t-2 border-white hover:border-blue-500 ">
+              <svg
+                className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+              </svg>
+            </div>
           </div>
-        </div>
+        </Link>
         {/* Profile Icon */}
-        <div className="flex flex-col items-center p-2">
-          <div className="p-4  group border-t-2 border-white hover:border-blue-500 ">
-            <svg
-              className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-            </svg>
+        <Link to="/profile">
+          <div className="flex flex-col items-center p-2">
+            <div className="p-4  group border-t-2 border-white hover:border-blue-500 ">
+              <svg
+                className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+              </svg>
+            </div>
           </div>
-        </div>
-        {/* Create Icon */}
-        <div className="flex flex-col items-center p-2">
-          <div className="p-4  group border-t-2 border-white hover:border-blue-500  ">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
-            >
-              <path
-                fillRule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-        </div>
+        </Link>
 
+        {/* Create Icon */}
+        <Link to="/createpost">
+          <div className="flex flex-col items-center p-2">
+            <div className="p-4  group border-t-2 border-white hover:border-blue-500  ">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          </div>
+        </Link>
         {/* Latest Icon */}
         <div className="flex flex-col items-center p-2">
           <div className="p-4  group border-t-2 border-white hover:border-blue-500 ">
-            <svg 
+          <svg
               className="w-8 h-8 text-gray-700 group-hover:text-blue-500"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
-              <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h2v-2H7v2zm0 4h2v-2H7v2zm0-8h2V7H7v2zm4 4h2v-2h-2v2zm0 4h2v-2h-2v2zm0-8h2V7h-2v2zm4 4h2v-2h-2v2zm0 4h2v-2h-2v2zm0-8h2V7h-2v2zm4 4h2v-2h-2v2zm0 4h2v-2h-2v2zm0-8h2V7h-2v2z" />
+              <path d="M8.625 0c.61 7.189-5.625 9.664-5.625 15.996 0 4.301 3.069 7.972 9 8.004 5.931.032 9-4.414 9-8.956 0-4.141-2.062-8.046-5.952-10.474.924 2.607-.306 4.988-1.501 5.808.07-3.337-1.125-8.289-4.922-10.378zm4.711 13c3.755 3.989 1.449 9-1.567 9-1.835 0-2.779-1.265-2.769-2.577.019-2.433 2.737-2.435 4.336-6.423z" />
             </svg>
           </div>
         </div>

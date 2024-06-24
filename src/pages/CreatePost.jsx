@@ -41,7 +41,7 @@ function CreatePost() {
           </div>
           <div
             style={containerStyle}
-            className="p-4 mb-4 w-[100%] md:h-[400px] h-[250px] "
+            className="p-4 w-[100%] md:h-[400px] h-[250px] "
           >
             <ReactQuill
               value={value}
@@ -50,8 +50,8 @@ function CreatePost() {
             />
           </div>
         </form>
-        <div className="px-4 py-8">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  inline-flex items-center">
+        <div className="px-4 py-8 mt-10">
+          <button className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  inline-flex items-center">
             <svg
               className="fill-current w-4 h-4 mr-2"
               xmlns="http://www.w3.org/2000/svg"
@@ -60,6 +60,16 @@ function CreatePost() {
               <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
             </svg>
             <span>Save Post</span>
+          </button>
+          <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4  inline-flex items-center">
+            <svg
+              className="fill-current w-4 h-4 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+            </svg>
+            <span>Cancel</span>
           </button>
         </div>
       </div>

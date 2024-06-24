@@ -33,7 +33,7 @@ const Navbar = () => {
             HOME
           </li>
           </Link>
-          <Link to="/">
+          <Link to="/profile">
           <li className="text-gray-800 text-sm hover:text-blue-400 duration-2000 md:ml-8 md:my-0 my-2 font-semibold">
             PROFILE
           </li>

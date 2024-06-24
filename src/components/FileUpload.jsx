@@ -14,6 +14,8 @@ const DropzoneComponent = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+    accept: 'image/png, image/jpeg, image/gif', // Added accept property
+
 
   });
 
