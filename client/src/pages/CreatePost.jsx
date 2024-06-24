@@ -22,7 +22,7 @@ function CreatePost() {
   return (
     <>
       <div className="items-center justify-center p-2 mb-8">
-        <div className="flex items-center justify-between p-4 sm:p-2">
+        <div className="flex items-center justify-between p-2 sm:p-2">
           <h3 className="text-xl font-semibold ">Create Post</h3>
           <Link
             to="/"
@@ -32,7 +32,7 @@ function CreatePost() {
           </Link>
         </div>
         <form>
-          <div className="preview-img p-4">
+          <div className="preview-img p-2">
             <FileUpload />
             <input
               className="w-full border-2 border-gray-300 focus:border-blue-500 focus:outline-none focus:border-opacity-100 px-4 py-2"
@@ -41,7 +41,7 @@ function CreatePost() {
           </div>
           <div
             style={containerStyle}
-            className="p-4 w-[100%] md:h-[400px] h-[250px] "
+            className="p-2 w-[100%] md:h-[400px] h-[250px] "
           >
             <ReactQuill
               value={value}
@@ -50,7 +50,7 @@ function CreatePost() {
             />
           </div>
         </form>
-        <div className="px-4 py-8 mt-10">
+        <div className="px-2 py-8 mt-10">
           <button className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  inline-flex items-center">
             <svg
               className="fill-current w-4 h-4 mr-2"
