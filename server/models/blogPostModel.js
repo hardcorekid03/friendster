@@ -5,23 +5,28 @@ const blogPostSchema = new Schema(
   {
     image: {
       type: String,
-      required: true
+      required: true,
     },
     title: {
       type: String,
-      required: true
+      required: true,
+      unique:true,
     },
     slug: {
       type: String,
-      required: true
+      required: true,
     },
     blogbody: {
       type: String,
-      required: true
+      required: true,
     },
     author: {
       type: String,
-      required: false
+      required: false,
+    },
+    authorId: {
+      type: String,
+      required: false,
     },
   },
   { timestamps: true }

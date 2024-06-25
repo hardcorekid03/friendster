@@ -1,22 +1,24 @@
 // src/hooks/useTitleAndSlug.js
 import { useState } from 'react';
+import slugify from 'slugify'; // Make sure to install slugify if not already installed
 
 const useTitleAndSlug = () => {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
 
-  const handleTitleChange = (event) => {
-    const newTitle = event.target.value;
+  const handleTitleChange = (e) => {
+    const newTitle = e.target.value;
     setTitle(newTitle);
-    const slugValue = newTitle.replace(/ /g, '-').toLowerCase();
-    setSlug(slugValue);
+    const newSlug = slugify(newTitle, { lower: true });
+    setSlug(newSlug);
   };
 
-  return {
-    title,
-    slug,
-    handleTitleChange,
+  const resetTitleAndSlug = () => {
+    setTitle('');
+    setSlug('');
   };
+
+  return { title, setTitle, slug, setSlug, handleTitleChange, resetTitleAndSlug };
 };
 
-export default useTitleAndSlug
+export default useTitleAndSlug;

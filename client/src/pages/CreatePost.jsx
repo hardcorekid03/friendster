@@ -1,4 +1,3 @@
-// src/components/CreatePost.js
 import React, { useState } from 'react';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import ReactQuill from 'react-quill';
@@ -8,24 +7,27 @@ import FileUpload from '../components/FileUpload';
 import useTitleAndSlug from '../hooks/useTitleAndSlug';
 
 function CreatePost() {
-
   const containerStyle = {
     height: '600px', // Set your desired height
   };
-  const editorStyle = {
-    height: '100%',
-  };
-  
 
   const [blogbody, setBlogbody] = useState('');
-  const [author, setAuthor] = useState('');
+  const [author, setAuthor] = useState('hardcorekid03');
   const [error, setError] = useState('');
-  const { title, slug, handleTitleChange } = useTitleAndSlug();
+  const [image, setImage] = useState('');
+  const { title, slug, handleTitleChange, resetTitleAndSlug } = useTitleAndSlug();
+
+  const handleFileSelect = (fileName) => {
+    console.log('Received file name in CreatePost:', fileName);
+    setImage(fileName);
+  };
+
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const blog = { image, title, slug, blogbody, author };
+
+    const blog = { image , title, slug, blogbody, author };
     const response = await fetch('/api/blogs', {
       method: 'POST',
       body: JSON.stringify(blog),
@@ -33,24 +35,23 @@ function CreatePost() {
         'Content-Type': 'application/json',
       },
     });
+
     const json = await response.json();
     if (!response.ok) {
       setError(json.error);
     }
     if (response.ok) {
-      setValue('');
+      resetTitleAndSlug();
       setBlogbody('');
       setAuthor('');
       setError(null);
       console.log('Blog posted!');
+      alert("blog posted!");
     }
-    console.log(slug)
   };
-
-
-
-  return (
+    return (
     <div className="items-center justify-center p-2 mb-8">
+
       <div className="flex items-center justify-between p-2 sm:p-2">
         <h3 className="text-xl font-semibold">Create Post</h3>
         <Link
@@ -62,8 +63,8 @@ function CreatePost() {
       </div>
       <form onSubmit={handleSubmit}>
         <div className="preview-img p-2">
-          <FileUpload />
-          <input
+        <FileUpload onFileSelect={handleFileSelect} />
+        <input
             className="w-full border-2 border-gray-300 focus:border-blue-500 focus:outline-none focus:border-opacity-100 px-4 py-2"
             placeholder="Enter blog title"
             value={title}
