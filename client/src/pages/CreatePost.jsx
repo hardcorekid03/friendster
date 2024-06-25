@@ -61,7 +61,7 @@ function CreatePost() {
       <form onSubmit={handleSubmit}>
         <div className="">
           <div className="preview-img p-2">
-            <label class="text-sm text-gray-400 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+            <label class="text-sm text-gray-400 font-medium  peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
              Upload Banner
             </label>
             <input
@@ -74,7 +74,7 @@ function CreatePost() {
 
           {/* Conditional rendering */}
           {selectedFile ? (
-            <div className="App mb-4 w-[100%] md:h-[400px] h-[250px] p-2 sm:p-2">
+            <div className="w-[100%] md:h-[400px] h-[250px] p-2 sm:p-2">
               <img
                 src={URL.createObjectURL(selectedFile)}
                 alt="Selected File"
@@ -90,7 +90,7 @@ function CreatePost() {
         <div className="preview-img p-2">
           {/* <FileUpload onFileSelect={handleFileSelect} /> */}
           <input
-            className="w-full border-2 border-gray-300 focus:border-blue-500 focus:outline-none focus:border-opacity-100 px-4 py-2"
+            className="w-full border border-gray-300 focus:border-blue-500 focus:outline-none focus:border-opacity-100 px-4 py-2"
             placeholder="Enter blog title"
             value={title}
             onChange={handleTitleChange}
