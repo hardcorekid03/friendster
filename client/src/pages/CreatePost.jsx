@@ -22,8 +22,6 @@ function CreatePost() {
   const { title, slug, handleTitleChange, resetTitleAndSlug } =
     useTitleAndSlug();
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -61,10 +59,17 @@ function CreatePost() {
         </Link>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="container mx-auto flex  flex-col">
+        <div className="mb-2">
           <div className="preview-img p-2">
-            <h2>Add Image:</h2>
-            <input type="file" onChange={handleChange} />
+            <label class="text-sm text-gray-400 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+             Upload Banner
+            </label>
+            <input
+              class="flex w-full  border border-blue-300 border-input bg-white text-sm text-gray-400 file:border-0 file:bg-blue-600 file:text-white file:text-sm file:font-lg"
+              type="file"
+              id="picture"
+              onChange={handleChange}
+            />
           </div>
 
           {/* Conditional rendering */}
