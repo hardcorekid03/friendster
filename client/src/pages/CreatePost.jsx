@@ -59,7 +59,7 @@ function CreatePost() {
         </Link>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="">
+        <div className="mb-2">
           <div className="preview-img p-2">
             <label class="text-sm text-gray-400 font-medium  peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
              Upload Banner
@@ -74,7 +74,7 @@ function CreatePost() {
 
           {/* Conditional rendering */}
           {selectedFile ? (
-            <div className="w-[100%] md:h-[400px] h-[250px] p-2 sm:p-2">
+            <div className="w-[100%] md:h-[400px] h-[250px] p-2 sm:p-2 ">
               <img
                 src={URL.createObjectURL(selectedFile)}
                 alt="Selected File"
