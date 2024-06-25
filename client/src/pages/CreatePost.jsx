@@ -26,6 +26,8 @@ function CreatePost() {
     e.preventDefault();
 
     const blog = { image, title, slug, blogbody, author };
+
+    
     const response = await fetch("/api/blogs", {
       method: "POST",
       body: JSON.stringify(blog),
@@ -61,11 +63,11 @@ function CreatePost() {
       <form onSubmit={handleSubmit}>
         <div className="mb-2">
           <div className="preview-img p-2">
-            <label class="text-sm text-gray-400 font-medium  peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+            <label className="text-sm text-gray-400 font-medium  peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
              Upload Banner
             </label>
             <input
-              class="flex w-full border border-gray-300 border-input bg-white text-sm text-gray-400 file:border-0 file:bg-gray-600 file:text-white file:text-lg file:font-lg"
+              className="flex w-full  bg-white text-sm text-gray-500 file:border-0 file:bg-blue-500 file:text-white file:text-lg file:font-lg"
               type="file"
               id="picture"
               onChange={handleChange}
