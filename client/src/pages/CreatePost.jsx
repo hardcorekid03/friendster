@@ -18,7 +18,7 @@ function CreatePost() {
   const [blogbody, setBlogbody] = useState("");
   const [author, setAuthor] = useState("hardcorekid03");
   const [error, setError] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState("dasdasdsa");
   const { title, slug, handleTitleChange, resetTitleAndSlug } =
     useTitleAndSlug();
 
@@ -59,13 +59,13 @@ function CreatePost() {
         </Link>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="mb-2">
+        <div className="">
           <div className="preview-img p-2">
             <label class="text-sm text-gray-400 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
              Upload Banner
             </label>
             <input
-              class="flex w-full  border border-blue-300 border-input bg-white text-sm text-gray-400 file:border-0 file:bg-blue-600 file:text-white file:text-sm file:font-lg"
+              class="flex w-full border border-gray-300 border-input bg-white text-sm text-gray-400 file:border-0 file:bg-gray-600 file:text-white file:text-lg file:font-lg"
               type="file"
               id="picture"
               onChange={handleChange}
