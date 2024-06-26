@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import slugify from 'slugify'; // Make sure to install slugify if not already installed
+import slugify from 'slugify'; 
 
 const useTitleAndSlug = () => {
   const [title, setTitle] = useState('');
