@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { IF } from "./url";
+<<<<<<< HEAD
+=======
+import Loader from "../components/Loader/Loader";
+>>>>>>> d023c2f153bd52e6f35291834002bf0464166614
 function Recent() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,6 +14,7 @@ function Recent() {
     const fetchBlogs = async () => {
       try {
         const response = await fetch("api/blogs");
+<<<<<<< HEAD
         const data = await response.json();
         setBlogs(data);
       } catch (error) {
@@ -18,6 +23,20 @@ function Recent() {
         setLoading(false);
       }
     };
+=======
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setBlogs(data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    };
+
+>>>>>>> d023c2f153bd52e6f35291834002bf0464166614
     fetchBlogs();
   }, []);
 
@@ -39,38 +58,41 @@ function Recent() {
           </div>
         ) : (
           <div>
-            {blogs.map((blogs, index) => (
-              <div
+            {blogs.map((blog,index) => (
+              <Link to={`/postdetails/${blog._id}`} key={blog.id}>
+                <div
                 key={index}
-                className="md:flex shadow-md border-2  border-gray-100 hover:border-blue-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4 sm:p-2"
-              >
-                <div className="blog-img mb-4 md:w-[35%] h-[220px]  sm:w-[75%] ">
-                  <img
-                    src={IF + blogs.image}
-                    className="blog-img h-full w-full object-cover "
-                  />
-                </div>
-                <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%]">
-                  <h3 className="text-lg font-semibold">{blogs.title}</h3>
-                  <p className="mb-2 leading-relaxed">
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: blogs.blogbody.slice(0, 300) + " ...Read more",
-                      }}
+                  className="md:flex shadow-md border-2  border-gray-100 hover:border-blue-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4 sm:p-2"
+                >
+                  <div className="blog-img mb-4 md:w-[35%] h-[220px]  sm:w-[75%] ">
+                    <img
+                      src={IF + blog.image}
+                      className="blog-img h-full w-full object-cover "
                     />
-                  </p>
-                  <Link to="/profile">
-                    <span className="font-semibold text-blue-400 cursor-pointer flex items-center">
-                      <img
-                        src="https://cdn-icons-png.freepik.com/512/168/168725.png" // Replace with the actual path to your avatar image
-                        alt="Avatar"
-                        className="inline-block h-8 w-8 object-cover rounded-full mr-2"
+                  </div>
+                  <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%]">
+                    <h3 className="text-lg font-semibold">{blog.title}</h3>
+                    <div className="mb-2 leading-relaxed">
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            blog.blogbody.slice(0, 300) + " ...Read more",
+                        }}
                       />
-                      {blogs.author}
-                    </span>
-                  </Link>
+                    </div>
+
+                      <span className="font-semibold text-blue-400 cursor-pointer flex items-center">
+                        <img
+                          src="https://cdn-icons-png.freepik.com/512/168/168725.png" // Replace with the actual path to your avatar image
+                          alt="Avatar"
+                          className="inline-block h-8 w-8 object-cover rounded-full mr-2"
+                        />
+                        {blog.author}
+                      </span>
+
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

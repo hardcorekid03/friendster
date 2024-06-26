@@ -11,7 +11,7 @@ const AppRoutes = () => {
             <Routes>
                 <Route path="/" element={<Recent />} />
                 <Route path="/recent" element={<Recent />} />
-                <Route path="/postdetails" element={<PostDetails />} />
+                <Route path="/postdetails/:id" element={<PostDetails />} />
                 <Route path="/createpost" element={<CreatePost />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="*" element={<h1>Error 404: Page not found!</h1>} />

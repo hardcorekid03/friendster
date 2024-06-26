@@ -1,8 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { IF, URL} from "./url";
+
 
 function PostDetails() {
+  const { id } = useParams();
+  const [blogDetails, setBlogDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch(URL +`api/blogs/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setBlogDetails(data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, [id]);
+console.log(id);
+
   return (
     <>
       <div className="items-center justify-center p-4 sm:p-2 ">
@@ -25,20 +51,16 @@ function PostDetails() {
           </div>
           <div className="p-4 sm:p-2">
             <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
-              What is Lorem Ipsum?
+{blogDetails.title}
             </h1>
-            <p className="mb-8 leading-relaxed">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </p>
+            <div className="mb-2 leading-relaxed">
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html:
+                          blogDetails.blogbody,
+                        }}
+                      />
+                    </div>
             <span className="font-semibold text-blue-700 cursor-pointer">
               by: @hardcorekid03
             </span>
