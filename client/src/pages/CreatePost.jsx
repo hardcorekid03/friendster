@@ -71,8 +71,8 @@ function CreatePost() {
         </Link>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="mb-2 p-2">
-          <div className=" preview-img mb-2">
+        <div className=" mb-2 p-2">
+          <div className="hidden preview-img mb-2">
             <label className="text-sm text-gray-400 font-medium  peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Upload Banner
             </label>
