@@ -56,7 +56,7 @@ function CreatePost() {
       setAuthor("");
       setError(null);
       console.log("Blog posted!");
-      alert("blog posted!");
+      alert("blog posted! " + slug);
     }
   };
   return (

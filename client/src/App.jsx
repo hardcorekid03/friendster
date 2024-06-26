@@ -2,8 +2,6 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import BottomNav from "./components/BottomNav";
-import Trending from "./pages/Trending";
-import AppRoutes from "./pages/Routes";
 
 function App() {
   return (
