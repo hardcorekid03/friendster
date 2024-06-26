@@ -111,7 +111,9 @@ function CreatePost() {
               <img
                 src={URL.createObjectURL(selectedFile)}
                 alt="Selected File"
-                className="object-contain w-full h-full"
+                className="object-contain w-full h-full cursor-pointer"
+                onClick={handleSvgClick}
+
               />
             ) : (
               

@@ -1,4 +1,3 @@
-// src/hooks/useTitleAndSlug.js
 import { useState } from 'react';
 import slugify from 'slugify'; // Make sure to install slugify if not already installed
 
