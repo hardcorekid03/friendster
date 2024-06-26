@@ -2,22 +2,23 @@ import React, { useState, useEffect } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { IF } from "./url";
-import Loader from "../components/Loader/Loader"
 function Recent() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("api/blogs")
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch("api/blogs");
+        const data = await response.json();
         setBlogs(data);
-        setLoading(false); 
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false); 
-      });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlogs();
   }, []);
 
   return (
