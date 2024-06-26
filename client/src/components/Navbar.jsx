@@ -7,7 +7,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="shadow-md w-full fixed top-0 left-0 mb-4">
+    <div className="shadow-md w-full fixed top-0 left-0 mb-4 z-[99]">
       <div className="md:flex items-center justify-between bg-white  md:px-10 px-10">
         {/* logo section */}
         <div className="cursor-pointer flex items-center gap-1">
