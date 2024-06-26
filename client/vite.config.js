@@ -9,10 +9,10 @@ export default defineConfig({
         target: "http://localhost:4000",
         secure: false,
       },
-      "/api/user": {
+      "/api/upload": {
         target: "http://localhost:4000",
         secure: false,
-      },
+      },    
     },
   },
   plugins: [react()],

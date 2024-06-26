@@ -22,9 +22,9 @@ const getBlogPost = async (req, res) => {
 
   // create new coffee
 const createBlogPost = async (req, res) => {
-    const {image,title,slug,blogbody,author} = req.body
+    const {image,title,slug,blogbody,author,authorId} = req.body
     try {
-        const blog = await BlogPost.create({ image, title, slug, blogbody, author })
+        const blog = await BlogPost.create({ image, title, slug, blogbody, author,authorId })
         res.status(200).json(blog)
       } catch (error) {
         res.status(400).json({ error: error.message })

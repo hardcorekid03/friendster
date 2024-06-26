@@ -1,40 +1,46 @@
-require("dotenv").config();
-const express = require("express");
+require('dotenv').config();
+const express = require('express');
 const cors = require('cors');
-const mongoose = require("mongoose");
-const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const path = require('path');
 
 const BlogRoutes = require('./routes/BlogRoutes');
+const imageRoutes = require('./routes/ImageRoutes'); 
+const userImageRoutes = require('./routes/userImageRoutes'); // Import userImageRoutes
 
-// express app
+
 const app = express();
 
-// Enable CORS for all origins
+// Enable CORS for specified origins
 app.use(cors({
   origin: ['https://prendster.netlify.app', 'http://localhost:5173'],
 }));
 
-
-// middleware
+// Middleware
 app.use(express.json());
+
+// Serve static files from 'assets/images' directory
+app.use('/images', express.static(path.join(__dirname, 'assets/images/blogs')));
+
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
 
-// routes
+// Routes
 app.use('/api/blogs', BlogRoutes);
+app.use('/api/upload', imageRoutes); // Use imageRoutes for handling image uploads
+app.use('/api/user/images', userImageRoutes); // Use userImageRoutes for user image uploads
 
-// connect to db
+
+// Connect to MongoDB
 const port = process.env.PORT || 4000;
-mongoose
-  .connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
-    // listen for requests
     app.listen(port, () => {
-      console.log("connected to database and listening on port", port);
+      console.log('Connected to database and listening on port', port);
     });
   })
   .catch((error) => {
-    console.log(error);
+    console.error('Error connecting to database:', error);
   });

@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import {IF} from './url'
 
 function Recent() {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    // Navigate to '/destination-path'
-    navigate("/postdetails");
-  };
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
+
+  useEffect(() => {
+    fetch("api/blogs")
+      .then((response) => response.json())
+      .then((data) => {
+        setBlogs(data);
+        setLoading(false); // Set loading to false after data is fetched
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false); // Set loading to false even if there's an error
+      });
+  }, []);
+
   return (
     <>
       <div className="items-center justify-center p-2 mb-8">
@@ -20,112 +32,38 @@ function Recent() {
             <PencilSquareIcon className="h-full w-full" />
           </Link>
         </div>
-        {/* // item 1       */}
-        <div className="md:flex shadow-md border-2  border-gray-100 hover:border-blue-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4 sm:p-2">
-          <div className="blog-img mb-4 md:w-[35%] h-[200px]  sm:w-[75%] ">
-            <img
-              src="https://www.searchenginejournal.com/wp-content/uploads/2020/08/7-ways-a-blog-can-help-your-business-right-now-5f3c06b9eb24e-1280x720.png"
-              className="blog-img h-full w-full object-cover "
-            />
+        {blogs.map((blogs, index) => (
+          <div
+            key={index}
+            className="md:flex shadow-md border-2  border-gray-100 hover:border-blue-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4 sm:p-2"
+          >
+            <div className="blog-img mb-4 md:w-[35%] h-[220px]  sm:w-[75%] ">
+              <img
+                src={IF + blogs.image}
+                className="blog-img h-full w-full object-cover "
+              />
+            </div>
+            <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%]">
+              <h3 className="text-lg font-semibold" >
+                {blogs.title}
+              </h3>
+              <p className="mb-2 leading-relaxed">
+              <div dangerouslySetInnerHTML={{ __html: blogs.blogbody.slice(0, 300) + " ...Read more" }} />
+
+              </p>
+              <Link to="/profile">
+                <span className="font-semibold text-blue-400 cursor-pointer flex items-center">
+                  <img
+                    src="https://cdn-icons-png.freepik.com/512/168/168725.png" // Replace with the actual path to your avatar image
+                    alt="Avatar"
+                    className="inline-block h-8 w-8 object-cover rounded-full mr-2"
+                  />
+                  {blogs.author}
+                </span>
+              </Link>
+            </div>
           </div>
-          <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%]">
-            <h3 className="text-lg font-semibold" onClick={handleClick}>
-              Businesses Benefit from Blogging
-            </h3>
-            <p className="mb-2 leading-relaxed">
-              Blogging helps businesses improve their search engine rankings. By
-              regularly publishing high-quality content with relevant keywords,
-              businesses can increase their visibility on search engines like
-              Google, driving more organic traffic to their websites.
-            </p>
-            <p
-              className="font-semibold text-gray-400 mb-4"
-              onClick={handleClick}
-            >
-              Read more...
-            </p>
-            <Link to="/profile">
-              <span className="font-semibold text-blue-400 cursor-pointer flex items-center">
-                <img
-                  src="https://cdn-icons-png.freepik.com/512/168/168725.png" // Replace with the actual path to your avatar image
-                  alt="Avatar"
-                  className="inline-block h-8 w-8 object-cover rounded-full mr-2"
-                />
-                areyoufamous99
-              </span>
-            </Link>
-          </div>
-        </div>
-        {/* // item 2       */}
-        <div className="md:flex shadow-md border-2  border-gray-100 hover:border-blue-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4 sm:p-2">
-          <div className="blog-img mb-4 md:w-[35%] h-[200px]  sm:w-[75%] ">
-            <img
-              src="https://imgv3.fotor.com/images/slider-image/A-clear-close-up-photo-of-a-woman.jpg"
-              className="blog-img h-full w-full object-cover "
-            />
-          </div>
-          <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%]">
-            <h3 className="text-lg font-semibold" onClick={handleClick}>
-              Automatically unblur images
-            </h3>
-            <p className="mb-2 leading-relaxed">
-              Automatically unblur images in one click with Fotor AI photo blur
-              remover. Try it out now to sharpen images and transform blur photo
-              to clear photo online in no time.
-            </p>
-            <p
-              className="font-semibold text-gray-400 mb-4"
-              onClick={handleClick}
-            >
-              Read more...
-            </p>
-            <Link to="/createpost">
-              <span className="font-semibold text-blue-400 cursor-pointer flex items-center">
-                <img
-                  src="https://cdn-icons-png.freepik.com/512/168/168725.png" // Replace with the actual path to your avatar image
-                  alt="Avatar"
-                  className="inline-block h-8 w-8 object-cover rounded-full mr-2"
-                />
-                qwerty88
-              </span>
-            </Link>
-          </div>
-        </div>
-        {/* // item 3       */}
-        <div className="md:flex shadow-md border-2  border-gray-100 hover:border-blue-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4 sm:p-2">
-          <div className="blog-img mb-4 md:w-[35%] h-[200px]  sm:w-[75%] ">
-            <img
-              src="https://www.typingpal.com/en/blog/lorem-ipsum-the-ultimate-placeholder-text/lorem-ipsum@2x.png"
-              className="blog-img h-full w-full object-cover "
-            />
-          </div>
-          <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%]">
-            <h3 className="text-lg font-semibold" onClick={handleClick}>
-              Lorem Ipsum Dolor sit Amet
-            </h3>
-            <p className="mb-2 leading-relaxed">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s.
-            </p>
-            <p
-              className="font-semibold text-gray-400 mb-4"
-              onClick={handleClick}
-            >
-              Read more...
-            </p>
-            <Link to="/createpost">
-              <span className="font-semibold text-blue-400 cursor-pointer flex items-center">
-                <img
-                  src="https://cdn-icons-png.freepik.com/512/168/168725.png" // Replace with the actual path to your avatar image
-                  alt="Avatar"
-                  className="inline-block h-8 w-8 object-cover rounded-full mr-2"
-                />
-                etelab78
-              </span>
-            </Link>
-          </div>
-        </div>
+        ))}
       </div>
     </>
   );

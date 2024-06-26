@@ -4,17 +4,16 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Link } from "react-router-dom";
 import useTitleAndSlug from "../hooks/useTitleAndSlug";
+import axios from "axios";
 
 function CreatePost() {
   const fileInputRef = useRef(null);
+  
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleChange = (event) => {
     setSelectedFile(event.target.files[0]);
-  };
-
-  const handleSvgClick = () => {
-    fileInputRef.current.click();
+    setImage(event.target.files[0]);
   };
 
   const handleReset = () => {
@@ -22,22 +21,44 @@ function CreatePost() {
     fileInputRef.current.value = null;
   };
 
+  const handleSvgClick = () => {
+    fileInputRef.current.click();
+  };
+
   const containerStyle = {
     height: "600px", // Set your desired height
   };
-
+  // states for blog posting
   const [blogbody, setBlogbody] = useState("");
   const [author, setAuthor] = useState("hardcorekid03");
-  const [error, setError] = useState("");
-  const [image, setImage] = useState("dasdasdsa");
+  const [authorId, setAuthorId] = useState("123456789");
+  const [image, setImage] = useState(null);
   const { title, slug, handleTitleChange, resetTitleAndSlug } =
     useTitleAndSlug();
 
+  const [error, setError] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const blog = { image, title, slug, blogbody, author, authorId };
 
-    const blog = { image, title, slug, blogbody, author };
+    if (image) {
+      const data = new FormData();
+      const alphanumericKey = Math.random().toString(36).substr(2, 9);
+      const filename = `blog-${alphanumericKey}-${Date.now()}${image.name}`;
+      data.append("img", filename);
+      data.append("file", image);
+      blog.image = filename;
 
+      // console.log(data)
+      //img upload
+      try {
+        const imgUpload = await axios.post("/api/upload", data);
+        console.log(imgUpload.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
     const response = await fetch("/api/blogs", {
       method: "POST",
       body: JSON.stringify(blog),
@@ -53,8 +74,9 @@ function CreatePost() {
     if (response.ok) {
       resetTitleAndSlug();
       setBlogbody("");
-      setAuthor("");
       setError(null);
+      setSelectedFile(null);
+      fileInputRef.current.value = null;
       console.log("Blog posted!");
       alert("blog posted! " + slug);
     }
@@ -88,7 +110,7 @@ function CreatePost() {
 
           {/* Conditional rendering */}
 
-          <div className="relative flex items-center justify-center bg-gray-00 border-dashed border-2 border-gray-300 w-[100%] md:h-[250px] h-[250px] p-2">
+          <div className="relative cursor-pointer flex items-center justify-center bg-gray-00 border-dashed border-2 border-gray-300 hover:border-blue-300 hover:shadow w-[100%] md:h-[250px] h-[250px] p-2">
             <div className="absolute top-2 right-2 bg-gray-400 text-white px-3 py-1 rounded ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +118,7 @@ function CreatePost() {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="size-6 cursor-pointer"
+                className="size-6 "
                 onClick={handleReset}
               >
                 <path
@@ -113,25 +135,26 @@ function CreatePost() {
                 alt="Selected File"
                 className="object-contain w-full h-full cursor-pointer"
                 onClick={handleSvgClick}
-
               />
             ) : (
-              
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-12 cursor-pointer"
-                onClick={handleSvgClick}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                />
-              </svg>
+              <div className="flex flex-col justify-center items-center text-gray-400">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-12 cursor-pointer"
+                  onClick={handleSvgClick}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                  />
+                </svg>
+                <h1 className="text-sm "> Upload Image</h1>
+              </div>
             )}
           </div>
         </div>
@@ -178,8 +201,8 @@ function CreatePost() {
             <span>Cancel</span>
           </button>
           {error && (
-            <div className="px-2 py-8 mt-4 border-red-500 border">
-              Error: {error}
+            <div className="px-2 py-8 mt-4 border-red-400 border bg-red-200">
+              All fields are required!
             </div>
           )}
         </div>
