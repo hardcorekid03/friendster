@@ -4,7 +4,10 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Link } from "react-router-dom";
 import useTitleAndSlug from "../hooks/useTitleAndSlug";
+import toast, { Toaster } from 'react-hot-toast';
 import axios from "axios";
+import Trending from "./Trending";
+
 
 function CreatePost() {
   const fileInputRef = useRef(null);
@@ -40,18 +43,17 @@ function CreatePost() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const blog = { image, title, slug, blogbody, author, authorId };
 
+    // save image to folder
     if (image) {
       const data = new FormData();
-      const alphanumericKey = Math.random().toString(36).substr(2, 9);
+      const alphanumericKey = Math.random().toString(36).slice(2, 9);
       const filename = `blog-${alphanumericKey}-${Date.now()}${image.name}`;
       data.append("img", filename);
       data.append("file", image);
       blog.image = filename;
-
-      // console.log(data)
-      //img upload
       try {
         const imgUpload = await axios.post("/api/upload", data);
         console.log(imgUpload.data);
@@ -59,6 +61,8 @@ function CreatePost() {
         console.log(err);
       }
     }
+
+    // save blog data
     const response = await fetch("/api/blogs", {
       method: "POST",
       body: JSON.stringify(blog),
@@ -70,6 +74,8 @@ function CreatePost() {
     const json = await response.json();
     if (!response.ok) {
       setError(json.error);
+      toast.error('All fields are required')
+
     }
     if (response.ok) {
       resetTitleAndSlug();
@@ -78,11 +84,17 @@ function CreatePost() {
       setSelectedFile(null);
       fileInputRef.current.value = null;
       console.log("Blog posted!");
-      alert("blog posted! " + slug);
+      toast.success('Blog added successfully')
     }
   };
   return (
-    <div className="p-2 mb-8">
+
+    <>
+    <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
+      <div className="icon-align p-2 bg-white shadow ">
+      <div className="p-2 mb-8">
+      <div><Toaster/></div>
+
       <div className="flex  justify-between p-2 sm:p-2">
         <h3 className="text-xl font-semibold">Create Post</h3>
         <Link
@@ -200,14 +212,17 @@ function CreatePost() {
             </svg>
             <span>Cancel</span>
           </button>
-          {error && (
-            <div className="px-2 py-8 mt-4 border-red-400 border bg-red-200">
-              All fields are required!
-            </div>
-          )}
         </div>
       </form>
     </div>
+      </div>
+    </section>
+    <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
+      <Trending />
+    </section>
+    </>
+    
+
   );
 }
 

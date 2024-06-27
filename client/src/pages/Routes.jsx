@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './Home';
+import { Routes, Route } from 'react-router-dom';
+import Signup from './Signup';
 import Recent from './Recent';
 import PostDetails from './PostDetails';
 import CreatePost from './CreatePost';
@@ -14,6 +14,7 @@ const AppRoutes = () => {
                 <Route path="/postdetails/:id" element={<PostDetails />} />
                 <Route path="/createpost" element={<CreatePost />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/signup" element={<Signup />} />
                 <Route path="*" element={<h1>Error 404: Page not found!</h1>} />
             </Routes>
     );
