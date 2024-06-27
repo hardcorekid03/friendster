@@ -5,15 +5,14 @@ import BottomNav from "./components/BottomNav";
 function App() {
   return (
     <>
-        <div className="main-div">
-      <Navbar />
-      <Home />
-      <div className="sm:hidden">
-        <BottomNav />
+      <div className="main-div">
+        <Navbar />
+        <Home />
+        <div className="sm:hidden">
+          <BottomNav />
+        </div>
       </div>
-    </div>
     </>
-
   );
 }
 
