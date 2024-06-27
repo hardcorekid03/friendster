@@ -36,7 +36,7 @@ function PostDetails() {
   return (
     <>
       <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
-        <div className="icon-align p-2 bg-white shadow ">
+        <div className="icon-align p-2 bg-white  ">
           <div className="items-center justify-center p-4 sm:p-2 ">
             <div className="flex items-center justify-between p-4 sm:p-2">
               <h3 className="text-xl font-semibold ">Post Details</h3>
@@ -47,7 +47,7 @@ function PostDetails() {
                 <ArrowLeftIcon className="h-full w-full" />
               </Link>
             </div>
-            <div className="container mx-auto flex  py-4 items-center justify-center flex-col mb-4 border-b-2 shadow-lg ">
+            <div className="container mx-auto flex  py-4 items-center justify-center flex-col mb-4 border-b-2 ">
               {loading ? (
                 <p>Loading...</p>
               ) : (

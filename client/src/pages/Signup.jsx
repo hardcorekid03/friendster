@@ -62,32 +62,42 @@ function Signup() {
               </div>
             </div>
             <div>
-              <label
-                htmlFor="birthdate"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Birthdate
-              </label>
               <div className="flex mt-2 justify-between gap-1">
-                <DatePicker
-                  id="birthdate"
-                  selected={birthdate}
-                  onChange={(date) => setBirthdate(date)}
-                  dateFormat="dd/MM/yyyy"
-                  placeholderText="Select a date"
-                  className="text-gray-800 h-full bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500 mr-2"
-                />
-                <select
-                  id="gender"
-                  value={gender}
-                  onChange={handleGenderChange}
-                  className="text-gray-800 h-full bg-white border border-gray-300 text-sm px-4 py-3 outline-blue-500"
-                >
-                  <option value="">Select gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
+                <div>
+                  <label
+                    htmlFor="birthdate"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Birthdate
+                  </label>
+                  <DatePicker
+                    id="birthdate"
+                    selected={birthdate}
+                    onChange={(date) => setBirthdate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    placeholderText="Select a date"
+                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="birthdate"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Gender
+                  </label>
+                  <select
+                    id="gender"
+                    value={gender}
+                    onChange={handleGenderChange}
+                    className="text-gray-800  bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                  >
+                    <option value="">Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
               </div>
             </div>
 
