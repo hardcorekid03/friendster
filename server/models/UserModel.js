@@ -9,6 +9,10 @@ const userSchema = new Schema(
       type: String,
       required: false,
     },
+    userbanner: {
+      type: String,
+      required: false,
+    },
     username: {
       type: String,
       required: true,
