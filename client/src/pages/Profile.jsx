@@ -7,8 +7,7 @@ function Profile() {
   return (
     <>
     <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
-      <div className="icon-align p-2 bg-white shadow ">
-      <div className="items-center justify-center p-4 sm:p-2 ">
+      <div className="items-center justify-center p-4 bg-white ">
         <div className="flex items-center justify-between p-4 sm:p-2">
           <h3 className="text-xl font-semibold ">User Profile</h3>
           <Link
@@ -44,7 +43,6 @@ function Profile() {
             placeholder="Write something...."
           />
         </div>
-      </div>
       </div>
     </section>
     <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
