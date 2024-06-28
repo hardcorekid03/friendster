@@ -5,7 +5,7 @@ import BottomNav from "./components/BottomNav";
 function App() {
   return (
     <>
-      <div className="main-div">
+      <div>
         <Navbar />
         <Home />
         <div className="sm:hidden">

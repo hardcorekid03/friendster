@@ -50,12 +50,10 @@ function Recent() {
           ) : (
             <>
               {blogs.map((blog, index) => (
-                <Link to={`/postdetails/${blog._id}`} key={blog._id}>
                   <div
                     key={index}
                     className="md:flex shadow-md bg-white rounded-lg border-0 border-gray-100 hover:border-blue-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
                   >
-
                     <div className="blog-img mb-4 md:w-[35%] h-[220px]  sm:w-[75%] ">
                       <img
                         src={IF + blog.image}
@@ -64,16 +62,20 @@ function Recent() {
                       />
                     </div>
                     <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%] ">
-                      <h3 className="text-lg font-semibold">{blog.title}</h3>
+                    <Link to={`/postdetails/${blog._id}`} key={blog._id}>
+
                       <div className="mb-2 ">
+                      <h3 className="text-lg font-semibold">{blog.title}</h3>
+
                         <div
                           dangerouslySetInnerHTML={{
                             __html:
-                              blog.blogbody.slice(0, 220) + " ....Read more",
+                              blog.blogbody.slice(0, 250) + " ....Read more",
                           }}
                         />
                       </div>
-                      <div className="flex justify-between">
+                      </Link>
+                      <div className="md:flex justify-between items-center ">
                         <span className="text-regular text-md text-blue-500 cursor-pointer flex items-center">
                           <img
                             src="https://cdn-icons-png.freepik.com/512/168/168725.png" // Replace with the actual path to your avatar image
@@ -82,21 +84,22 @@ function Recent() {
                           />
                           {blog.author}
                         </span>
-                        <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center">
+                        <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center ">
                           Posted:{" "}
-                        {`${format(
+                          {`${format(
                             new Date(blog.createdAt),
-                            "MMMM/dd/yyyy"
-                          )} (${formatDistanceToNow(
-                            new Date(blog.createdAt),
-                            { addSuffix: true }
-                          )})`}
-
+                            "MMM dd, yyyy"
+                          )} `}
+                        </span>
+                      </div>
+                      <div className="md:flex justify-end items-center mt-4 ">
+                        <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center ">
+                          Add to favorites
                         </span>
                       </div>
                     </div>
                   </div>
-                </Link>
+
               ))}
             </>
           )}

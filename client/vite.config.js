@@ -15,6 +15,14 @@ export default defineConfig({
         target: "http://localhost:4000",
         secure: false,
       },    
+      "/api/user": {
+        target: "http://localhost:4000",
+        secure: false,
+      },    
+      "/images": {
+        target: "http://localhost:4000/assets/images/blogs",
+        secure: false,
+      },    
     },
   },
   plugins: [react()],

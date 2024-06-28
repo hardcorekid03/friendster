@@ -8,6 +8,7 @@ import Trending from "./Trending";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 
 function PostDetails() {
+  
   const { id } = useParams();
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(true);
