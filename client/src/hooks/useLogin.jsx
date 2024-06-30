@@ -24,8 +24,8 @@ export const useLogin = () => {
       const { id, token } = json;
 
       // Save the user ID and token to local storage
-      localStorage.setItem('userId', id);
-      localStorage.setItem('token', token);
+      // localStorage.setItem('userId', id);
+      // localStorage.setItem('token', token);
 
       // Fetch user details
       const userResponse = await fetch(`/api/user/${id}`, {
