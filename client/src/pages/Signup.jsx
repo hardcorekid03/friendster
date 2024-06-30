@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useSignup } from "../hooks/useSignup";
 import { Link } from "react-router-dom";
-// import { useLogout } from "../../hooks/useLogout";
+import toast, { Toaster } from "react-hot-toast";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -26,7 +26,7 @@ function Signup() {
     e.preventDefault();
 
     if (password !== password2) {
-      alert("Passwords do not match");
+      // toast.error("Passwords do not match");
       return;
     }
 
@@ -40,7 +40,7 @@ function Signup() {
     });
 
     if (!error) {
-      alert("Signup successful!");
+      toast.success("Welcome" + username);
     }
   };
 
@@ -50,6 +50,9 @@ function Signup() {
 
   return (
     <>
+      <div>
+        <Toaster />
+      </div>
       <section className="md:col-span-12 lg:p-6 sm:p-4 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full sm:max-w-md">
           <div className="text-center mb-4">
@@ -202,14 +205,27 @@ function Signup() {
                     type="password"
                     autoComplete="new-password"
                     required
-                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                    className={`text-gray-800 bg-white border ${
+                      password !== password2
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } w-full text-sm px-4 py-3 outline-blue-500`}
                     placeholder="Re-enter password"
                     value={password2}
                     onChange={(e) => setPassword2(e.target.value)}
                   />
+                  {password !== password2 && (
+                    <p className="text-red-500 text-xs mt-1">
+                      Passwords do not match
+                    </p>
+                  )}
+                  {password === password2 && password2 !== "" && (
+                    <p className="text-green-500 text-xs mt-1">
+                      Passwords match
+                    </p>
+                  )}
                 </div>
               </div>
-
               <div>
                 <button
                   type="submit"

@@ -26,15 +26,9 @@ export const AuthContextProvider = ({ children }) => {
         }
     }, [])
 
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'))
 
-        if (!user) {
-            redirect('/'); // Redirect to login page if user is null
-        }
-    }, [state.user]);
 
-    console.log('AuthContext state:', state);
+    // console.log('AuthContext state:', state);
 
     return (
         <AuthContext.Provider value={{ ...state, dispatch }}>

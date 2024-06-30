@@ -14,6 +14,9 @@ const Navbar = () => {
   const handleLogout = () => {
     logout()
   }
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="shadow-md w-full fixed top-0 left-0 mb-4 z-[99]">
@@ -32,7 +35,6 @@ const Navbar = () => {
           {open ? <XMarkIcon /> : <Bars3Icon />}
         </div>
         {/* linke items */}   
-{ user && <h1>Welcome {user.username}</h1>}
         <ul
           className={`cursor-pointer md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
             open ? "top-12" : "top-[-490px]"

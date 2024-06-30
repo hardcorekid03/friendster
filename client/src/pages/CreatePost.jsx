@@ -7,8 +7,12 @@ import useTitleAndSlug from "../hooks/useTitleAndSlug";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import Trending from "./Trending";
+import { useAuthContext } from "../hooks/useAuthContext";
+
 
 function CreatePost() {
+  const { user } = useAuthContext();
+
   const fileInputRef = useRef(null);
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -32,8 +36,8 @@ function CreatePost() {
   };
   // states for blog posting
   const [blogbody, setBlogbody] = useState("");
-  const [author, setAuthor] = useState("hardcorekid03");
-  const [authorId, setAuthorId] = useState("123456789");
+  const [author, setAuthor] = useState("");
+  const [authorId, setAuthorId] = useState("");
   const [image, setImage] = useState(null);
   const { title, slug, handleTitleChange, resetTitleAndSlug } =
     useTitleAndSlug();
@@ -43,7 +47,7 @@ function CreatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const blog = { image, title, slug, blogbody, author, authorId };
+    const blog = { image, title, slug, blogbody, author: user.username, authorId: user.id };
 
     // save image to folder
     if (image) {

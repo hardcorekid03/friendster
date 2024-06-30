@@ -1,7 +1,19 @@
-import React from "react";
+import {useEffect } from "react";
+import { format } from 'date-fns';
+import { useAuthContext } from "../hooks/useAuthContext";
 
 function Trending() {
-  const user = false;
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    // Fetch additional user data if needed
+    // For now, we just use the user data from the context
+    // console.log(user);
+  }, [user]);
+
+  if (!user) return <p>Loading...</p>;
+  const formattedDate = format(new Date(user.createdAt), 'MMMM yyyy');
+
   return (
     <>
       <div className="p-4 bg-zinc-300 shadow-lg flex flex-col items-center w-full">
@@ -9,26 +21,27 @@ function Trending() {
           <img
             className="h-full w-full object-cover"
             alt="hero"
-            src="https://cdn-icons-png.freepik.com/512/168/168725.png"
+            src= {user.image || "https://cdn-icons-png.freepik.com/512/168/168725.png"}
           />
         </div>
         <label className="block text-sm font-semibold mb-2" htmlFor="name">
-        @qwerty88
+          {user.username}
         </label>
       </div>
-
       <div className="bg-white p-6">
         <label className="block text-sm font-medium mb-2">
-          Bio: <span className="text-blue-400 font-normal"> Lies for the liars</span>
+          Bio: 
+          <span className="text-blue-400 font-normal"> {user.bio || ""}</span>
         </label>
         <label className="block text-sm font-medium mb-2">
-          Location: <span className="text-blue-400 font-normal"> System32</span>
+          Location:{" "}
+          <span className="text-blue-400 font-normal"> {user.location}</span>
         </label>
         <label className="block text-sm font-medium mb-2">
-          Gender: <span className="text-blue-400 font-normal"> Male</span>
+          Gender: <span className="text-blue-400 font-normal"> {user.gender}</span>
         </label>
         <label className="block text-sm font-medium mb-2">
-          Joined: <span className="text-blue-400 font-normal"> 2009</span>
+          Joined: <span className="text-blue-400 font-normal"> {formattedDate}</span>
         </label>
       </div>
     </>

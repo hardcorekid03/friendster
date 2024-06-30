@@ -1,8 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
+
 
 const BottomNav = () => {
+  const { user } = useAuthContext();
+  
+  if (!user) {
+    return null;
+  }
+
   return (
+
     <div className="fixed bottom-0 left-0 right-0  shadow-lg rounded-md bg-zinc-50 mx-2 my-2">
       <div className="w-full p-2 sm:p-4">
         <div className="flex justify-around">
