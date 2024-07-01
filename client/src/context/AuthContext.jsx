@@ -1,5 +1,4 @@
 import { createContext, useReducer, useEffect } from "react";
-import { redirect} from 'react-router-dom'; // Assuming you're using react-router-dom
 
 export const AuthContext = createContext();
 

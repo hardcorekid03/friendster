@@ -33,12 +33,17 @@ export const useLogin = () => {
       });
       const userData = await userResponse.json();
 
+      // if (userResponse.ok) {
+      //   // Save the user data to local storage
+      //   localStorage.setItem('user', JSON.stringify(userData));
+      //   // Update the auth context
+      //   dispatch({ type: 'LOGIN', payload: userData.token });
       if (userResponse.ok) {
         // Save the user data to local storage
-        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('user', JSON.stringify(json.token));
 
         // Update the auth context
-        dispatch({ type: 'LOGIN', payload: userData });
+        dispatch({ type: 'LOGIN', payload: json });
 
         setIsLoading(false);
       } else {

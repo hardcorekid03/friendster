@@ -1,6 +1,7 @@
 import {useEffect } from "react";
 import { format } from 'date-fns';
 import { useAuthContext } from "../hooks/useAuthContext";
+import avatar from "../assets/images/avatar.png"
 
 function Trending() {
   const { user } = useAuthContext();
@@ -21,7 +22,7 @@ function Trending() {
           <img
             className="h-full w-full object-cover"
             alt="hero"
-            src= {user.image || "https://cdn-icons-png.freepik.com/512/168/168725.png"}
+            src= {user.image || avatar }
           />
         </div>
         <label className="block text-sm font-semibold mb-2" htmlFor="name">

@@ -22,7 +22,7 @@ function Signin() {
       <div>
         <Toaster />
       </div>
-      <section className="md:col-span-12 lg:p-6 sm:p-4 flex items-center justify-center min-h-screen">
+      <section className="md:col-span-12 lg:p-6 sm:p-4 flex items-center justify-center ">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full sm:max-w-md">
           <div className="text-center mb-4">
             {/* <img src={logo} alt="logo" className="w-40 inline-block" /> */}

@@ -113,7 +113,7 @@ function Signup() {
                     htmlFor="birthdateString"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    birthdateString
+                    Birthdate
                   </label>
                   <DatePicker
                     id="birthdateString"
@@ -239,16 +239,21 @@ function Signup() {
 
             <p className="mt-10 text-center text-sm text-gray-500">
               Already have an account?{" "}
-              <a
-                href="#"
+              <Link
+                to="/signin"
                 className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
               >
                 Sign in
-              </a>
+              </Link>
             </p>
 
             <div className="error mt-5">
-              {error && <p className="error">{error}</p>}
+              {error && (
+                <p className="error text-red-500 text- mt-1 text-center ">
+                  {" "}
+                  {error}
+                </p>
+              )}
             </div>
           </div>
         </div>

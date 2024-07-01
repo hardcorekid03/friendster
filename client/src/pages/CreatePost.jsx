@@ -47,7 +47,7 @@ function CreatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const blog = { image, title, slug, blogbody, author: user.username, authorId: user.id };
+    const blog = { image, title, slug, blogbody, author: user.username, authorId: user._id };
 
     // save image to folder
     if (image) {
