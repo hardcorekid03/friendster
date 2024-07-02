@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/nav-logo.svg";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
