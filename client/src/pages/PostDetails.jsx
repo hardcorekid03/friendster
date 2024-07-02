@@ -16,18 +16,15 @@ function PostDetails() {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-
       if (!user) {
         setLoading(false);
         return;
       }
 
       try {
-        const response = await fetch(`/api/blogs/${id}`, 
-        {
+        const response = await fetch(`/api/blogs/${id}`, {
           headers: { Authorization: `Bearer ${user.token}` },
-        }
-      );
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -38,12 +35,10 @@ function PostDetails() {
         console.error(error);
         setLoading(false);
         navigate("/500");
-
       }
     };
     fetchBlogs();
-  }, [id,user]);
-
+  }, [id, user]);
 
   return (
     <>
@@ -59,14 +54,19 @@ function PostDetails() {
             </Link>
           </div>
 
-
           <div className="container mx-auto flex  py-4  flex-col mb-4 border-b-2 ">
             {loading ? (
               <p>Loading...</p>
             ) : (
               blogDetails && (
                 <>
-                {blogDetails.author == user.username  }
+                  {blogDetails.author === user.username && (
+                    <div className="justify-end p-2">
+                      <button className="bg-red-500 text-white px-4 py-2 rounded mb-4">
+                        Delete Post
+                      </button>
+                    </div>
+                  )}
                   <div className=" mb-4 w-[100%] md:h-[400px] h-[250px] p-4 sm:p-2">
                     <img
                       className="h-full w-full object-cover"
@@ -86,8 +86,7 @@ function PostDetails() {
                             alt="Avatar"
                             className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                           />
-                          {blogDetails.author} 
-                          
+                          {blogDetails.author}
                         </span>
                         <span className="text-regular text-sm text-gray-500 cursor-pointer flex items-center">
                           {format(
