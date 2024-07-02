@@ -5,10 +5,8 @@ import { IF, URL } from "./url";
 import { format } from "date-fns";
 import Trending from "./Trending";
 
-import defaultImage from "../assets/images/dafaultImage.jpg";
 
 function PostDetails() {
-  
   const { id } = useParams();
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,7 +29,7 @@ function PostDetails() {
 
     fetchBlogs();
   }, [id]);
-  console.log(id);
+  // console.log(id);
 
   return (
     <>

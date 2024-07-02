@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useAuthContext } from './useAuthContext';
+import { useState } from "react";
+import { useAuthContext } from "./useAuthContext";
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
@@ -10,9 +10,9 @@ export const useLogin = () => {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch('/api/user/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("/api/user/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ identifier, password }),
     });
     const json = await response.json();
@@ -20,36 +20,15 @@ export const useLogin = () => {
     if (!response.ok) {
       setIsLoading(false);
       setError(json.error);
-    } else {
-      const { id, token } = json;
+    }
 
-      // Save the user ID and token to local storage
-      // localStorage.setItem('userId', id);
-      // localStorage.setItem('token', token);
+    if (response.ok) {
+      // save user to local storage
+      localStorage.setItem("user", JSON.stringify(json));
 
-      // Fetch user details
-      const userResponse = await fetch(`/api/user/${id}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const userData = await userResponse.json();
-
-      // if (userResponse.ok) {
-      //   // Save the user data to local storage
-      //   localStorage.setItem('user', JSON.stringify(userData));
-      //   // Update the auth context
-      //   dispatch({ type: 'LOGIN', payload: userData.token });
-      if (userResponse.ok) {
-        // Save the user data to local storage
-        localStorage.setItem('user', JSON.stringify(json.token));
-
-        // Update the auth context
-        dispatch({ type: 'LOGIN', payload: json });
-
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
-        setError(userData.error);
-      }
+      // update AuthContext
+      dispatch({ type: "LOGIN", payload: json });
+      setIsLoading(false);
     }
   };
 

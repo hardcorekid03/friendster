@@ -1,19 +1,28 @@
-import {useEffect } from "react";
-import { format } from 'date-fns';
+import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
 import { useAuthContext } from "../hooks/useAuthContext";
-import avatar from "../assets/images/avatar.png"
+import avatar from "../assets/images/avatar.png";
 
 function Trending() {
   const { user } = useAuthContext();
+  const [userData, setUserdata] = useState([]);
 
   useEffect(() => {
-    // Fetch additional user data if needed
-    // For now, we just use the user data from the context
-    // console.log(user);
+    const fetchUser = async () => {
+      try {    
+        const response = await fetch(`api/user/${user.id}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        const data = await response.json();
+        setUserdata(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        // setLoading(false);
+      }
+    };
+    fetchUser();
   }, [user]);
-
-  if (!user) return <p>Loading...</p>;
-  const formattedDate = format(new Date(user.createdAt), 'MMMM yyyy');
 
   return (
     <>
@@ -22,27 +31,38 @@ function Trending() {
           <img
             className="h-full w-full object-cover"
             alt="hero"
-            src= {user.image || avatar }
+            src={userData.image || avatar}
           />
         </div>
         <label className="block text-sm font-semibold mb-2" htmlFor="name">
-          {user.username}
+          {/* {user.username} */}
+          {userData.username}
         </label>
       </div>
       <div className="bg-white p-6">
         <label className="block text-sm font-medium mb-2">
-          Bio: 
-          <span className="text-blue-400 font-normal"> {user.bio || ""}</span>
+          Bio:
+          <span className="text-blue-400 font-normal">
+            {" "}
+            {userData.bio || ""}
+          </span>
         </label>
         <label className="block text-sm font-medium mb-2">
           Location:{" "}
-          <span className="text-blue-400 font-normal"> {user.location}</span>
+          <span className="text-blue-400 font-normal">
+            {" "}
+            {userData.location}
+          </span>
         </label>
         <label className="block text-sm font-medium mb-2">
-          Gender: <span className="text-blue-400 font-normal"> {user.gender}</span>
+          Gender:{" "}
+          <span className="text-blue-400 font-normal"> {userData.gender}</span>
         </label>
         <label className="block text-sm font-medium mb-2">
-          Joined: <span className="text-blue-400 font-normal"> {formattedDate}</span>
+          Joined:{" "}
+          <span className="text-blue-400 font-normal">
+            {userData.createdAt}
+          </span>
         </label>
       </div>
     </>

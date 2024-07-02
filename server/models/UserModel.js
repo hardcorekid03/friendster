@@ -32,7 +32,7 @@ const userSchema = new Schema(
       required: true,
     },
     birthdate: {
-      type: Date, 
+      type: Date,
       required: true,
     },
     location: {
@@ -74,7 +74,7 @@ userSchema.statics.signup = async function (
   if (!validator.isStrongPassword(password)) {
     throw new Error("Password is not strong enough");
   }
-  
+
   if (username.length < 8) {
     toast.error("Username must be at least 8 characters long");
     return;
@@ -118,7 +118,7 @@ userSchema.statics.signup = async function (
     email,
     password: hash,
     username,
-    birthdate, 
+    birthdate,
     location,
     gender,
     userimage,
