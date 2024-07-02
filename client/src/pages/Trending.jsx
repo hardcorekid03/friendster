@@ -5,32 +5,35 @@ import avatar from "../assets/images/avatar.png";
 
 function Trending() {
   const { user } = useAuthContext();
-  const [userData, setUserdata] = useState([]);
-
+  const [userData, setUserdata] = useState({});
 
   useEffect(() => {
-    
     const fetchUser = async () => {
-      try {    
-        const response = await fetch(`api/user/${user.id}`, 
-        {
+      try {
+        const response = await fetch(`/api/user/${user.id}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
+
+        // Check if response is JSON
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new TypeError("Expected JSON, received " + contentType);
+        }
+
         const data = await response.json();
         setUserdata(data);
-
       } catch (error) {
-        console.error(error);
-      } 
+        console.error("Error fetching user data:", error);
+      }
     };
-    if(user){
-      fetchUser();
 
-    
+    if (user) {
+      fetchUser();
     }
   }, [user]);
-  const date = new Date(userData.createdAt);
-  const month = date.toLocaleString('default', { month: 'long' }); // Full month name
+
+  const date = new Date(userData.createdAt || Date.now());
+  const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();
 
   return (
@@ -44,7 +47,6 @@ function Trending() {
           />
         </div>
         <label className="block text-sm font-semibold mb-2" htmlFor="name">
-          {/* {user.username} */}
           {userData.username}
         </label>
       </div>
@@ -70,7 +72,7 @@ function Trending() {
         <label className="block text-sm font-medium mb-2">
           Joined:{" "}
           <span className="text-blue-400 font-normal">
-            {month + " " + year} 
+            {month + " " + year}
           </span>
         </label>
       </div>

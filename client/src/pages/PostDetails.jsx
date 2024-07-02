@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { IF, URL } from "./url";
 import { format } from "date-fns";
 import Trending from "./Trending";
@@ -9,13 +9,19 @@ import { useAuthContext } from "../hooks/useAuthContext";
 function PostDetails() {
   const { user } = useAuthContext();
   const { id } = useParams();
-
+  const navigate = useNavigate();
 
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBlogs = async () => {
+
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const response = await fetch(`/api/blogs/${id}`, 
         {
@@ -31,11 +37,13 @@ function PostDetails() {
       } catch (error) {
         console.error(error);
         setLoading(false);
+        navigate("/500");
+
       }
     };
     fetchBlogs();
   }, [id,user]);
-  // console.log(id);
+
 
   return (
     <>
@@ -58,6 +66,7 @@ function PostDetails() {
             ) : (
               blogDetails && (
                 <>
+                {blogDetails.author == user.username  }
                   <div className=" mb-4 w-[100%] md:h-[400px] h-[250px] p-4 sm:p-2">
                     <img
                       className="h-full w-full object-cover"
@@ -104,7 +113,7 @@ function PostDetails() {
         </div>
       </section>
       <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
-        {/* <Trending /> */}
+        <Trending />
       </section>
     </>
   );

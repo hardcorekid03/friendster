@@ -6,7 +6,8 @@ import Recent from "./Recent";
 import PostDetails from "./PostDetails";
 import CreatePost from "./CreatePost";
 import Profile from "./Profile";
-import Error505 from "./error/Error505";
+import Error404 from "./error/Error404";
+import Error500 from "./error/Error500";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const AppRoutes = () => {
@@ -15,18 +16,9 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={user ? <Recent /> : <Navigate to="/signin" />} />
 
-      <Route
-        path="/postdetails/:id"
-        element= {<PostDetails />}
-      />
-      <Route
-        path="/createpost"
-        element={<CreatePost /> }
-      />
-      <Route
-        path="/profile"
-        element={<Profile />}
-      />
+      <Route path="/postdetails/:id" element={<PostDetails />} />
+      <Route path="/createpost" element={<CreatePost />} />
+      <Route path="/profile" element={<Profile />} />
       <Route
         path="/signin"
         element={!user ? <Signin /> : <Navigate to="/" />}
@@ -35,7 +27,9 @@ const AppRoutes = () => {
         path="/signup"
         element={!user ? <Signup /> : <Navigate to="/" />}
       />
-      <Route path="*" element={<Error505 />} />
+      <Route path="/500" element={<Error500 />} />
+
+      <Route path="*" element={<Error404 />} />
     </Routes>
   );
 };

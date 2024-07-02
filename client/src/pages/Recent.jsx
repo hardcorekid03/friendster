@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IF } from "./url";
 import { format } from "date-fns";
 import { useAuthContext } from "../hooks/useAuthContext";
 import Trending from "./Trending";
 
 function Recent() {
-
   const { user } = useAuthContext();
+  const navigate = useNavigate();
 
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,19 +16,18 @@ function Recent() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("api/blogs",
-        {
+        const response = await fetch("api/blogs", {
           headers: { Authorization: `Bearer ${user.token}` },
-        }
-      );
+        });
         const data = await response.json();
         setBlogs(data);
       } catch (error) {
         console.error(error);
+        navigate("/500");
       }
       setLoading(false);
     };
-    if(user){
+    if (user) {
       fetchBlogs();
     }
   }, [user]);
@@ -65,18 +64,20 @@ function Recent() {
                     />
                   </div>
                   <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%] ">
-                    <Link to={`/postdetails/${blog._id}`} key={blog._id}>
-                      <div className="mb-2 ">
-                        <h3 className="text-lg font-semibold">{blog.title}</h3>
+                    <div className="mb-2 ">
+                      <Link to={`/postdetails/${blog._id}`}>
+                        <h3 className="text-lg font-semibold text-blue-500 hover:underline">
+                          {blog.title}
+                        </h3>
+                      </Link>
 
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html:
-                              blog.blogbody.slice(0, 250) + " ....Read more",
-                          }}
-                        />
-                      </div>
-                    </Link>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            blog.blogbody.slice(0, 250) + " ....Read more",
+                        }}
+                      />
+                    </div>
                     <div className="md:flex justify-between items-center ">
                       <span className="text-regular text-md text-blue-500 cursor-pointer flex items-center">
                         <img

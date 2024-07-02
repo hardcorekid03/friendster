@@ -37,11 +37,11 @@ const getUser = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "user not found" });
   }
-  const user1 = await User.findById(id);
-  if (!user1) {
+  const user = await User.findById(id);
+  if (!user) {
     return res.status(404).json({ error: "user not found" });
   }
-  res.status(200).json(user1);
+  res.status(200).json(user);
 };
 
 // get all user
