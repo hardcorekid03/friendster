@@ -4,17 +4,24 @@ import { Link, useParams } from "react-router-dom";
 import { IF, URL } from "./url";
 import { format } from "date-fns";
 import Trending from "./Trending";
-
+import { useAuthContext } from "../hooks/useAuthContext";
 
 function PostDetails() {
+  const { user } = useAuthContext();
   const { id } = useParams();
+
+
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch(URL + `api/blogs/${id}`);
+        const response = await fetch(`/api/blogs/${id}`, 
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -26,9 +33,8 @@ function PostDetails() {
         setLoading(false);
       }
     };
-
     fetchBlogs();
-  }, [id]);
+  }, [id,user]);
   // console.log(id);
 
   return (
@@ -44,7 +50,9 @@ function PostDetails() {
               <ArrowLeftIcon className="h-full w-full" />
             </Link>
           </div>
-          <div className="container mx-auto flex  py-4 items-center justify-center flex-col mb-4 border-b-2 ">
+
+
+          <div className="container mx-auto flex  py-4  flex-col mb-4 border-b-2 ">
             {loading ? (
               <p>Loading...</p>
             ) : (
@@ -69,7 +77,8 @@ function PostDetails() {
                             alt="Avatar"
                             className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                           />
-                          {blogDetails.author}
+                          {blogDetails.author} 
+                          
                         </span>
                         <span className="text-regular text-sm text-gray-500 cursor-pointer flex items-center">
                           {format(
@@ -95,7 +104,7 @@ function PostDetails() {
         </div>
       </section>
       <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
-        <Trending />
+        {/* <Trending /> */}
       </section>
     </>
   );

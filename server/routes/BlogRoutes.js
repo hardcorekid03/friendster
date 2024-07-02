@@ -11,7 +11,7 @@ const requireAuth = require ('../middleware/requireAuth')
 
 const router = express.Router();
 
-// router.use (requireAuth)
+router.use (requireAuth)
 // get all blogs
 router.get("/", getBlogPosts);
 

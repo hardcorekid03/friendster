@@ -19,12 +19,12 @@ const loginUser = async (req, res) => {
       .status(200)
       .json({
         id: user._id,
-        username: user.username,
-        email: user.email,
-        location: user.location,
-        gender: user.gender,
-        createdAt: user.createdAt,
         token,
+        username: user.username,
+        // email: user.email,
+        // location: user.location,
+        // gender: user.gender,
+        // createdAt: user.createdAt,
       });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -78,13 +78,13 @@ const signupUser = async (req, res) => {
       .status(200)
       .json({
         id: user._id,
-        username: user.username,
-        birthdate: user.birthdate,
-        email: user.email,
-        location: user.location,
-        gender: user.gender,
-        createdAt: user.createdAt,
         token,
+        username: user.username,
+        // birthdate: user.birthdate,
+        // email: user.email,
+        // location: user.location,
+        // gender: user.gender,
+        // createdAt: user.createdAt,
       });
   } catch (error) {
     res.status(400).json({ error: error.message });

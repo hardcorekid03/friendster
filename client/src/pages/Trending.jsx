@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { format } from "date-fns";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { useAuthContext } from "../hooks/useAuthContext";
 import avatar from "../assets/images/avatar.png";
 
@@ -7,22 +7,31 @@ function Trending() {
   const { user } = useAuthContext();
   const [userData, setUserdata] = useState([]);
 
+
   useEffect(() => {
+    
     const fetchUser = async () => {
       try {    
-        const response = await fetch(`api/user/${user.id}`, {
+        const response = await fetch(`api/user/${user.id}`, 
+        {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         const data = await response.json();
         setUserdata(data);
+
       } catch (error) {
         console.error(error);
-      } finally {
-        // setLoading(false);
-      }
+      } 
     };
-    fetchUser();
+    if(user){
+      fetchUser();
+
+    
+    }
   }, [user]);
+  const date = new Date(userData.createdAt);
+  const month = date.toLocaleString('default', { month: 'long' }); // Full month name
+  const year = date.getFullYear();
 
   return (
     <>
@@ -61,7 +70,7 @@ function Trending() {
         <label className="block text-sm font-medium mb-2">
           Joined:{" "}
           <span className="text-blue-400 font-normal">
-            {userData.createdAt}
+            {month + " " + year} 
           </span>
         </label>
       </div>
