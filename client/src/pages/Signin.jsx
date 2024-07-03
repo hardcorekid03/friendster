@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
-import logo from "../assets/images/nav-logo.svg"
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 
+import logo from "../assets/images/nav-logo.svg";
 
 function Signin() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const { login, error, isLoading } = useLogin();
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,10 +18,12 @@ function Signin() {
 
     if (error) {
       toast.error(error);
-
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
   return (
     <>
@@ -32,7 +35,7 @@ function Signin() {
           <div className="text-center mb-4">
             {/* <img src={logo} alt="logo" className="w-40 inline-block" /> */}
             <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Signin to your account
+              Sign in to your account
             </h2>
           </div>
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -65,11 +68,11 @@ function Signin() {
                 >
                   Password
                 </label>
-                <div className="mt-2">
+                <div className="mt-2 relative">
                   <input
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     autoComplete="new-password"
                     required
                     className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
@@ -77,6 +80,17 @@ function Signin() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                  >
+                    {showPassword ? (
+                      <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                    ) : (
+                      <EyeIcon className="h-5 w-5 text-gray-500" />
+                    )}
+                  </button>
                 </div>
               </div>
               <div>
@@ -92,7 +106,8 @@ function Signin() {
 
             <p className="mt-10 text-center text-sm text-gray-500">
               Don't have an account?{" "}
-              <Link to="/signup"
+              <Link
+                to="/signup"
                 className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
               >
                 Sign up
