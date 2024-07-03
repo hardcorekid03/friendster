@@ -5,6 +5,9 @@ import { IF, URL } from "./url";
 import { format } from "date-fns";
 import Trending from "./Trending";
 import { useAuthContext } from "../hooks/useAuthContext";
+import defaultImage from "../assets/images/dafaultImage.jpg";
+import useAddToFavorites from "../hooks/useAddToFavorites";
+import useDeleteBlog from "../hooks/useDeleteBlog";
 
 function PostDetails() {
   const { user } = useAuthContext();
@@ -13,6 +16,12 @@ function PostDetails() {
 
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const { addToFavorites } = useAddToFavorites(user, blogDetails);
+
+  const handleImageError = (event) => {
+    event.target.src = defaultImage;
+  };
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -38,14 +47,21 @@ function PostDetails() {
       }
     };
     fetchBlogs();
-  }, [id, user]);
+  }, [id, user, navigate]);
 
+  const { handleDelete } = useDeleteBlog();
+
+  const onDeleteClick = () => {
+    handleDelete(blogDetails._id, blogDetails);
+  };
   return (
     <>
       <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
         <div className="bg-white  items-center justify-center p-4  mb-8 ">
           <div className="flex items-center justify-between p-4 sm:p-2">
-            <h3 className="text-xl font-semibold ">Post Details</h3>
+            <h3 className="text-xl font-semibold ">
+              Post Details
+            </h3>
             <Link
               to="/"
               className="text-xl font-semibold hover:text-gray-700 cursor-pointer h-8 w-8 justify-center"
@@ -60,17 +76,11 @@ function PostDetails() {
             ) : (
               blogDetails && (
                 <>
-                  {blogDetails.author === user.username && (
-                    <div className="justify-end p-2">
-                      <button className="bg-red-500 text-white px-4 py-2 rounded mb-4">
-                        Delete Post
-                      </button>
-                    </div>
-                  )}
                   <div className=" mb-4 w-[100%] md:h-[400px] h-[250px] p-4 sm:p-2">
                     <img
                       className="h-full w-full object-cover"
                       alt="hero"
+                      onError={handleImageError}
                       src={IF + blogDetails.image}
                     />
                   </div>
@@ -93,6 +103,51 @@ function PostDetails() {
                             new Date(blogDetails.createdAt),
                             "MMMM/dd/yyyy"
                           )}
+                          <div className="group inline-block">
+                            <button className="outline-none focus:outline-none border ml-2 px-2 py-1 bg-white rounded-sm flex items-center w-10 h-10">
+                              <span className="pr-1 flex-1">
+                                <svg
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  data-prefix="fas"
+                                  data-icon="ellipsis-h"
+                                  role="img"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 512 512"
+                                  className="svg-inline--fa fa-ellipsis-h fa-w-16 fa-3x"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
+                                    className=""
+                                  ></path>
+                                </svg>
+                              </span>
+                            </button>
+                            <ul className="cursor-pointer  bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32">
+                              {blogDetails.author === user.username && (
+                                <>
+                                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100"  onClickCapture={onDeleteClick}>
+                                    Delete
+                                  </li>
+                                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                                    {" "}
+                                    Edit
+                                  </li>
+                                </>
+                              )}
+                              <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                                {" "}
+                                Share
+                              </li>
+                              <li
+                                className="rounded-sm px-3 py-1 hover:bg-gray-100"
+                                onClickCapture={addToFavorites}
+                              >
+                                Add to Favorites
+                              </li>
+                            </ul>
+                          </div>
                         </span>
                       </div>
                     </div>

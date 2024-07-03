@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
+import logo from "../assets/images/nav-logo.svg"
 
 
 function Signin() {

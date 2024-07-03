@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import useTitleAndSlug from "../hooks/useTitleAndSlug";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
@@ -12,6 +12,9 @@ import { useAuthContext } from "../hooks/useAuthContext";
 
 function CreatePost() {
   const { user } = useAuthContext();
+
+  const navigate = useNavigate();
+
 
   const fileInputRef = useRef(null);
 
@@ -88,6 +91,8 @@ function CreatePost() {
       fileInputRef.current.value = null;
       console.log("Blog posted!");
       toast.success("Blog added successfully");
+      navigate("/")
+
     }
   };
   return (
