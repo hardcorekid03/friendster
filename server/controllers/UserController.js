@@ -8,6 +8,8 @@ const createToken = (_id) => {
   return jwt.sign({ _id }, secretKey, { expiresIn: "1d" });
 };
 
+
+
 // login user
 const loginUser = async (req, res) => {
   const { identifier, password } = req.body;

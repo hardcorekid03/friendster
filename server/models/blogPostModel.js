@@ -5,7 +5,7 @@ const blogPostSchema = new Schema(
   {
     image: {
       type: String,
-      required: true,
+      required: false,
     },
     title: {
       type: String,

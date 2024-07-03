@@ -43,6 +43,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    favorites: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'BlogPost'
+    }]
   },
   { timestamps: true }
 );
