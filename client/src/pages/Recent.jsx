@@ -26,12 +26,14 @@ function Recent() {
         return;
       }
       try {
-        const response = await api.get("api/blogs", {
+        const response = await api.get("api/blogs/all", {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         setBlogs(response.data);
       } catch (error) {
         console.error(error);
+        console.error('Error fetching blogs:', error);
+
       }
       setLoading(false);
     };
@@ -46,6 +48,7 @@ function Recent() {
         <div className="items-center justify-center p-4 mb-8 bg-white">
           <div className="flex items-center justify-between p-4 sm:p-2">
             <h3 className="text-xl font-semibold ">Recent Posts</h3>
+
             <Link
               to="/createpost"
               className="text-xl font-semibold hover:text-gray-700 cursor-pointer h-8 w-8 flex items-center justify-center"

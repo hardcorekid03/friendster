@@ -2,28 +2,28 @@ import React, { useState, useRef } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useTitleAndSlug from "../hooks/useTitleAndSlug";
 import toast, { Toaster } from "react-hot-toast";
-import axios from "axios";
+import axios from "../api/Api"; // Adjust the path as per your file structure
 import Trending from "./Trending";
 import { useAuthContext } from "../hooks/useAuthContext";
-
+import debounce from "lodash/debounce"; // Import debounce from lodash
 
 function CreatePost() {
   const { user } = useAuthContext();
-
   const navigate = useNavigate();
-
-
   const fileInputRef = useRef(null);
-
   const [selectedFile, setSelectedFile] = useState(null);
+  const [blogbody, setBlogbody] = useState("");
+  const [image, setImage] = useState(null);
+  const { title, slug, handleTitleChange, resetTitleAndSlug } = useTitleAndSlug();
+  const [error, setError] = useState("");
 
-  const handleChange = (event) => {
+  const debouncedHandleChange = useRef(debounce((event) => {
     setSelectedFile(event.target.files[0]);
     setImage(event.target.files[0]);
-  };
+  }, 300)).current; // Debounce input handler
 
   const handleReset = () => {
     setSelectedFile(null);
@@ -37,22 +37,20 @@ function CreatePost() {
   const containerStyle = {
     height: "600px", // Set your desired height
   };
-  // states for blog posting
-  const [blogbody, setBlogbody] = useState("");
-  const [author, setAuthor] = useState("");
-  const [authorId, setAuthorId] = useState("");
-  const [image, setImage] = useState(null);
-  const { title, slug, handleTitleChange, resetTitleAndSlug } =
-    useTitleAndSlug();
-
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const blog = { image, title, slug, blogbody, author: user.username, authorId: user._id };
+    const blog = {
+      image,
+      title,
+      slug,
+      blogbody,
+      author: user.username,
+      // authorId: user._id,
+    };
 
-    // save image to folder
+    // Save image to folder if selected
     if (image) {
       const data = new FormData();
       const alphanumericKey = Math.random().toString(36).slice(2, 9);
@@ -68,33 +66,29 @@ function CreatePost() {
       }
     }
 
-    // Save blog data
-    const response = await fetch("/api/blogs", {
-      method: "POST",
-      body: JSON.stringify(blog),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
-    
-    const json = await response.json();
-    if (!response.ok) {
-      setError(json.error);
+    try {
+      const response = await axios.post("/api/blogs", blog, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        resetTitleAndSlug();
+        setBlogbody("");
+        setError(null);
+        setSelectedFile(null);
+        fileInputRef.current.value = null;
+        console.log("Blog posted!");
+        toast.success("Blog added successfully");
+        navigate("/");
+      }
+    } catch (error) {
+      setError(error.response.data.error);
       toast.error("All fields are required");
     }
-    if (response.ok) {
-      resetTitleAndSlug();
-      setBlogbody("");
-      setError(null);
-      setSelectedFile(null);
-      fileInputRef.current.value = null;
-      console.log("Blog posted!");
-      toast.success("Blog added successfully");
-      navigate("/")
-
-    }
   };
+
   return (
     <>
       <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
@@ -103,7 +97,7 @@ function CreatePost() {
             <Toaster />
           </div>
 
-          <div className="flex  justify-between p-2 sm:p-2">
+          <div className="flex justify-between p-2 sm:p-2">
             <h3 className="text-xl font-semibold">Create Post</h3>
             <Link
               to="/"
@@ -112,6 +106,7 @@ function CreatePost() {
               <ArrowLeftIcon className="h-full w-full" />
             </Link>
           </div>
+
           <div className=" mb-2 p-2">
             <div className="hidden preview-img mb-2">
               <label className="text-sm text-gray-400 font-medium  peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -123,7 +118,7 @@ function CreatePost() {
                 accept="image/*"
                 id="picture"
                 ref={fileInputRef}
-                onChange={handleChange}
+                onChange={debouncedHandleChange} // Use debounced handler
               />
             </div>
 
@@ -179,7 +174,6 @@ function CreatePost() {
           </div>
 
           <div className="preview-img p-2">
-            {/* <FileUpload onFileSelect={handleFileSelect} /> */}
             <input
               className="w-full border border-gray-300 focus:border-blue-500 focus:outline-none focus:border-opacity-100 px-4 py-2"
               placeholder="Enter blog title"
@@ -187,10 +181,8 @@ function CreatePost() {
               onChange={handleTitleChange}
             />
           </div>
-          <div
-            style={containerStyle}
-            className="p-2 w-[100%] md:h-[400px] h-[250px]"
-          >
+
+          <div style={containerStyle} className="p-2 w-[100%] md:h-[400px] h-[250px]">
             <ReactQuill
               value={blogbody}
               placeholder="Write a blog now..."
@@ -198,6 +190,7 @@ function CreatePost() {
               className="h-full w-full"
             />
           </div>
+
           <div className="px-2 py-8 mt-10">
             <button
               className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 inline-flex items-center"
@@ -212,6 +205,7 @@ function CreatePost() {
               </svg>
               <span>Save Post</span>
             </button>
+
             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 inline-flex items-center">
               <svg
                 className="fill-current w-4 h-4 mr-2"
@@ -225,6 +219,7 @@ function CreatePost() {
           </div>
         </div>
       </section>
+
       <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
         <Trending />
       </section>

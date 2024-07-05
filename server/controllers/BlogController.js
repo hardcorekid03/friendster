@@ -7,11 +7,17 @@ const getBlogPosts = async (req, res) => {
   res.status(200).json(blog);
 };
 
-// get all blogs
 const getBlogPostsForUser = async (req, res) => {
-  const user_id = req.user_id
-  const blog = await BlogPost.find({user_id}).sort({ createdAt: -1 });
-  res.status(200).json(blog);
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    const authorId  = req.user._id;
+    const blog = await BlogPost.find({ authorId }).sort({ createdAt: -1 });
+    res.status(200).json(blog);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
 };
 
 // get single blog
@@ -29,9 +35,11 @@ const getBlogPost = async (req, res) => {
 
   // create new coffee
 const createBlogPost = async (req, res) => {
-    const {image,title,slug,blogbody,author,authorId} = req.body
+  
+    const {image,title,slug,blogbody,author} = req.body
     try {
-        const blog = await BlogPost.create({ image, title, slug, blogbody, author,authorId })
+      const authorId  = req.user._id;
+      const blog = await BlogPost.create({ image, title, slug, blogbody, author,authorId})
         res.status(200).json(blog)
       } catch (error) {
         res.status(400).json({ error: error.message })

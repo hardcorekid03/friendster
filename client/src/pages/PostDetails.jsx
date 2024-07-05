@@ -45,7 +45,6 @@ function PostDetails() {
         setBlogDetails(data);
       } catch (error) {
         console.error("Error fetching blog details:", error);
-        navigate("/500");
       } finally {
         setLoading(false);
       }
