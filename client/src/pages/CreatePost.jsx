@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { Link, useNavigate } from "react-router-dom";
 import useTitleAndSlug from "../hooks/useTitleAndSlug";
 import toast, { Toaster } from "react-hot-toast";
-import axios from "../api/Api"; // Adjust the path as per your file structure
+import api from "../api/Api"; // Adjust the path as per your file structure
 import Trending from "./Trending";
 import { useAuthContext } from "../hooks/useAuthContext";
 import debounce from "lodash/debounce"; // Import debounce from lodash
@@ -17,13 +17,16 @@ function CreatePost() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [blogbody, setBlogbody] = useState("");
   const [image, setImage] = useState(null);
-  const { title, slug, handleTitleChange, resetTitleAndSlug } = useTitleAndSlug();
+  const { title, slug, handleTitleChange, resetTitleAndSlug } =
+    useTitleAndSlug();
   const [error, setError] = useState("");
 
-  const debouncedHandleChange = useRef(debounce((event) => {
-    setSelectedFile(event.target.files[0]);
-    setImage(event.target.files[0]);
-  }, 300)).current; // Debounce input handler
+  const debouncedHandleChange = useRef(
+    debounce((event) => {
+      setSelectedFile(event.target.files[0]);
+      setImage(event.target.files[0]);
+    }, 300)
+  ).current; // Debounce input handler
 
   const handleReset = () => {
     setSelectedFile(null);
@@ -34,12 +37,12 @@ function CreatePost() {
     fileInputRef.current.click();
   };
 
-  const containerStyle = {
-    height: "600px", // Set your desired height
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
     const blog = {
       image,
@@ -47,7 +50,6 @@ function CreatePost() {
       slug,
       blogbody,
       author: user.username,
-      // authorId: user._id,
     };
 
     // Save image to folder if selected
@@ -59,7 +61,12 @@ function CreatePost() {
       data.append("file", image);
       blog.image = filename;
       try {
-        const imgUpload = await axios.post("/api/upload", data);
+        const imgUpload = await api.post("/api/upload", data, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
         console.log(imgUpload.data);
       } catch (err) {
         console.log(err);
@@ -67,7 +74,7 @@ function CreatePost() {
     }
 
     try {
-      const response = await axios.post("/api/blogs", blog, {
+      const response = await api.post("/api/blogs", blog, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -182,7 +189,7 @@ function CreatePost() {
             />
           </div>
 
-          <div style={containerStyle} className="p-2 w-[100%] md:h-[400px] h-[250px]">
+          <div className="p-2 w-[100%] md:h-[400px] h-[600px]">
             <ReactQuill
               value={blogbody}
               placeholder="Write a blog now..."

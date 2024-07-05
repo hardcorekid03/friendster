@@ -5,7 +5,8 @@ const {
   getBlogPost,
   deleteBlog,
   updateBlogPost,
-  getBlogPostsForUser
+  getBlogPostsForUser,
+  addToFavorites
 } = require("../controllers/BlogController");
 const requireAuth = require ('../middleware/requireAuth')
 
@@ -31,5 +32,8 @@ router.delete("/:id", deleteBlog);
 
 // update a single blog
 router.patch("/:id", updateBlogPost);
+
+router.post('/favorites/:blogId', addToFavorites);
+
 
 module.exports = router;

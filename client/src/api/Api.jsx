@@ -18,7 +18,7 @@ api.interceptors.response.use(
       if (errorMessage === 'Token expired') {
         alert('Your session has expired. Please log in again.'); // Alert for session expiration
         localStorage.removeItem('user');
-        window.location.reload(); // Refresh the page
+        window.location.href = '/signin'; // Redirect to login page
       }
     }
     return Promise.reject(error);

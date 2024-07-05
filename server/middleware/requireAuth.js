@@ -22,7 +22,7 @@ const requireAuth = async (req, res, next) => {
   } catch (error) {
     // console.error('Authentication error:', error); // Debug log
     if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({ error: 'Token expired' });
+      return res.status(401).json({ error: 'Token expired'});
     }
     res.status(401).json({ error: 'Request is not authorized' });
   }

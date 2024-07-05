@@ -8,8 +8,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import useAddToFavorites from "../hooks/useAddToFavorites";
 import useDeleteBlog from "../hooks/useDeleteBlog";
-import api from '../api/Api'; // Import the Axios instance
-
+import api from "../api/Api";
 
 function PostDetails() {
   const { user } = useAuthContext();
@@ -36,22 +35,18 @@ function PostDetails() {
         const response = await api.get(`/api/blogs/${id}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
-
-        if (response.status !== 200) {
-          throw new Error("Failed to fetch data");
-        }
-
         const data = response.data;
         setBlogDetails(data);
       } catch (error) {
-        console.error("Error fetching blog details:", error);
-      } finally {
-        setLoading(false);
+        console.error(error);
+        console.error("Error fetching blogs:", error);
+
       }
+      setLoading(false);
     };
 
     fetchBlogDetails();
-  }, [id, user, navigate]);
+  }, [id, user]);
 
   const { handleDelete } = useDeleteBlog();
 
@@ -63,9 +58,7 @@ function PostDetails() {
       <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
         <div className="bg-white  items-center justify-center p-4  mb-8 ">
           <div className="flex items-center justify-between p-4 sm:p-2">
-            <h3 className="text-xl font-semibold ">
-              Post Details
-            </h3>
+            <h3 className="text-xl font-semibold ">Post Details</h3>
             <Link
               to="/"
               className="text-xl font-semibold hover:text-gray-700 cursor-pointer h-8 w-8 justify-center"
@@ -131,7 +124,10 @@ function PostDetails() {
                             <ul className="cursor-pointer  bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32">
                               {blogDetails.author === user.username && (
                                 <>
-                                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100"  onClickCapture={onDeleteClick}>
+                                  <li
+                                    className="rounded-sm px-3 py-1 hover:bg-gray-100"
+                                    onClickCapture={onDeleteClick}
+                                  >
                                     Delete
                                   </li>
                                   <li className="rounded-sm px-3 py-1 hover:bg-gray-100">

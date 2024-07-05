@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import { IF } from "./url";
-import { format } from "date-fns";
 import { useAuthContext } from "../hooks/useAuthContext";
 import Trending from "./Trending";
 import defaultImage from "../assets/images/dafaultImage.jpg";

@@ -33,7 +33,6 @@ function Recent() {
       } catch (error) {
         console.error(error);
         console.error('Error fetching blogs:', error);
-
       }
       setLoading(false);
     };
