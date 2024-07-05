@@ -8,8 +8,6 @@ const createToken = (_id) => {
   return jwt.sign({ _id }, secretKey, { expiresIn: "1d" });
 };
 
-
-
 // login user
 const loginUser = async (req, res) => {
   const { identifier, password } = req.body;
@@ -23,10 +21,6 @@ const loginUser = async (req, res) => {
         id: user._id,
         token,
         username: user.username,
-        // email: user.email,
-        // location: user.location,
-        // gender: user.gender,
-        // createdAt: user.createdAt,
       });
   } catch (error) {
     res.status(400).json({ error: error.message });

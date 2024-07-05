@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { Link, useNavigate } from "react-router-dom";
-import { IF,URL } from "./url";
+import { Link } from "react-router-dom";
+import { IF } from "./url";
 import { format } from "date-fns";
 import { useAuthContext } from "../hooks/useAuthContext";
 import Trending from "./Trending";
 import defaultImage from "../assets/images/dafaultImage.jpg"
+import api from '../api/Api'; // Import the Axios instance
+
 
 function Recent() {
   const { user } = useAuthContext();
-  const navigate = useNavigate();
 
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,15 +21,17 @@ function Recent() {
 
   useEffect(() => {
     const fetchBlogs = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
       try {
-        const response = await fetch("api/blogs", {
+        const response = await api.get("api/blogs", {
           headers: { Authorization: `Bearer ${user.token}` },
         });
-        const data = await response.json();
-        setBlogs(data);
+        setBlogs(response.data);
       } catch (error) {
         console.error(error);
-        navigate("/500");
       }
       setLoading(false);
     };
@@ -47,9 +50,10 @@ function Recent() {
               to="/createpost"
               className="text-xl font-semibold hover:text-gray-700 cursor-pointer h-8 w-8 flex items-center justify-center"
             >
-              <PencilSquareIcon className="h-full w-full" />
+              <PencilSquareIcon className="h-full w-full hidden sm:block" />
             </Link>
           </div>
+          
           {loading ? (
             <div className="container py-5">
               <p> Loading... </p>
@@ -110,6 +114,8 @@ function Recent() {
               </div>
             ))
           )}
+
+
         </div>
       </section>
       <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">

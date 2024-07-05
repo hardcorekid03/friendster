@@ -7,6 +7,13 @@ const getBlogPosts = async (req, res) => {
   res.status(200).json(blog);
 };
 
+// get all blogs
+const getBlogPostsForUser = async (req, res) => {
+  const user_id = req.user_id
+  const blog = await BlogPost.find({user_id}).sort({ createdAt: -1 });
+  res.status(200).json(blog);
+};
+
 // get single blog
 const getBlogPost = async (req, res) => {
     const { id } = req.params;
@@ -69,5 +76,6 @@ const updateBlogPost = async (req, res) => {
     getBlogPost,
     deleteBlog,
     updateBlogPost,
+    getBlogPostsForUser,
   };
   

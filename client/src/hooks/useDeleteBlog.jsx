@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "./useAuthContext";
 import toast from "react-hot-toast";
+import api from '../api/Api'; // Import the Axios instance
 
 function useDeleteBlog() {
   const [loading, setLoading] = useState(false);
@@ -18,16 +19,14 @@ function useDeleteBlog() {
 
     try {
       // Delete the post
-      const postResponse = await fetch(`/api/blogs/${id}`, {
-        method: "DELETE",
+      const response = await api.delete(`/api/blogs/${id}`, {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
       });
 
-      if (!postResponse.ok) {
-        throw new Error("Failed to delete the post");
+      if (response.status !== 200) {
+        throw new Error(`Failed to delete the post: ${response.statusText}`);
       }
 
       // Delete the associated image if it exists
@@ -35,20 +34,19 @@ function useDeleteBlog() {
         const imageUrl = blogDetails.image;
         const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
         
-        const imageResponse = await fetch(`/api/upload/${imageName}`, {
-          method: "DELETE",
+        const imageResponse = await api.delete(`/api/upload/${imageName}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
 
-        if (!imageResponse.ok) {
-          throw new Error("Failed to delete the image");
+        if (imageResponse.status !== 200) {
+          throw new Error(`Failed to delete the image: ${imageResponse.statusText}`);
         }
       }
 
       toast.success("Post and image deleted successfully");
       navigate("/"); // Redirect to home after successful deletion
     } catch (error) {
-      console.error(error);
+      console.error("Error deleting post:", error);
       setError("Failed to delete post and image");
       navigate("/500");
     } finally {
@@ -57,8 +55,6 @@ function useDeleteBlog() {
   };
 
   return { handleDelete, loading, error };
-
 }
 
-export default useDeleteBlog
-
+export default useDeleteBlog;

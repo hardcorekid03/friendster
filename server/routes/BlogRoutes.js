@@ -4,7 +4,8 @@ const {
   getBlogPosts,
   getBlogPost,
   deleteBlog,
-  updateBlogPost
+  updateBlogPost,
+  getBlogPostsForUser
 } = require("../controllers/BlogController");
 const requireAuth = require ('../middleware/requireAuth')
 
@@ -17,6 +18,9 @@ router.get("/", getBlogPosts);
 
 // get a single blog
 router.get("/:id", getBlogPost);
+
+// get a single blog
+router.get("/post", getBlogPostsForUser);
 
 // create a single blog
 router.post("/", createBlogPost);

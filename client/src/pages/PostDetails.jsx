@@ -8,6 +8,8 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import useAddToFavorites from "../hooks/useAddToFavorites";
 import useDeleteBlog from "../hooks/useDeleteBlog";
+import api from '../api/Api'; // Import the Axios instance
+
 
 function PostDetails() {
   const { user } = useAuthContext();
@@ -24,29 +26,32 @@ function PostDetails() {
   };
 
   useEffect(() => {
-    const fetchBlogs = async () => {
+    const fetchBlogDetails = async () => {
       if (!user) {
         setLoading(false);
         return;
       }
 
       try {
-        const response = await fetch(`/api/blogs/${id}`, {
+        const response = await api.get(`/api/blogs/${id}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
-        if (!response.ok) {
+
+        if (response.status !== 200) {
           throw new Error("Failed to fetch data");
         }
-        const data = await response.json();
+
+        const data = response.data;
         setBlogDetails(data);
-        setLoading(false);
       } catch (error) {
-        console.error(error);
-        setLoading(false);
+        console.error("Error fetching blog details:", error);
         navigate("/500");
+      } finally {
+        setLoading(false);
       }
     };
-    fetchBlogs();
+
+    fetchBlogDetails();
   }, [id, user, navigate]);
 
   const { handleDelete } = useDeleteBlog();

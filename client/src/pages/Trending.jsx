@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { useAuthContext } from "../hooks/useAuthContext";
 import avatar from "../assets/images/avatar.png";
+import api from '../api/Api'; // Import the Axios instance
+
 
 function Trending() {
   const { user } = useAuthContext();
@@ -9,27 +11,27 @@ function Trending() {
 
   useEffect(() => {
     const fetchUser = async () => {
+      if (!user) {
+        return;
+      }
+
       try {
-        const response = await fetch(`/api/user/${user.id}`, {
+        const response = await api.get(`/api/user/${user.id}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
 
-        // Check if response is JSON
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          throw new TypeError("Expected JSON, received " + contentType);
+        if (response.status !== 200) {
+          throw new Error("Failed to fetch user data");
         }
 
-        const data = await response.json();
+        const data = response.data;
         setUserdata(data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
-    if (user) {
-      fetchUser();
-    }
+    fetchUser();
   }, [user]);
 
   const date = new Date(userData.createdAt || Date.now());
