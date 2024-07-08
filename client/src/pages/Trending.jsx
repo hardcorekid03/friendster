@@ -45,7 +45,7 @@ function Trending() {
           <img
             className="h-full w-full object-cover"
             alt="hero"
-            src={userData.image || avatar}
+            src={userData.image || "https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"}
           />
         </div>
         <label className="block text-sm font-semibold mb-2" htmlFor="name">

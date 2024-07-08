@@ -10,12 +10,13 @@ const blogPostSchema = new Schema(
     title: {
       type: String,
       required: true,
-      unique:true,
+      unique:false,
     },
     slug: {
       type: String,
       required: true,
-      unique:true,
+      unique:false,
+
     },
     blogbody: {
       type: String,
@@ -23,11 +24,11 @@ const blogPostSchema = new Schema(
     },
     author: {
       type: String,
-      required: false,
+      required: true,
     },
     authorId: {
       type: String,
-      required: false,
+      required: true,
     },
   },
   { timestamps: true }

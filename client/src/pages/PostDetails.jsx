@@ -40,7 +40,6 @@ function PostDetails() {
       } catch (error) {
         console.error(error);
         console.error("Error fetching blogs:", error);
-
       }
       setLoading(false);
     };
@@ -52,6 +51,10 @@ function PostDetails() {
 
   const onDeleteClick = () => {
     handleDelete(blogDetails._id, blogDetails);
+  };
+
+  const onEditClick = () => {
+    navigate(`/createpost/${blogDetails._id}`);
   };
   return (
     <>
@@ -130,7 +133,10 @@ function PostDetails() {
                                   >
                                     Delete
                                   </li>
-                                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                                  <li
+                                    className="rounded-sm px-3 py-1 hover:bg-gray-100"
+                                    onClickCapture={onEditClick}
+                                  >
                                     {" "}
                                     Edit
                                   </li>
