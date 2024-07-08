@@ -26,10 +26,12 @@ function CreatePost() {
 
   const debouncedHandleChange = useRef(
     debounce((event) => {
-      setSelectedFile(event.target.files[0]);
-      setImage(event.target.files[0]);
+      if (event.target.files[0]) {
+        setSelectedFile(event.target.files[0]);
+        setImage(event.target.files[0]); // Update the image state with the new file
+      }
     }, 300)
-  ).current; // Debounce input handler
+  ).current;
 
   useEffect(() => {
     if (id && user) {
@@ -61,28 +63,49 @@ function CreatePost() {
     fileInputRef.current.click();
   };
 
+  const deletePreviousImage = async () => {
+    if (typeof image === 'string' && id) {
+      const imageUrl = image.startsWith("/") ? image.substr(1) : image; // Remove leading slash if present
+      const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+      try {
+        const imageResponse = await api.delete(`/api/upload/${imageName}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+
+        if (imageResponse.status !== 200) {
+          throw new Error(`Failed to delete the image: ${imageResponse.statusText}`);
+        }
+      } catch (error) {
+        console.error("Error deleting previous image:", error);
+        toast.error("Failed to delete the previous image");
+      }
+    } else {
+      console.log("No previous image to delete or invalid image type:", image);
+    }
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
       setLoading(false);
       return;
     }
-
     const blog = {
-      image,
       title,
       slug,
       blogbody,
       author: user.username,
     };
 
-    // Save image to folder if selected
-    if (image) {
+    if (selectedFile) {
       const data = new FormData();
       const alphanumericKey = Math.random().toString(36).slice(2, 9);
-      const filename = `blog-${alphanumericKey}-${Date.now()}${image.name}`;
+      const filename = `blog-${alphanumericKey}-${Date.now()}${
+        selectedFile.name
+      }`;
       data.append("img", filename);
-      data.append("file", image);
+      data.append("file", selectedFile);
       blog.image = filename;
       try {
         const imgUpload = await api.post("/api/upload", data, {
@@ -90,16 +113,21 @@ function CreatePost() {
             Authorization: `Bearer ${user.token}`,
           },
         });
-
         console.log(imgUpload.data);
       } catch (err) {
         console.log(err);
       }
+    } else if (id && image) {
+      // Keep the existing image if no new file is selected
+      blog.image = image;
     }
 
     try {
       let response;
       if (id) {
+        if (image && typeof image === 'string') {
+          await deletePreviousImage(); // Delete previous image if it exists
+        }
         response = await api.patch(`/api/blogs/${id}`, blog, {
           headers: {
             Authorization: `Bearer ${user.token}`,
