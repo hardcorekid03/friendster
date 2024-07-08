@@ -63,26 +63,6 @@ function CreatePost() {
     fileInputRef.current.click();
   };
 
-  const deletePreviousImage = async () => {
-    if (typeof image === 'string' && id) {
-      const imageUrl = image.startsWith("/") ? image.substr(1) : image; // Remove leading slash if present
-      const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-      try {
-        const imageResponse = await api.delete(`/api/upload/${imageName}`, {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
-
-        if (imageResponse.status !== 200) {
-          throw new Error(`Failed to delete the image: ${imageResponse.statusText}`);
-        }
-      } catch (error) {
-        console.error("Error deleting previous image:", error);
-        toast.error("Failed to delete the previous image");
-      }
-    } else {
-      console.log("No previous image to delete or invalid image type:", image);
-    }
-  };
 
 
   const handleSubmit = async (e) => {
@@ -118,16 +98,12 @@ function CreatePost() {
         console.log(err);
       }
     } else if (id && image) {
-      // Keep the existing image if no new file is selected
       blog.image = image;
     }
 
     try {
       let response;
       if (id) {
-        if (image && typeof image === 'string') {
-          await deletePreviousImage(); // Delete previous image if it exists
-        }
         response = await api.patch(`/api/blogs/${id}`, blog, {
           headers: {
             Authorization: `Bearer ${user.token}`,
