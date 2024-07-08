@@ -53,8 +53,8 @@ function Profile() {
             </Link>
           </div>
           <div className="relative container mx-auto flex  py-4 items-center justify-center flex-col ">
-            <div className="absolute top-2 right-2 bg-gray-400 text-white px-3 py-1 rounded ">
-              <svg
+            <div className="absolute w-[200px] h-[200px]   bottom-1  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
+              {/* <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -67,9 +67,15 @@ function Profile() {
                   strokeLinejoin="round"
                   d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
                 />
-              </svg>
+              </svg> */}
+              <img
+                className="h-full w-full border-4 shadow border-white object-cover"
+                alt="hero"
+                src="https://st.depositphotos.com/2218212/2938/i/450/depositphotos_29387653-stock-photo-facebook-profile.jpg"
+              />
+
             </div>
-            <div className=" mb-4 w-[100%] md:h-[400px] h-[250px] p-4 sm:p-2">
+            <div className=" mb-4 w-[100%] h-[300px] p-4 sm:p-2">
               <img
                 className="h-full w-full object-cover"
                 alt="hero"
