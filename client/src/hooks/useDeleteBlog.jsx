@@ -32,8 +32,7 @@ function useDeleteBlog() {
       // Delete the associated image if it exists
       if (blogDetails.image) {
         const imageUrl = blogDetails.image;
-        const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-        
+        const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);       
         const imageResponse = await api.delete(`/api/upload/${imageName}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });

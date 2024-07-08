@@ -13,12 +13,18 @@ api.interceptors.response.use(
   },
   (error) => {
     // If the response has an error
-    if (error.response && error.response.status === 401) {
-      const errorMessage = error.response.data.error;
-      if (errorMessage === 'Token expired') {
-        alert('Your session has expired. Please log in again.'); // Alert for session expiration
-        localStorage.removeItem('user');
-        window.location.href = '/signin'; // Redirect to login page
+    if (error.response) {
+      const status = error.response.status;
+      if (status === 401) {
+        const errorMessage = error.response.data.error;
+        if (errorMessage === 'Token expired') {
+          alert('Your session has expired. Please log in again.'); // Alert for session expiration
+          localStorage.removeItem('user');
+          window.location.href = '/signin'; // Redirect to login page
+        }
+      } else if (status === 500) {
+        alert('An unexpected error occurred. Redirecting to page 500.'); // Alert for 500 error
+        window.location.href = '/500'; // Redirect to page 500
       }
     }
     return Promise.reject(error);

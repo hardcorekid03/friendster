@@ -1,26 +1,23 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useTitleAndSlug from "../hooks/useTitleAndSlug";
 import toast, { Toaster } from "react-hot-toast";
 import api from "../api/Api"; // Adjust the path as per your file structure
 import Trending from "./Trending";
 import { useAuthContext } from "../hooks/useAuthContext";
 import debounce from "lodash/debounce"; // Import debounce from lodash
-import { IF } from "./url";
 
-function CreatePost() {
+function EditPost() {
   const { user } = useAuthContext();
-  const { id } = useParams();
-
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [blogbody, setBlogbody] = useState("");
   const [image, setImage] = useState(null);
-  const { title, setTitle, slug, handleTitleChange, resetTitleAndSlug } =
+  const { title, slug, handleTitleChange, resetTitleAndSlug } =
     useTitleAndSlug();
   const [error, setError] = useState("");
 
@@ -30,27 +27,6 @@ function CreatePost() {
       setImage(event.target.files[0]);
     }, 300)
   ).current; // Debounce input handler
-
-  useEffect(() => {
-    if (id && user) {
-      // If there's an ID, fetch the blog details for editing
-      const fetchBlogDetails = async () => {
-        try {
-          const response = await api.get(`/api/blogs/${id}`, {
-            headers: { Authorization: `Bearer ${user.token}` },
-          });
-          const data = response.data;
-          setBlogbody(data.blogbody);
-          setTitle(data.title);
-          setImage(data.image);
-        } catch (error) {
-          console.error("Error fetching blog details for editing:", error);
-        }
-      };
-
-      fetchBlogDetails();
-    }
-  }, [id, user, setBlogbody, setTitle, setImage]);
 
   const handleReset = () => {
     setSelectedFile(null);
@@ -98,20 +74,11 @@ function CreatePost() {
     }
 
     try {
-      let response;
-      if (id) {
-        response = await api.patch(`/api/blogs/${id}`, blog, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
-      } else {
-        response = await api.post("/api/blogs", blog, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
-      }
+      const response = await api.post("/api/blogs", blog, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
       if (response.status === 200) {
         resetTitleAndSlug();
@@ -138,9 +105,7 @@ function CreatePost() {
           </div>
 
           <div className="flex justify-between p-2 sm:p-2">
-            <h3 className="text-xl font-semibold">
-              {!id ? "Create Post" : "Edit Post"}
-            </h3>
+            <h3 className="text-xl font-semibold">Create Post</h3>
             <Link
               to="/"
               className="text-xl font-semibold hover:text-gray-700 cursor-pointer h-8 w-8 justify-center"
@@ -188,13 +153,6 @@ function CreatePost() {
               {selectedFile ? (
                 <img
                   src={URL.createObjectURL(selectedFile)}
-                  alt="Selected File"
-                  className="object-contain w-full h-full cursor-pointer"
-                  onClick={handleSvgClick}
-                />
-              ) : image && id ? (
-                <img
-                  src={IF + image} // Assuming `IF` resolves to the correct image path
                   alt="Selected File"
                   className="object-contain w-full h-full cursor-pointer"
                   onClick={handleSvgClick}
@@ -276,4 +234,4 @@ function CreatePost() {
   );
 }
 
-export default CreatePost;
+export default EditPost;
