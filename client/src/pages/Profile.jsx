@@ -13,13 +13,14 @@ import useFetchBlogs from "../hooks/useFetchBlogs"; // Import the custom hook
 function Profile() {
   const { user } = useAuthContext();
   const { userData, imageSrc, setImageSrc } = useFetchUser(); // Use the custom hook
-  const { blogs, loading } = useFetchBlogs();
+  const { blogs, loading,setLoading } = useFetchBlogs();
 
   const [originalImageSrc, setOriginalImageSrc] = useState(''); // Store original image URL
   const [hasChanges, setHasChanges] = useState(false); // Track if changes are made
   const [isImageUploaded, setIsImageUploaded] = useState(false);
 
   const fileInputRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleSVGClick = () => {
     fileInputRef.current.click();
@@ -33,17 +34,63 @@ function Profile() {
         setImageSrc(reader.result);
         setIsImageUploaded(true);
         setHasChanges(true); // Set changes flag when a file is selected
+        setSelectedFile(file);
 
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSaveChanges = () => {
-    console.log("Changes saved");
-    setIsImageUploaded(false);
-    setOriginalImageSrc(imageSrc); // Save the current image as original
-    setHasChanges(false); // Reset changes flag after saving
+  const handleSaveChanges = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      // Handle case where user is not logged in
+      setLoading(false);
+      return;
+    }
+    const blog = {}
+    if (selectedFile) {
+      const data = new FormData();
+      const alphanumericKey = Math.random().toString(36).slice(2, 9);
+      const filename = `blog-${alphanumericKey}-${Date.now()}-${selectedFile.name}`;
+      data.append("img", filename);
+      data.append("file", selectedFile);
+      blog.image = filename;
+      try {
+        const imgUpload = await api.post("/api/upload/uploadBanner", data, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "multipart/form-data", // Ensure proper content type header
+          },
+        });
+        console.log(imgUpload.data);
+        setIsImageUploaded(false); // Update state after successful upload
+      } catch (err) {
+        console.log("Error uploading image:", err);
+        // Handle error state or show error message to user
+      }
+    }
+
+    // wala pang route para dito kaya di pa makapag save hahaha
+    // try {
+    //   const response = await api.patch(`/api/user/${user.id}`, blog, {
+    //     headers: {
+    //       Authorization: `Bearer ${user.token}`,
+    //     },
+    //   });
+
+    //   if (response.status === 200) {
+    //     setError(null);
+    //     setSelectedFile(null);
+    //     fileInputRef.current.value = null;
+    //     navigate("/");
+    //     setIsImageUploaded(false);
+    //     setOriginalImageSrc(imageSrc);
+    //     setHasChanges(false);
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   const handleDiscardChanges = () => {
@@ -94,6 +141,8 @@ function Profile() {
                   d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
                 />
               </svg>
+
+
               <input
                 type="file"
                 ref={fileInputRef}
