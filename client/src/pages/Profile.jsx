@@ -9,23 +9,20 @@ import api from "../api/Api"; // Import the Axios instance
 import useFetchUser from "../hooks/useFetchUser";
 import useFetchBlogs from "../hooks/useFetchBlogs"; // Import the custom hook
 
-
 import { IFF } from "./url";
-
 
 function Profile() {
   const { user } = useAuthContext();
   const { userData, imageSrc, setImageSrc } = useFetchUser(); // Use the custom hook
-  const { blogs, loading,setLoading } = useFetchBlogs();
+  const { blogs, loading, setLoading } = useFetchBlogs();
 
-  const [originalImageSrc, setOriginalImageSrc] = useState(''); // Store original image URL
-  
+  const [originalImageSrc, setOriginalImageSrc] = useState(""); // Store original image URL
+
   const [hasChanges, setHasChanges] = useState(false); // Track if changes are made
   const [isImageUploaded, setIsImageUploaded] = useState(false);
 
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
-
 
   const handleSVGClick = () => {
     fileInputRef.current.click();
@@ -40,7 +37,6 @@ function Profile() {
         setIsImageUploaded(true);
         setHasChanges(true); // Set changes flag when a file is selected
         setSelectedFile(file);
-
       };
       reader.readAsDataURL(file);
     }
@@ -53,11 +49,13 @@ function Profile() {
       setLoading(false);
       return;
     }
-    const blog = {}
+    const blog = {};
     if (selectedFile) {
       const data = new FormData();
       const alphanumericKey = Math.random().toString(36).slice(2, 9);
-      const filename = `user-${alphanumericKey}-${Date.now()}-banner-${selectedFile.name}`;
+      const filename = `user-${alphanumericKey}-${Date.now()}-banner-${
+        selectedFile.name
+      }`;
       data.append("img", filename);
       data.append("file", selectedFile);
       blog.userbanner = filename;
@@ -98,7 +96,7 @@ function Profile() {
   };
 
   const handleDiscardChanges = () => {
-    setImageSrc(originalImageSrc || "https://via.placeholder.com/450"); // Reset to original image
+    setImageSrc(imageSrc); // Reset to original image
     setIsImageUploaded(false); // Reset upload flag
     setHasChanges(false); // Reset changes flag
   };
@@ -106,7 +104,6 @@ function Profile() {
   const handleImageError = (event) => {
     event.target.src = defaultImage;
   };
-  
 
   return (
     <>
@@ -146,7 +143,6 @@ function Profile() {
                 />
               </svg>
 
-
               <input
                 type="file"
                 ref={fileInputRef}
@@ -163,13 +159,22 @@ function Profile() {
               />
             </div>
             <div className=" mb-4 w-[100%] h-[300px] p-4 sm:p-2">
+            {!hasChanges && (
               <img
                 className="h-full w-full object-cover"
                 alt="hero"
                 src={IFF + imageSrc}
-                // onError={handleImageError}
-
+                onError={handleImageError}
               />
+            )}
+              {hasChanges && (
+                <img
+                  className="h-full w-full object-cover"
+                  alt="hero"
+                  src={imageSrc}
+                  onError={handleImageError}
+                />
+              )}
             </div>
             {isImageUploaded && (
               <div className="absolute bottom-3 right-3  text-xs ">

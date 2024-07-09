@@ -26,7 +26,7 @@ const useFetchUser = () => {
         const data = response.data;
         setUserData(data);
         const defaultImageUrl = data.userbanner; // Adjust based on your data structure
-        setImageBanner(defaultImageUrl);
+        setImageSrc(defaultImageUrl);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
