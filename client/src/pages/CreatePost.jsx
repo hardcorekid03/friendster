@@ -69,9 +69,6 @@ function CreatePost() {
     fileInputRef.current.click();
   };
 
-
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
@@ -95,7 +92,7 @@ function CreatePost() {
       data.append("file", selectedFile);
       blog.image = filename;
       try {
-        const imgUpload = await api.post("/api/upload", data, {
+        const imgUpload = await api.post("/api/upload/", data, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },

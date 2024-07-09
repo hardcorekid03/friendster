@@ -16,7 +16,49 @@ const storage = multer.diskStorage({
   },
 });
 
+const storageBanner = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "assets/images/banners");
+  },
+  filename: (req, file, fn) => {
+    fn(null, req.body.img);
+  },
+});
+
+const storageProfile = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "assets/images/profiles");
+  },
+  filename: (req, file, fn) => {
+    fn(null, req.body.img);
+  },
+});
+
 const upload = multer({ storage: storage }).single("file");
+const uploadBanner = multer({ storage: storageBanner }).single("file");
+const uploadProfile = multer({ storage: storageProfile }).single("file");
+
+// Endpoint for uploading banners
+router.post("/uploadBanner", (req, res) => {
+  uploadBanner(req, res, (err) => {
+    if (err) {
+      console.error("Multer Error:", err);
+      return res.status(400).json({ error: err.message });
+    }
+    res.status(200).json("Banner image has been uploaded successfully!");
+  });
+});
+
+// Endpoint for uploading profile pictures
+router.post("/uploadProfile", (req, res) => {
+  uploadProfile(req, res, (err) => {
+    if (err) {
+      console.error("Multer Error:", err);
+      return res.status(400).json({ error: err.message });
+    }
+    res.status(200).json("Profile picture has been uploaded successfully!");
+  });
+});
 
 // Endpoint for file upload
 router.post("/", (req, res) => {
@@ -28,6 +70,8 @@ router.post("/", (req, res) => {
     res.status(200).json("Image has been uploaded successfully!");
   });
 });
+
+
 
 // DELETE endpoint for deleting images
 router.delete("/:imageName", (req, res) => {

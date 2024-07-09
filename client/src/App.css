@@ -29,7 +29,7 @@ html {
 }
 
 .bottom-nav-button:hover {
-  background-color: #e2e8f0; /* Tailwind's bg-gray-200 */
+  background-color: #e2e8f0; 
   transform: translateY(-2px);
 }
 
@@ -38,11 +38,65 @@ li:hover>ul { transform: translatex(101%) scale(1) }
 li > button svg { transform: rotate(-90deg) }
 li:hover > button svg { transform: rotate(-270deg) }
 
-/* Below styles fake what can be achieved with the Tailwind config
-   you need to add the group-hover variant to scale and define your custom
-   min width style.
-*/
 .group:hover .group-hover\:scale-100 { transform: scale(1) }
 .group:hover .group-hover\:-rotate-180 { transform: rotate(180deg) }
 .scale-0 { transform: scale(0) }
 .min-w-32 { min-width: 8rem }
+
+.ScrollTop {
+  width: 45px;
+  height: 45px;
+  /* background: linear-gradient(#44ea76, #39fad7); */
+  background: linear-gradient(to right, #0397d5, #3a89ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  border: none;
+}
+
+.arrow path {
+  fill: white;
+}
+
+.text {
+  font-size: 0.7em;
+  width: 100px;
+  position: absolute;
+  color: rgb(8, 8, 8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: -18px;
+  opacity: 0;
+  transition-duration: 0.7s;
+}
+
+.ScrollTop:hover .text {
+  opacity: 1;
+  transition-duration: 0.7s;
+}
+
+.ScrollTop:hover .arrow {
+  animation: slide-in-bottom 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes slide-in-bottom {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@media (max-width: 768px) {
+  .ScrollTop {
+    bottom: 50px; /* Adjust as needed */
+    right: 50%; /* Center horizontally */
+    transform: translateX(50%);
+  }
+}

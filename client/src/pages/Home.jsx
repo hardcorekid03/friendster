@@ -1,4 +1,5 @@
 import AppRoutes from "./Routes";
+import ScrollToTopButton from "../components/ScrollToTop";
 export default function Home() {
   return (
     <>

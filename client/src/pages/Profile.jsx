@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -6,38 +6,56 @@ import Trending from "./Trending";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import UserPost from "./postdetails/UserPost";
 import api from "../api/Api"; // Import the Axios instance
+import useFetchUser from "../hooks/useFetchUser";
+import useFetchBlogs from "../hooks/useFetchBlogs"; // Import the custom hook
+
 
 function Profile() {
   const { user } = useAuthContext();
+  const { userData, imageSrc, setImageSrc } = useFetchUser(); // Use the custom hook
+  const { blogs, loading } = useFetchBlogs();
 
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [originalImageSrc, setOriginalImageSrc] = useState(''); // Store original image URL
+  const [hasChanges, setHasChanges] = useState(false); // Track if changes are made
+  const [isImageUploaded, setIsImageUploaded] = useState(false);
+
+  const fileInputRef = useRef(null);
+
+  const handleSVGClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageSrc(reader.result);
+        setIsImageUploaded(true);
+        setHasChanges(true); // Set changes flag when a file is selected
+
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSaveChanges = () => {
+    console.log("Changes saved");
+    setIsImageUploaded(false);
+    setOriginalImageSrc(imageSrc); // Save the current image as original
+    setHasChanges(false); // Reset changes flag after saving
+  };
+
+  const handleDiscardChanges = () => {
+    setImageSrc(originalImageSrc || "https://via.placeholder.com/450"); // Reset to original image
+    setIsImageUploaded(false); // Reset upload flag
+    setHasChanges(false); // Reset changes flag
+  };
 
   const handleImageError = (event) => {
     event.target.src = defaultImage;
   };
-
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const response = await api.get("api/blogs/", {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
-        setBlogs(response.data);
-      } catch (error) {
-        console.error(error);
-        console.error("Error fetching blogs:", error);
-      }
-      setLoading(false);
-    };
-    if (user) {
-      fetchBlogs();
-    }
-  }, [user]);
+  
 
   return (
     <>
@@ -52,9 +70,12 @@ function Profile() {
               <ArrowLeftIcon className="h-full w-full" />
             </Link>
           </div>
-          <div className="relative container mx-auto flex  py-4 items-center justify-center flex-col ">
-            <div className="absolute w-[150px] h-[150px]   bottom-1  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
-              {/* <svg
+          <div className="relative container mx-auto flex  bg-gray-400py-4 items-center justify-center flex-col ">
+            <div
+              className="absolute flex top-3 right-3 hover:bg-gray-400  text-white px-3 py-1 rounded  "
+              onClick={handleSVGClick}
+            >
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -63,30 +84,54 @@ function Profile() {
                 className="size-6 cursor-pointer  "
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
                 />
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
                 />
-              </svg> */}
+              </svg>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </div>
+
+            <div className="absolute w-[150px] h-[150px]   bottom-1  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
               <img
-                className="h-full w-full border-4 shadow border-white object-cover"
+                className="h-full w-full border-4 shadow border-white  object-cover"
                 alt="hero"
                 src="https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"
               />
-
             </div>
             <div className=" mb-4 w-[100%] h-[300px] p-4 sm:p-2">
               <img
                 className="h-full w-full object-cover"
                 alt="hero"
-                src="https://art.ngfiles.com/images/1805000/1805086_forks0rspoons_my-new-profile-banner.png?f1620391802"
+                src={imageSrc}
               />
             </div>
+            {isImageUploaded && (
+              <div className="absolute bottom-3 right-3  text-xs ">
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={handleSaveChanges}
+                >
+                  Save Changes
+                </button>
+                <button
+                  className="bg-white border-gray-300 border hover:bg-gray-200 font-bold py-2 px-4 rounded ml-2"
+                  onClick={handleDiscardChanges}
+                >
+                  Discard Changes
+                </button>
+              </div>
+            )}
           </div>
           <div className="flex items-center justify-between p-4 sm:p-2 border-b-2 mb-4">
             <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
@@ -109,73 +154,6 @@ function Profile() {
             />
           </div>
 
-          {/* <div className="UserPost items-center p-4 sm:p-2 border-b-2 mb-4">
-            <>
-              {loading ? (
-                <div className="container py-5">
-                  <p> Loading... </p>
-                </div>
-              ) : blogs.length === 0 ? (
-                <div className="container py-5">
-                  <p>No blogs found...</p>
-                </div>
-              ) : (
-                blogs.map((blog, index) => (
-                  <div
-                    key={index}
-                    className="md:flex shadow-sm bg-white rounded-lg border border-gray-100 hover:border-gray-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
-                  >
-                    <div className="blog-img mb-4 md:w-[35%] h-[220px] sm:w-[75%] ">
-                      <img
-                        src={IF + blog.image}
-                        alt={blog.title}
-                        onError={handleImageError}
-                        className="blog-img h-full w-full object-cover "
-                      />
-                    </div>
-                    <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%] ">
-                      <div className="mb-2 ">
-                        <Link to={`/postdetails/${blog._id}`}>
-                          <h3 className="text-lg font-semibold text-blue-500 hover:underline">
-                            {blog.title}
-                          </h3>
-                        </Link>
-
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html:
-                              blog.blogbody.slice(0, 250) + " ....Read more",
-                          }}
-                        />
-                      </div>
-                      <div className="md:flex justify-between items-center ">
-                        <span className="text-regular text-md text-blue-500 cursor-pointer flex items-center">
-                          <img
-                            src="https://cdn-icons-png.freepik.com/512/168/168725.png"
-                            alt="Avatar"
-                            className="inline-block h-8 w-8 object-cover rounded-full mr-2"
-                          />
-                          {blog.author}
-                        </span>
-                        <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center ">
-                          Posted:{" "}
-                          {`${format(
-                            new Date(blog.createdAt),
-                            "MMM dd, yyyy"
-                          )} `}
-                        </span>
-                      </div>
-                      <div className="md:flex justify-end items-center mt-4 ">
-                        <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center ">
-                          Add to favorites
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
-            </>
-          </div> */}
           <div className="items-center p-4 sm:p-2 border-b-2 mb-4">
             <UserPost
               loading={loading}

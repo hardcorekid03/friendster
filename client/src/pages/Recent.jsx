@@ -5,9 +5,8 @@ import { IF } from "./url";
 import { format } from "date-fns";
 import { useAuthContext } from "../hooks/useAuthContext";
 import Trending from "./Trending";
-import defaultImage from "../assets/images/dafaultImage.jpg"
-import api from '../api/Api'; // Import the Axios instance
-
+import defaultImage from "../assets/images/dafaultImage.jpg";
+import api from "../api/Api"; // Import the Axios instance
 
 function Recent() {
   const { user } = useAuthContext();
@@ -32,7 +31,7 @@ function Recent() {
         setBlogs(response.data);
       } catch (error) {
         console.error(error);
-        console.error('Error fetching blogs:', error);
+        console.error("Error fetching blogs:", error);
       }
       setLoading(false);
     };
@@ -55,7 +54,7 @@ function Recent() {
               <PencilSquareIcon className="h-full w-full hidden sm:block" />
             </Link>
           </div>
-          
+
           {loading ? (
             <div className="container py-5">
               <p> Loading... </p>
@@ -88,8 +87,7 @@ function Recent() {
 
                     <div
                       dangerouslySetInnerHTML={{
-                        __html:
-                          blog.blogbody.slice(0, 250) + " ....Read more",
+                        __html: blog.blogbody.slice(0, 250) + " ....Read more",
                       }}
                     />
                   </div>
@@ -116,8 +114,6 @@ function Recent() {
               </div>
             ))
           )}
-
-
         </div>
       </section>
       <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
