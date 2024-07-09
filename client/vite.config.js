@@ -32,6 +32,10 @@ export default defineConfig({
         target: "http://localhost:4000/images/",
         secure: false,
       },
+      "/banners": {
+        target: "http://localhost:4000/banners/",
+        secure: false,
+      },
     },
   },
 });

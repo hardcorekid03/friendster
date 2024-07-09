@@ -10,17 +10,22 @@ import useFetchUser from "../hooks/useFetchUser";
 import useFetchBlogs from "../hooks/useFetchBlogs"; // Import the custom hook
 
 
+import { IFF } from "./url";
+
+
 function Profile() {
   const { user } = useAuthContext();
   const { userData, imageSrc, setImageSrc } = useFetchUser(); // Use the custom hook
   const { blogs, loading,setLoading } = useFetchBlogs();
 
   const [originalImageSrc, setOriginalImageSrc] = useState(''); // Store original image URL
+  
   const [hasChanges, setHasChanges] = useState(false); // Track if changes are made
   const [isImageUploaded, setIsImageUploaded] = useState(false);
 
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
+
 
   const handleSVGClick = () => {
     fileInputRef.current.click();
@@ -55,7 +60,7 @@ function Profile() {
       const filename = `user-${alphanumericKey}-${Date.now()}-banner-${selectedFile.name}`;
       data.append("img", filename);
       data.append("file", selectedFile);
-      blog.image = filename;
+      blog.userbanner = filename;
       try {
         const imgUpload = await api.post("/api/upload/uploadBanner", data, {
           headers: {
@@ -72,25 +77,24 @@ function Profile() {
     }
 
     // wala pang route para dito kaya di pa makapag save hahaha
-    // try {
-    //   const response = await api.patch(`/api/user/${user.id}`, blog, {
-    //     headers: {
-    //       Authorization: `Bearer ${user.token}`,
-    //     },
-    //   });
+    try {
+      const response = await api.patch(`/api/user/${user.id}`, blog, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
-    //   if (response.status === 200) {
-    //     setError(null);
-    //     setSelectedFile(null);
-    //     fileInputRef.current.value = null;
-    //     navigate("/");
-    //     setIsImageUploaded(false);
-    //     setOriginalImageSrc(imageSrc);
-    //     setHasChanges(false);
-    //   }
-    // } catch (err) {
-    //   console.log(err);
-    // }
+      if (response.status === 200) {
+        setSelectedFile(null);
+        fileInputRef.current.value = null;
+        navigate("/");
+        setIsImageUploaded(false);
+        setOriginalImageSrc(imageSrc);
+        setHasChanges(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleDiscardChanges = () => {
@@ -162,7 +166,9 @@ function Profile() {
               <img
                 className="h-full w-full object-cover"
                 alt="hero"
-                src={imageSrc}
+                src={IFF + imageSrc}
+                // onError={handleImageError}
+
               />
             </div>
             {isImageUploaded && (

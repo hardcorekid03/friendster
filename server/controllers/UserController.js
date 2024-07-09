@@ -40,6 +40,25 @@ const getUser = async (req, res) => {
   res.status(200).json(user);
 };
 
+  // update blog
+  const updateUser = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "User not found" });
+    }
+  
+    const user = await User.findOneAndUpdate(
+      { _id: id },
+      {
+        ...req.body,
+      }
+    );
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+    res.status(200).json(user);
+  };
+
 // get all user
 const getUsers = async (req, res) => {
   const blog = await User.find({}).sort({ createdAt: -1 });
@@ -85,6 +104,8 @@ const signupUser = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+
+  
 };
 
-module.exports = { signupUser, loginUser, getUser, getUsers };
+module.exports = { signupUser, loginUser, getUser, getUsers,updateUser };
