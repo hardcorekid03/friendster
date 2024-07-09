@@ -52,7 +52,7 @@ function Profile() {
     if (selectedFile) {
       const data = new FormData();
       const alphanumericKey = Math.random().toString(36).slice(2, 9);
-      const filename = `blog-${alphanumericKey}-${Date.now()}-${selectedFile.name}`;
+      const filename = `user-${alphanumericKey}-${Date.now()}-banner-${selectedFile.name}`;
       data.append("img", filename);
       data.append("file", selectedFile);
       blog.image = filename;

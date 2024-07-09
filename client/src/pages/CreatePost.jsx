@@ -92,7 +92,7 @@ function CreatePost() {
       data.append("file", selectedFile);
       blog.image = filename;
       try {
-        const imgUpload = await api.post("/api/upload/uploadBanner", data, {
+        const imgUpload = await api.post("/api/upload/", data, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
