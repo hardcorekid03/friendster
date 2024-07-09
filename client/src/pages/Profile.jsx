@@ -53,7 +53,7 @@ function Profile() {
             </Link>
           </div>
           <div className="relative container mx-auto flex  py-4 items-center justify-center flex-col ">
-            <div className="absolute w-[200px] h-[200px]   bottom-1  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
+            <div className="absolute w-[150px] h-[150px]   bottom-1  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
               {/* <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -76,7 +76,7 @@ function Profile() {
               <img
                 className="h-full w-full border-4 shadow border-white object-cover"
                 alt="hero"
-                src="https://st.depositphotos.com/2218212/2938/i/450/depositphotos_29387653-stock-photo-facebook-profile.jpg"
+                src="https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"
               />
 
             </div>

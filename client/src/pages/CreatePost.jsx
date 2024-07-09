@@ -7,6 +7,8 @@ import useTitleAndSlug from "../hooks/useTitleAndSlug";
 import toast, { Toaster } from "react-hot-toast";
 import api from "../api/Api"; // Adjust the path as per your file structure
 import Trending from "./Trending";
+import defaultImage from "../assets/images/dafaultImage.jpg";
+
 import { useAuthContext } from "../hooks/useAuthContext";
 import debounce from "lodash/debounce"; // Import debounce from lodash
 import { IF } from "./url";
@@ -14,6 +16,10 @@ import { IF } from "./url";
 function CreatePost() {
   const { user } = useAuthContext();
   const { id } = useParams();
+
+  const handleImageError = (event) => {
+    event.target.src = defaultImage;
+  };
 
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -62,6 +68,7 @@ function CreatePost() {
   const handleSvgClick = () => {
     fileInputRef.current.click();
   };
+
 
 
 
@@ -195,6 +202,8 @@ function CreatePost() {
                   alt="Selected File"
                   className="object-contain w-full h-full cursor-pointer"
                   onClick={handleSvgClick}
+                  onError={handleImageError}
+
                 />
               ) : image && id ? (
                 <img
@@ -202,6 +211,8 @@ function CreatePost() {
                   alt="Selected File"
                   className="object-contain w-full h-full cursor-pointer"
                   onClick={handleSvgClick}
+                  onError={handleImageError}
+
                 />
               ) : (
                 <div className="flex flex-col justify-center items-center text-gray-400">
