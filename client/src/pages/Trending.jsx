@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { useAuthContext } from "../hooks/useAuthContext";
-import avatar from "../assets/images/avatar.png";
 import api from '../api/Api'; // Import the Axios instance
-
+import { IFF } from "./url";
 
 function Trending() {
   const { user } = useAuthContext();
@@ -38,14 +36,18 @@ function Trending() {
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();
 
+  const baseUrl = IFF + userData.userbanner;
+
   return (
     <>
-      <div className="p-4 bg-zinc-300 shadow-lg flex flex-col items-center w-full">
+      <div className="p-4 bg-zinc-300 shadow-lg flex flex-col items-center w-full"
+          //  style={{ backgroundImage: `url(${baseUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
         <div className="flex justify-center  w-[100px] h-[100px] mb-4 rounded-full overflow-hidden">
           <img
             className="h-full w-full object-cover"
             alt="hero"
-            src={userData.image || "https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"}
+            src={IFF + userData.userbanner || "https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"}
           />
         </div>
         <label className="block text-sm font-semibold mb-2" htmlFor="name">

@@ -6,9 +6,7 @@ const useFetchUser = () => {
   const { user } = useAuthContext();
   const [userData, setUserData] = useState({});
   const [imageSrc, setImageSrc] = useState('');
-  const [imageBanner, setImageBanner] = useState('');
-
-
+  
   useEffect(() => {
     const fetchUser = async () => {
       if (!user) {
@@ -35,7 +33,7 @@ const useFetchUser = () => {
     fetchUser();
   }, [user]);
 
-  return { userData, imageSrc, setImageSrc, setImageBanner };
+  return { userData, imageSrc, setImageSrc };
 };
 
 export default useFetchUser;

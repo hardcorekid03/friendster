@@ -5,24 +5,37 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import Trending from "./Trending";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import UserPost from "./postdetails/UserPost";
-import api from "../api/Api"; // Import the Axios instance
 import useFetchUser from "../hooks/useFetchUser";
-import useFetchBlogs from "../hooks/useFetchBlogs"; // Import the custom hook
-
+import useFetchBlogs from "../hooks/useFetchBlogs";
+import useSaveChanges from "../hooks/useSaveChanges";
 import { IFF } from "./url";
 
 function Profile() {
   const { user } = useAuthContext();
-  const { userData, imageSrc, setImageSrc } = useFetchUser(); // Use the custom hook
+  const { userData, imageSrc, setImageSrc } = useFetchUser();
   const { blogs, loading, setLoading } = useFetchBlogs();
 
-  const [originalImageSrc, setOriginalImageSrc] = useState(""); // Store original image URL
-
-  const [hasChanges, setHasChanges] = useState(false); // Track if changes are made
+  const [originalImageSrc, setOriginalImageSrc] = useState("");
   const [isImageUploaded, setIsImageUploaded] = useState(false);
-
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const { handleSaveChanges, hasChanges, setHasChanges } = useSaveChanges(
+    user,
+    imageSrc,
+    selectedFile,
+    setIsImageUploaded,
+    setSelectedFile,
+    setOriginalImageSrc,
+    setLoading
+  );
+
+  useEffect(() => {
+    if (userData && userData.bannerImage) {
+      setOriginalImageSrc(IFF + userData.bannerImage);
+      setImageSrc(userData.bannerImage);
+    }
+  }, [userData]);
 
   const handleSVGClick = () => {
     fileInputRef.current.click();
@@ -35,70 +48,19 @@ function Profile() {
       reader.onloadend = () => {
         setImageSrc(reader.result);
         setIsImageUploaded(true);
-        setHasChanges(true); // Set changes flag when a file is selected
+        setHasChanges(true);
         setSelectedFile(file);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSaveChanges = async (e) => {
-    e.preventDefault();
-    if (!user) {
-      // Handle case where user is not logged in
-      setLoading(false);
-      return;
-    }
-    const blog = {};
-    if (selectedFile) {
-      const data = new FormData();
-      const alphanumericKey = Math.random().toString(36).slice(2, 9);
-      const filename = `user-${alphanumericKey}-${Date.now()}-banner-${
-        selectedFile.name
-      }`;
-      data.append("img", filename);
-      data.append("file", selectedFile);
-      blog.userbanner = filename;
-      try {
-        const imgUpload = await api.post("/api/upload/uploadBanner", data, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-            "Content-Type": "multipart/form-data", // Ensure proper content type header
-          },
-        });
-        console.log(imgUpload.data);
-        setIsImageUploaded(false); // Update state after successful upload
-      } catch (err) {
-        console.log("Error uploading image:", err);
-        // Handle error state or show error message to user
-      }
-    }
-
-    // wala pang route para dito kaya di pa makapag save hahaha
-    try {
-      const response = await api.patch(`/api/user/${user.id}`, blog, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-
-      if (response.status === 200) {
-        setSelectedFile(null);
-        fileInputRef.current.value = null;
-        navigate("/");
-        setIsImageUploaded(false);
-        setOriginalImageSrc(imageSrc);
-        setHasChanges(false);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleDiscardChanges = () => {
-    setImageSrc(imageSrc); // Reset to original image
-    setIsImageUploaded(false); // Reset upload flag
-    setHasChanges(false); // Reset changes flag
+
+    window.location.reload();
+    //    setImageSrc(originalImageSrc); // Reset to original image
+    // setIsImageUploaded(false); // Reset upload flag
+    // setHasChanges(false); // Reset changes flag
   };
 
   const handleImageError = (event) => {
@@ -120,7 +82,7 @@ function Profile() {
           </div>
           <div className="relative container mx-auto flex  bg-gray-400py-4 items-center justify-center flex-col ">
             <div
-              className="absolute flex top-3 right-3 hover:bg-gray-400  text-white px-3 py-1 rounded  "
+              className="absolute flex top-3 right-3 hover:bg-gray-700  text-white px-3 py-1 rounded  "
               onClick={handleSVGClick}
             >
               <svg
@@ -159,40 +121,39 @@ function Profile() {
               />
             </div>
             <div className=" mb-4 w-[100%] h-[300px] p-4 sm:p-2">
-            {!hasChanges && (
-              <img
-                className="h-full w-full object-cover"
-                alt="hero"
-                src={IFF + imageSrc}
-                onError={handleImageError}
-              />
-            )}
-              {hasChanges && (
+              {hasChanges ? (
                 <img
                   className="h-full w-full object-cover"
                   alt="hero"
                   src={imageSrc}
                   onError={handleImageError}
                 />
+              ) : (
+                <img
+                  className="h-full w-full object-cover"
+                  alt="hero"
+                  src={IFF + imageSrc}
+                  onError={handleImageError}
+                />
               )}
             </div>
-            {isImageUploaded && (
-              <div className="absolute bottom-3 right-3  text-xs ">
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={handleSaveChanges}
-                >
-                  Save Changes
-                </button>
-                <button
-                  className="bg-white border-gray-300 border hover:bg-gray-200 font-bold py-2 px-4 rounded ml-2"
-                  onClick={handleDiscardChanges}
-                >
-                  Discard Changes
-                </button>
-              </div>
-            )}
           </div>
+          {isImageUploaded && (
+            <div className=" flex items-center justify-center  md:justify-end   text-xs  ">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={handleSaveChanges}
+              >
+                Save Changes
+              </button>
+              <button
+                className="bg-white border-gray-300 border hover:bg-gray-200 font-bold py-2 px-4 rounded ml-2"
+                onClick={handleDiscardChanges}
+              >
+                Discard Changes
+              </button>
+            </div>
+          )}
           <div className="flex items-center justify-between p-4 sm:p-2 border-b-2 mb-4">
             <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
               Timeline
