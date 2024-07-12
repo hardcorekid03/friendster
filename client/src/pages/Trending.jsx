@@ -2,35 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import api from '../api/Api'; // Import the Axios instance
 import { IFF } from "./url";
+import useFetchUser from "../hooks/useFetchUser";
+
 
 function Trending() {
   const { user } = useAuthContext();
-  const [userData, setUserdata] = useState({});
+  const { userData, imageSrc, setImageSrc } = useFetchUser();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (!user) {
-        return;
-      }
 
-      try {
-        const response = await api.get(`/api/user/${user.id}`, {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
 
-        if (response.status !== 200) {
-          throw new Error("Failed to fetch user data");
-        }
-
-        const data = response.data;
-        setUserdata(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUser();
-  }, [user]);
 
   const date = new Date(userData.createdAt || Date.now());
   const month = date.toLocaleString("default", { month: "long" });

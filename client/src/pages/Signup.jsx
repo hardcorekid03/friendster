@@ -123,6 +123,8 @@ function Signup() {
                     placeholderText="Select a date"
                     className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
                     required
+                    showYearDropdown
+                    scrollableYearDropdown
                   />
                 </div>
                 <div>

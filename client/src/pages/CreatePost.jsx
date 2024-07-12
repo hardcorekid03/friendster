@@ -8,7 +8,6 @@ import toast, { Toaster } from "react-hot-toast";
 import api from "../api/Api"; // Adjust the path as per your file structure
 import Trending from "./Trending";
 import defaultImage from "../assets/images/dafaultImage.jpg";
-
 import { useAuthContext } from "../hooks/useAuthContext";
 import debounce from "lodash/debounce"; // Import debounce from lodash
 import { IF } from "./url";

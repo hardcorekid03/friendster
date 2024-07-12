@@ -67,14 +67,14 @@ function Recent() {
             blogs.map((blog, index) => (
               <div
                 key={index}
-                className="md:flex shadow-sm bg-white rounded-lg border border-gray-100 hover:border-gray-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
+                className="md:flex shadow-sm bg-white border border-gray-100 hover:border-gray-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
               >
                 <div className="blog-img mb-4 md:w-[35%] h-[220px] sm:w-[75%] overflow-hidden ">
                   <img
                     src={IF + blog.image}
                     alt={blog.title}
                     onError={handleImageError}
-                    className="blog-img h-full w-full object-cover inset-0 object-cover transform transition-transform duration-300 hover:scale-110"
+                    className="blog-img h-full w-full object-cover inset-0 transform transition-transform duration-300 hover:scale-110"
                   />
                 </div>
                 <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%] ">

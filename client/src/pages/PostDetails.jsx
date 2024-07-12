@@ -47,6 +47,8 @@ function PostDetails() {
     fetchBlogDetails();
   }, [id, user]);
 
+  
+
   const { handleDelete } = useDeleteBlog();
 
   const onDeleteClick = () => {
@@ -60,7 +62,7 @@ function PostDetails() {
     <>
       <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
         <div className="bg-white  items-center justify-center p-4  mb-8 ">
-          <div className="flex items-center justify-between p-4 sm:p-2">
+          {/* <div className="flex items-center justify-between p-4 sm:p-2">
             <h3 className="text-xl font-semibold ">Post Details</h3>
             <Link
               to="/"
@@ -68,7 +70,7 @@ function PostDetails() {
             >
               <ArrowLeftIcon className="h-full w-full" />
             </Link>
-          </div>
+          </div> */}
 
           <div className="container mx-auto flex  py-4  flex-col mb-4 border-b-2 ">
             {loading ? (

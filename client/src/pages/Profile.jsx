@@ -1,24 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
-import Trending from "./Trending";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import UserPost from "./postdetails/UserPost";
 import useFetchUser from "../hooks/useFetchUser";
 import useFetchBlogs from "../hooks/useFetchBlogs";
 import useSaveChanges from "../hooks/useSaveChanges";
 import { IFF } from "./url";
+import format from "date-fns/formatDistanceToNow";
+
+import UserDetails from "./UserDetails";
+import Trending from "./Trending";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 function Profile() {
   const { user } = useAuthContext();
   const { userData, imageSrc, setImageSrc } = useFetchUser();
   const { blogs, loading, setLoading } = useFetchBlogs();
 
-  const [originalImageSrc, setOriginalImageSrc] = useState("");
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const userBanner = IFF + userData.userbanner;
 
   const { handleSaveChanges, hasChanges, setHasChanges } = useSaveChanges(
     user,
@@ -26,16 +29,8 @@ function Profile() {
     selectedFile,
     setIsImageUploaded,
     setSelectedFile,
-    setOriginalImageSrc,
     setLoading
   );
-
-  useEffect(() => {
-    if (userData && userData.bannerImage) {
-      setOriginalImageSrc(IFF + userData.bannerImage);
-      setImageSrc(userData.bannerImage);
-    }
-  }, [userData]);
 
   const handleSVGClick = () => {
     fileInputRef.current.click();
@@ -56,11 +51,10 @@ function Profile() {
   };
 
   const handleDiscardChanges = () => {
-
-    window.location.reload();
-    //    setImageSrc(originalImageSrc); // Reset to original image
-    // setIsImageUploaded(false); // Reset upload flag
-    // setHasChanges(false); // Reset changes flag
+    // window.location.reload();
+    setIsImageUploaded(false);
+    setHasChanges(false);
+    setSelectedFile(userBanner);
   };
 
   const handleImageError = (event) => {
@@ -69,18 +63,9 @@ function Profile() {
 
   return (
     <>
-      <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
+      <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
         <div className="items-center justify-center p-4 bg-white ">
-          <div className="flex items-center justify-between p-4 sm:p-2">
-            <h3 className="text-xl font-semibold ">User Profile</h3>
-            <Link
-              to="/"
-              className="text-xl font-semibold hover:text-gray-700 cursor-pointer h-8 w-8 justify-center"
-            >
-              <ArrowLeftIcon className="h-full w-full" />
-            </Link>
-          </div>
-          <div className="relative container mx-auto flex  bg-gray-400py-4 items-center justify-center flex-col ">
+          <div className="relative flex  items-center justify-center flex-col ">
             <div
               className="absolute flex top-3 right-3 hover:bg-gray-700  text-white px-3 py-1 rounded  "
               onClick={handleSVGClick}
@@ -113,14 +98,15 @@ function Profile() {
               />
             </div>
 
-            <div className="absolute w-[150px] h-[150px]   bottom-1  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
+            <div className="absolute w-[150px] h-[150px]   -bottom-1  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
               <img
-                className="h-full w-full border-4 shadow border-white  object-cover"
+                className="h-full w-full border-4 shadow border-white  object-cover "
                 alt="hero"
                 src="https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"
               />
             </div>
-            <div className=" mb-4 w-[100%] h-[300px] p-4 sm:p-2">
+            <div className=" mb-4 w-[100%] md:h-[350px] h-[200px] xl:h-[500px]">
+
               {hasChanges ? (
                 <img
                   className="h-full w-full object-cover"
@@ -132,28 +118,65 @@ function Profile() {
                 <img
                   className="h-full w-full object-cover"
                   alt="hero"
-                  src={IFF + imageSrc}
+                  src={userBanner}
                   onError={handleImageError}
                 />
               )}
+
             </div>
+            
           </div>
-          {isImageUploaded && (
-            <div className=" flex items-center justify-center  md:justify-end   text-xs  ">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={handleSaveChanges}
-              >
-                Save Changes
-              </button>
-              <button
-                className="bg-white border-gray-300 border hover:bg-gray-200 font-bold py-2 px-4 rounded ml-2"
-                onClick={handleDiscardChanges}
-              >
-                Discard Changes
-              </button>
+
+          <div className="bg-gray-50 p-4 border mb-4 md:flex md:justify-between mt-4">
+            <div className="userDetails items-center justify-center">
+              <h3 className="font-semibold text-xl">{userData.username}</h3>
+              <h3 className="text-sm font-semibold">
+                Location:{" "}
+                <span className="text-md font-normal text-gray-800">
+                  {userData.location}
+                </span>
+              </h3>
+              <h3 className="text-sm font-semibold">
+                Gender:{" "}
+                <span className="text-md font-normal text-gray-800">
+                  {userData.gender}
+                </span>
+              </h3>
+              <h3 className="text-sm font-semibold">
+                Joined:{" "}
+                <span className="text-md font-normal text-gray-800">
+                  {userData.createdAt}
+                </span>
+              </h3>
+              <h3 className="text-sm font-semibold">
+                Bio:{" "}
+                <span className="text-md font-normal text-gray-800">
+                  {userData.bio || "error 404: bio not found"}
+                </span>
+              </h3>
             </div>
-          )}
+
+            <div className="text-xs mt-4 md:mt-0 flex flex-col items-center md:flex-row md:items-center">
+              {isImageUploaded && (
+                <>
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  w-full mb-2 md:mb-0 md:w-auto md:mr-2"
+                    onClick={handleSaveChanges}
+                  >
+                    Save Changes
+                  </button>
+                  <button
+                    className="bg-white border-gray-300 border hover:bg-gray-200 font-bold py-2 px-4  w-full md:w-auto"
+                    onClick={handleDiscardChanges}
+                  >
+                    Discard Changes
+                  </button>
+                </>
+              )}
+            </div>
+            
+          </div>
+
           <div className="flex items-center justify-between p-4 sm:p-2 border-b-2 mb-4">
             <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
               Timeline
@@ -164,9 +187,11 @@ function Profile() {
             <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
               Favorites
             </h3>
-            <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
-              Settings
-            </h3>
+            <Link to="/userdetails">
+              <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
+                Settings
+              </h3>
+            </Link>
           </div>
           <div className="flex items-center justify-between p-4 sm:p-2 ">
             <input
@@ -184,9 +209,9 @@ function Profile() {
           </div>
         </div>
       </section>
-      <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
+      {/* <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
         <Trending />
-      </section>
+      </section> */}
     </>
   );
 }

@@ -20,7 +20,7 @@ const UserPost = ({ loading, blogs, handleImageError }) => (
       blogs.map((blog, index) => (
         <div
           key={index}
-          className="md:flex shadow-sm bg-white rounded-lg border border-gray-100 hover:border-gray-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
+          className="md:flex shadow-sm bg-white  border border-gray-100 hover:border-gray-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
         >
           <div className="blog-img mb-4 md:w-[35%] h-[220px] sm:w-[75%]">
             <img
