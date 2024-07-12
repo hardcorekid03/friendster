@@ -6,7 +6,8 @@ import { format } from "date-fns";
 
 
 // Separate UserPost component
-const UserPost = ({ loading, blogs, handleImageError }) => (
+const UserPost = ({ loading, blogs, handleImageError }) => 
+  (
   <div className="UserPost ">
     {loading ? (
       <div className="container py-5">
@@ -51,7 +52,7 @@ const UserPost = ({ loading, blogs, handleImageError }) => (
                   alt="Avatar"
                   className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                 />
-                {blog.author}
+                {blog.author} <br/>
               </span>
               <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center">
                 Posted:{" "}

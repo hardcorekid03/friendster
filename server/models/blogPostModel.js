@@ -24,7 +24,7 @@ const blogPostSchema = new Schema(
     },
     author: {
       type: String,
-      required: true,
+      required: false,
     },
     authorId: {
       type: String,

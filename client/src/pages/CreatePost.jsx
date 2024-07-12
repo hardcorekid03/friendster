@@ -78,7 +78,7 @@ function CreatePost() {
       title,
       slug,
       blogbody,
-      author: user.username,
+      // author: user.username,
     };
 
     if (selectedFile) {

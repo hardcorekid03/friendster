@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import { useAuthContext } from "./useAuthContext";
 
 export const useSignup = () => {
@@ -19,26 +20,22 @@ export const useSignup = () => {
       gender,
     };
 
-    const response = await fetch("api/user/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userData),
-    });
+    try {
+      const response = await axios.post("api/user/signup", userData, {
+        headers: { "Content-Type": "application/json" },
+      });
 
-    const json = await response.json();
+      const json = response.data;
 
-    if (!response.ok) {
-      setIsLoading(false);
-      setError(json.error);
-    }
-
-    if (response.ok) {
       // save user to local storage
       localStorage.setItem("user", JSON.stringify(json));
 
       // update AuthContext
       dispatch({ type: "LOGIN", payload: json });
       setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      setError(error.response?.data?.error || "An error occurred");
     }
   };
 

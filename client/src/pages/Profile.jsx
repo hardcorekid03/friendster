@@ -3,24 +3,27 @@ import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import UserPost from "./postdetails/UserPost";
+import { format } from "date-fns";
 import useFetchUser from "../hooks/useFetchUser";
 import useFetchBlogs from "../hooks/useFetchBlogs";
 import useSaveChanges from "../hooks/useSaveChanges";
-import { IFF } from "./url";
-import format from "date-fns/formatDistanceToNow";
+import { IFF, IFFF } from "./url";
 
-import UserDetails from "./UserDetails";
-import Trending from "./Trending";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 function Profile() {
   const { user } = useAuthContext();
   const { userData, imageSrc, setImageSrc } = useFetchUser();
   const { blogs, loading, setLoading } = useFetchBlogs();
 
+  const date = new Date(userData.createdAt);
+  const isValidDate = !isNaN(date.getTime());
+  const formattedDate = isValidDate ? format(date, 'MMMM dd, yyyy') : 'Invalid date';
+
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const avatar = IFFF + userData.userimage;
   const userBanner = IFF + userData.userbanner;
 
   const { handleSaveChanges, hasChanges, setHasChanges } = useSaveChanges(
@@ -51,7 +54,6 @@ function Profile() {
   };
 
   const handleDiscardChanges = () => {
-    // window.location.reload();
     setIsImageUploaded(false);
     setHasChanges(false);
     setSelectedFile(userBanner);
@@ -59,6 +61,10 @@ function Profile() {
 
   const handleImageError = (event) => {
     event.target.src = defaultImage;
+  };
+
+  const handleAvatarError = (event) => {
+    event.target.src = "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
   };
 
   return (
@@ -102,11 +108,11 @@ function Profile() {
               <img
                 className="h-full w-full border-4 shadow border-white  object-cover "
                 alt="hero"
-                src="https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"
+                src={avatar}
+                onError={handleAvatarError}
               />
             </div>
             <div className=" mb-4 w-[100%] md:h-[350px] h-[200px] xl:h-[500px]">
-
               {hasChanges ? (
                 <img
                   className="h-full w-full object-cover"
@@ -122,9 +128,7 @@ function Profile() {
                   onError={handleImageError}
                 />
               )}
-
             </div>
-            
           </div>
 
           <div className="bg-gray-50 p-4 border mb-4 md:flex md:justify-between mt-4">
@@ -145,13 +149,13 @@ function Profile() {
               <h3 className="text-sm font-semibold">
                 Joined:{" "}
                 <span className="text-md font-normal text-gray-800">
-                  {userData.createdAt}
+                {formattedDate}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">
                 Bio:{" "}
-                <span className="text-md font-normal text-gray-800">
-                  {userData.bio || "error 404: bio not found"}
+                <span className="text-md font-normal italic text-gray-800">
+                  "{userData.bio || "error 404: bio not found"}"
                 </span>
               </h3>
             </div>
@@ -174,7 +178,6 @@ function Profile() {
                 </>
               )}
             </div>
-            
           </div>
 
           <div className="flex items-center justify-between p-4 sm:p-2 border-b-2 mb-4">

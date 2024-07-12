@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import api from '../api/Api'; // Import the Axios instance
-import { IFF } from "./url";
+import { IFFF } from "./url";
 import useFetchUser from "../hooks/useFetchUser";
 
 
@@ -9,14 +9,11 @@ function Trending() {
   const { user } = useAuthContext();
   const { userData, imageSrc, setImageSrc } = useFetchUser();
 
-
-
-
   const date = new Date(userData.createdAt || Date.now());
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();
 
-  const baseUrl = IFF + userData.userbanner;
+  const userImage = IFFF + userData.userimage;
 
   return (
     <>
@@ -27,7 +24,7 @@ function Trending() {
           <img
             className="h-full w-full object-cover"
             alt="hero"
-            src={IFF + userData.userbanner || "https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"}
+            src={userImage || "https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"}
           />
         </div>
         <label className="block text-sm font-semibold mb-2" htmlFor="name">

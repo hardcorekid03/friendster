@@ -40,6 +40,7 @@ function Recent() {
     }
   }, [user]);
 
+
   return (
     <>
       <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
@@ -69,7 +70,7 @@ function Recent() {
                 key={index}
                 className="md:flex shadow-sm bg-white border border-gray-100 hover:border-gray-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
               >
-                <div className="blog-img mb-4 md:w-[35%] h-[220px] sm:w-[75%] overflow-hidden ">
+                <div className="blog-img mb-4 md:w-[35%] h-[220px] sm:w-[75%] overflow-hidden  ">
                   <img
                     src={IF + blog.image}
                     alt={blog.title}

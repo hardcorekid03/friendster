@@ -2,17 +2,23 @@ import React, { useState, useEffect, useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import useFetchUser from "../hooks/useFetchUser";
-import { IFF } from "./url";
+import { IFF, IFFF } from "./url";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import useSaveChanges from "../hooks/useSaveChanges";
+import { useAuthContext } from "../hooks/useAuthContext";
+import api from "../api/Api";
 
 function UserDetails() {
+  const { user } = useAuthContext();
   const { userData } = useFetchUser();
   const [originalFormData, setOriginalFormData] = useState({}); // Store original formData
   const [isEditing, setIsEditing] = useState(false);
-  const navigate = useNavigate()
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isImageUploaded, setIsImageUploaded] = useState(false);
+
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     avatar: null,
@@ -22,7 +28,19 @@ function UserDetails() {
     gender: "",
     location: "",
     bio: "",
-  });
+    });
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setIsImageUploaded(true);
+        setSelectedFile(file);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   useEffect(() => {
     // Set formData to userData initially
@@ -65,10 +83,50 @@ function UserDetails() {
     setIsEditing(true);
   };
 
-  const handleSaveChanges = (e) => {
+  const handleSaveChanges = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    setIsEditing(false);
+
+    if (!user) {
+      setIsEditing(false);
+      return;
+    }
+
+    if (selectedFile) {
+      const data = new FormData();
+      const alphanumericKey = Math.random().toString(36).slice(2, 9);
+      const filename = `user-${alphanumericKey}-${Date.now()}-banner-${
+        selectedFile.name
+      }`;
+
+      data.append("img", filename);
+      data.append("file", selectedFile);
+      formData.userimage = filename;
+      try {
+        const imgUpload = await api.post("/api/upload/uploadProfile", data, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(imgUpload.data);
+        setIsImageUploaded(false);
+      } catch (err) {
+        console.log("Error uploading image:", err);
+      }
+    }
+
+    try {
+      // Perform API request to save formData
+      const response = await api.patch(`/api/user/${user.id}`, formData);
+      console.log("Form data saved:", response.data);
+      setIsEditing(false); // Exit edit mode
+      navigate("/profile");
+    } catch (error) {
+      console.error("Error saving form data:", error);
+      // Handle error state or display an error message to the user
+    }
+
+    const blog = {};
   };
 
   const discardChanges = () => {
@@ -83,13 +141,12 @@ function UserDetails() {
     <>
       <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
         <div className="items-center justify-center p-4 bg-white ">
-
           <div className="relative flex items-center justify-center flex-col ">
             <div className="absolute w-[150px] h-[150px] bottom-1 md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
               <img
                 className="h-full w-full border-4 shadow border-white object-cover"
-                alt="hero"
-                src="https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"
+                src={IFFF + userData.userimage}
+                onError={handleImageError}
               />
             </div>
             <div className="mb-4 w-[100%] h-[350px] p-4 sm:p-2">
@@ -123,12 +180,14 @@ function UserDetails() {
                 className={`mb-4 text-md font-bold cursor-pointer 
 
                   ${isEditing ? "text-red-600" : "hover:text-blue-400"}`}
-                onClick={isEditing ? () => navigate("/profile") : handleEditClick}
+                onClick={
+                  isEditing ? () => navigate("/profile") : handleEditClick
+                }
               >
                 {isEditing ? "Cancel" : "Edit Details"}
               </h3>
             </div>
-            <form >
+            <form>
               <div className="grid gap-4 mb-4 sm:grid-cols-12 sm:gap-6 sm:mb-5">
                 <div className="sm:col-span-12">
                   <label
@@ -143,7 +202,7 @@ function UserDetails() {
                     id="avatar"
                     className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
                     placeholder="Type product name"
-                    onChange={handleInputChange}
+                    onChange={handleFileChange}
                     required=""
                     disabled={!isEditing}
                     ref={fileInputRef} // Add this line
@@ -271,9 +330,8 @@ function UserDetails() {
                 <button
                   type="submit"
                   className="w-full sm:w-auto text-white inline-flex bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium text-sm px-5 py-2.5 text-center"
-                onClick={handleSaveChanges}
-                disabled={!isEditing}
-
+                  onClick={handleSaveChanges}
+                  disabled={!isEditing}
                 >
                   Save Changes
                 </button>
