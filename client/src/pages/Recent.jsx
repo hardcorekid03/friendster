@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { IF, IFFF } from "./url";
 import { format } from "date-fns";
 import { useAuthContext } from "../hooks/useAuthContext";
+import defaultImage from "../assets/images/dafaultImage.jpg";
 import Trending from "./Trending";
 import api from "../api/Api"; // Import the Axios instance
 
@@ -14,7 +15,7 @@ function Recent() {
   const [loading, setLoading] = useState(true);
 
   const handleImageError = (event) => {
-    event.target.src = "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
+    event.target.src = defaultImage;
   };
 
   useEffect(() => {
@@ -112,17 +113,12 @@ function Recent() {
                         alt="Avatar"
                         onError={handleImageError}
                         className="inline-block h-8 w-8 object-cover rounded-full mr-2"
-                      />
-                      {/* {blog.author}
-                      {blog.authorId && (
-                        <span className="ml-1 text-gray-500">({blog.authorId})</span>
-                      )} */}
-                      
+                      />           
                       {blog.authorId}
                     </span>
                     <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center">
                       Posted:{" "}
-                      {`${format(new Date(blog.createdAt), "MMM dd, yyyy")} `}
+                      {`${format(new Date(blog.createdAt), "MMMM dd, yyyy")} `}
                     </span>
                   </div>
                   <div className="md:flex justify-end items-center mt-4">
