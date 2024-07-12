@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
-import { IF} from "../url"
+import { IF } from "../url";
 import { format } from "date-fns";
 
-
 // Separate UserPost component
-const UserPost = ({ loading, blogs, handleImageError }) => 
-  (
+const UserPost = ({ loading, blogs, handleImageError }) => (
   <div className="UserPost ">
     {loading ? (
       <div className="container py-5">
@@ -52,11 +50,10 @@ const UserPost = ({ loading, blogs, handleImageError }) =>
                   alt="Avatar"
                   className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                 />
-                {blog.author} <br/>
+                {blog.authorId}
               </span>
               <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center">
-                Posted:{" "}
-                {`${format(new Date(blog.createdAt), "MMM dd, yyyy")} `}
+                Posted: {`${format(new Date(blog.createdAt), "MMM dd, yyyy")} `}
               </span>
             </div>
             <div className="md:flex justify-end items-center mt-4">

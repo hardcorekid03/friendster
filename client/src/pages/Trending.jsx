@@ -14,6 +14,9 @@ function Trending() {
   const year = date.getFullYear();
 
   const userImage = IFFF + userData.userimage;
+  const handleImageError = (event) => {
+    event.target.src = "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
+  };
 
   return (
     <>
@@ -24,7 +27,8 @@ function Trending() {
           <img
             className="h-full w-full object-cover"
             alt="hero"
-            src={userImage || "https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"}
+            src={userImage}
+            onError={handleImageError}
           />
         </div>
         <label className="block text-sm font-semibold mb-2" htmlFor="name">
