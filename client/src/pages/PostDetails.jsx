@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { IF, URL } from "./url";
+import { IF, IFFF, URL } from "./url";
 import { format } from "date-fns";
 import Trending from "./Trending";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -36,18 +35,38 @@ function PostDetails() {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         const data = response.data;
-        setBlogDetails(data);
+
+        try {
+          // Fetch author details based on authorId from blog data
+          const authorResponse = await api.get(`/api/user/${data.authorId}`, {
+            headers: { Authorization: `Bearer ${user.token}` },
+          });
+          const authorDetails = authorResponse.data;
+
+          // Combine blog data with author details
+          const blogWithAuthorDetails = {
+            ...data,
+            authorUsername: authorDetails.username,
+            authorImage: authorDetails.userimage,
+          };
+
+          setBlogDetails(blogWithAuthorDetails);
+        } catch (authorError) {
+          console.error(
+            `Error fetching author details for blog ${id}:`,
+            authorError
+          );
+          setBlogDetails(data); // Set blog data without author details in case of error
+        }
       } catch (error) {
-        console.error(error);
-        console.error("Error fetching blogs:", error);
+        console.error("Error fetching blog details:", error);
       }
+
       setLoading(false);
     };
 
     fetchBlogDetails();
   }, [id, user]);
-
-  
 
   const { handleDelete } = useDeleteBlog();
 
@@ -58,20 +77,11 @@ function PostDetails() {
   const onEditClick = () => {
     navigate(`/createpost/${blogDetails._id}`);
   };
+
   return (
     <>
       <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
         <div className="bg-white  items-center justify-center p-4  mb-8 ">
-          {/* <div className="flex items-center justify-between p-4 sm:p-2">
-            <h3 className="text-xl font-semibold ">Post Details</h3>
-            <Link
-              to="/"
-              className="text-xl font-semibold hover:text-gray-700 cursor-pointer h-8 w-8 justify-center"
-            >
-              <ArrowLeftIcon className="h-full w-full" />
-            </Link>
-          </div> */}
-
           <div className="container mx-auto flex  py-4  flex-col mb-4 border-b-2 ">
             {loading ? (
               <p>Loading...</p>
@@ -94,11 +104,13 @@ function PostDetails() {
                       <div className="font-semibold text-blue-400 cursor-pointer flex items-center justify-between mb-4">
                         <span>
                           <img
-                            src="https://cdn-icons-png.freepik.com/512/168/168725.png" // Replace with the actual path to your avatar image
+                            src={IFFF + blogDetails.authorImage} // Replace with the actual path to your avatar image
                             alt="Avatar"
                             className="inline-block h-8 w-8 object-cover rounded-full mr-2"
+                            onError={handleImageError}
+
                           />
-                          {blogDetails.author}
+                          {blogDetails.authorUsername}
                         </span>
                         <span className="text-regular text-sm text-gray-500 cursor-pointer flex items-center">
                           {format(
@@ -127,7 +139,7 @@ function PostDetails() {
                               </span>
                             </button>
                             <ul className="cursor-pointer  bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32">
-                              {blogDetails.author === user.username && (
+                              {blogDetails.authorUsername === user.username && (
                                 <>
                                   <li
                                     className="rounded-sm px-3 py-1 hover:bg-gray-100"

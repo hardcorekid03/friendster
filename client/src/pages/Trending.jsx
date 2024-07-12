@@ -20,10 +20,10 @@ function Trending() {
 
   return (
     <>
-      <div className="p-4 bg-zinc-300 shadow-lg flex flex-col items-center w-full"
+      <div className="p-4 bg-zinc-100 shadow-lg flex flex-col items-center w-full"
           //  style={{ backgroundImage: `url(${baseUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
-        <div className="flex justify-center  w-[100px] h-[100px] mb-4 rounded-full overflow-hidden">
+        <div className="flex justify-center border-2 shadow-sm border-white  w-[100px] h-[100px] mb-4 rounded-full overflow-hidden">
           <img
             className="h-full w-full object-cover"
             alt="hero"

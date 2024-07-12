@@ -104,9 +104,9 @@ function Profile() {
               />
             </div>
 
-            <div className="absolute w-[150px] h-[150px]   -bottom-1  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
+            <div className="absolute  w-[150px] h-[150px] lg:h-[180px] lg:w-[180px] -bottom-2  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
               <img
-                className="h-full w-full border-4 shadow border-white  object-cover "
+                className="h-full w-full border-4 shadow border-white  object-cover  "
                 alt="hero"
                 src={avatar}
                 onError={handleAvatarError}
@@ -131,7 +131,7 @@ function Profile() {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-4 border mb-4 md:flex md:justify-between mt-4">
+          <div className="bg-gray-50 p-4 border mb-4 md:flex md:justify-between mt-6">
             <div className="userDetails items-center justify-center">
               <h3 className="font-semibold text-xl">{userData.username}</h3>
               <h3 className="text-sm font-semibold">
