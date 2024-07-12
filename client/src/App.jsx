@@ -11,7 +11,7 @@ function App() {
         <Navbar />
         <ScrollToTopButton />
         <Home />
-        <div className="sm:hidden">
+        <div className="md:hidden">
           <BottomNav />
         </div>
       </div>

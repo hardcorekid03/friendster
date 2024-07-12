@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
-import { IF} from "../url"
+import { IF } from "../url";
 import { format } from "date-fns";
-
 
 // Separate UserPost component
 const UserPost = ({ loading, blogs, handleImageError }) => (
@@ -20,7 +19,7 @@ const UserPost = ({ loading, blogs, handleImageError }) => (
       blogs.map((blog, index) => (
         <div
           key={index}
-          className="md:flex shadow-sm bg-white rounded-lg border border-gray-100 hover:border-gray-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
+          className="md:flex shadow-sm bg-white  border border-gray-100 hover:border-gray-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
         >
           <div className="blog-img mb-4 md:w-[35%] h-[220px] sm:w-[75%]">
             <img
@@ -51,11 +50,10 @@ const UserPost = ({ loading, blogs, handleImageError }) => (
                   alt="Avatar"
                   className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                 />
-                {blog.author}
+                {blog.authorId}
               </span>
               <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center">
-                Posted:{" "}
-                {`${format(new Date(blog.createdAt), "MMM dd, yyyy")} `}
+                Posted: {`${format(new Date(blog.createdAt), "MMM dd, yyyy")} `}
               </span>
             </div>
             <div className="md:flex justify-end items-center mt-4">

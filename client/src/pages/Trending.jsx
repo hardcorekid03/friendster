@@ -1,42 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import api from '../api/Api'; // Import the Axios instance
-import { IFF } from "./url";
+import { IFFF } from "./url";
+import useFetchUser from "../hooks/useFetchUser";
+
 
 function Trending() {
   const { user } = useAuthContext();
-  const [userData, setUserdata] = useState({});
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (!user) {
-        return;
-      }
-
-      try {
-        const response = await api.get(`/api/user/${user.id}`, {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
-
-        if (response.status !== 200) {
-          throw new Error("Failed to fetch user data");
-        }
-
-        const data = response.data;
-        setUserdata(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUser();
-  }, [user]);
+  const { userData, imageSrc, setImageSrc } = useFetchUser();
 
   const date = new Date(userData.createdAt || Date.now());
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();
 
-  const baseUrl = IFF + userData.userbanner;
+  const userImage = IFFF + userData.userimage;
+  const handleImageError = (event) => {
+    event.target.src = "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
+  };
 
   return (
     <>
@@ -47,7 +27,8 @@ function Trending() {
           <img
             className="h-full w-full object-cover"
             alt="hero"
-            src={IFF + userData.userbanner || "https://media.tenor.com/i8ZeIWcfYYYAAAAM/caesar-the-clown.gif"}
+            src={userImage}
+            onError={handleImageError}
           />
         </div>
         <label className="block text-sm font-semibold mb-2" htmlFor="name">

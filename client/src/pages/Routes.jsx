@@ -6,6 +6,7 @@ import Recent from "./Recent";
 import PostDetails from "./PostDetails";
 import CreatePost from "./CreatePost";
 import Profile from "./Profile";
+import UserDetails from "./UserDetails";
 import Error404 from "./error/Error404";
 import Error500 from "./error/Error500";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -21,6 +22,8 @@ const AppRoutes = () => {
       <Route path="/createpost/:id" element={<CreatePost />} />
 
       <Route path="/profile" element={<Profile />} />
+      <Route path="/userdetails" element={<UserDetails />} />
+
       
       <Route
         path="/signin"

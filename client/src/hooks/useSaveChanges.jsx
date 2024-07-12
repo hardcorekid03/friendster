@@ -12,6 +12,7 @@ const useSaveChanges = (user, imageSrc, selectedFile, setIsImageUploaded, setSel
       return;
     }
     const blog = {};
+    
     if (selectedFile) {
       const data = new FormData();
       const alphanumericKey = Math.random().toString(36).slice(2, 9);

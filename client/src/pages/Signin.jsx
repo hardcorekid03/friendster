@@ -114,8 +114,8 @@ function Signin() {
               </Link>
             </p>
 
-            <div className="error mt-5">
-              {error && <p className="error">{error}</p>}
+            <div className="error mt-5 ">
+              {error && <p className="error text-red-500 0">{error}</p>}
             </div>
           </div>
         </div>
