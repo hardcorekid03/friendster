@@ -1,12 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import useTitleAndSlug from "../hooks/useTitleAndSlug";
 import toast, { Toaster } from "react-hot-toast";
 import api from "../api/Api"; // Adjust the path as per your file structure
-import Trending from "./Trending";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import { useAuthContext } from "../hooks/useAuthContext";
 import debounce from "lodash/debounce"; // Import debounce from lodash
@@ -62,6 +60,10 @@ function CreatePost() {
   const handleReset = () => {
     setSelectedFile(null);
     fileInputRef.current.value = null;
+  };
+
+  const handleCancel = () => {
+    navigate("/");
   };
 
   const handleSvgClick = () => {
@@ -138,24 +140,11 @@ function CreatePost() {
 
   return (
     <>
-      <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
+      <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
         <div className="p-4 bg-white mb-8">
           <div>
             <Toaster />
           </div>
-
-          <div className="flex justify-between p-2 sm:p-2">
-            <h3 className="text-xl font-semibold">
-              {!id ? "Create Post" : "Edit Post"}
-            </h3>
-            <Link
-              to="/"
-              className="text-xl font-semibold hover:text-gray-700 cursor-pointer h-8 w-8 justify-center"
-            >
-              <ArrowLeftIcon className="h-full w-full" />
-            </Link>
-          </div>
-
           <div className=" mb-2 p-2">
             <div className="hidden preview-img mb-2">
               <label className="text-sm text-gray-400 font-medium  peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -199,7 +188,6 @@ function CreatePost() {
                   className="object-contain w-full h-full cursor-pointer"
                   onClick={handleSvgClick}
                   onError={handleImageError}
-
                 />
               ) : image && id ? (
                 <img
@@ -208,7 +196,6 @@ function CreatePost() {
                   className="object-contain w-full h-full cursor-pointer"
                   onClick={handleSvgClick}
                   onError={handleImageError}
-
                 />
               ) : (
                 <div className="flex flex-col justify-center items-center text-gray-400">
@@ -266,13 +253,23 @@ function CreatePost() {
               <span>Save Post</span>
             </button>
 
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 inline-flex items-center">
+            <button
+              className="bg-white border-gray-300 border hover:bg-gray-200 py-2 px-4 inline-flex items-center"
+              onClick={handleCancel}
+            >
               <svg
-                className="fill-current w-4 h-4 mr-2"
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="fill-current w-4 h-4 mr-2"
+                >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
               </svg>
               <span>Cancel</span>
             </button>
@@ -280,9 +277,9 @@ function CreatePost() {
         </div>
       </section>
 
-      <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
+      {/* <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
         <Trending />
-      </section>
+      </section> */}
     </>
   );
 }

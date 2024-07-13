@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon,MagnifyingGlassIcon  } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { IF, IFFF } from "./url";
 import { format } from "date-fns";
@@ -13,6 +13,7 @@ function Recent() {
 
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
 
   const handleImageError = (event) => {
     event.target.src = defaultImage;
@@ -57,6 +58,13 @@ function Recent() {
     fetchBlogs();
   }, [user]);
 
+  // Filter blogs based on the search term
+  const filteredBlogs = blogs.filter(blog =>
+    blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    blog.blogbody.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (blog.authorId && blog.authorId.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   return (
     <>
       <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
@@ -71,17 +79,28 @@ function Recent() {
               <PencilSquareIcon className="h-full w-full hidden sm:block" />
             </Link>
           </div>
-
+          <div className="flex items-center justify-between">
+            <div className="relative w-full">
+              <input
+                type="text"
+                placeholder="Search posts..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="border p-2 pl-10 text-gray-800 bg-white  border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+              />
+              <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            </div>
+          </div>
           {loading ? (
             <div className="container py-5 items-center justify-center">
               <p>Loading...</p>
             </div>
-          ) : blogs.length === 0 ? (
+          ) : filteredBlogs.length === 0 ? (
             <div className="container py-5">
               <p>No blogs found...</p>
             </div>
           ) : (
-            blogs.map((blog, index) => (
+            filteredBlogs.map((blog, index) => (
               <div
                 key={index}
                 className="md:flex shadow-sm bg-white border border-gray-100 hover:border-gray-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
