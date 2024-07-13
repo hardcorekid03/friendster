@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { PencilSquareIcon,MagnifyingGlassIcon  } from "@heroicons/react/24/outline";
+import {
+  PencilSquareIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { IF, IFFF } from "./url";
 import { format } from "date-fns";
@@ -14,6 +17,8 @@ function Recent() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Adjust this number as needed
 
   const handleImageError = (event) => {
     event.target.src = defaultImage;
@@ -36,13 +41,23 @@ function Recent() {
           blogsData.map(async (blog) => {
             try {
               // Assuming blog.authorId is available in the blog data
-              const authorResponse = await api.get(`/api/user/${blog.authorId}`, {
-                headers: { Authorization: `Bearer ${user.token}` },
-              });
+              const authorResponse = await api.get(
+                `/api/user/${blog.authorId}`,
+                {
+                  headers: { Authorization: `Bearer ${user.token}` },
+                }
+              );
               const authorDetails = authorResponse.data;
-              return { ...blog, authorId: authorDetails.username, authorImage: authorDetails.userimage }; // Assuming authorId is directly accessible in authorDetails
+              return {
+                ...blog,
+                authorId: authorDetails.username,
+                authorImage: authorDetails.userimage,
+              }; // Assuming authorId is directly accessible in authorDetails
             } catch (error) {
-              console.error(`Error fetching author details for blog ${blog._id}:`, error);
+              console.error(
+                `Error fetching author details for blog ${blog._id}:`,
+                error
+              );
               return { ...blog, authorId: null }; // Handle error case if author details cannot be fetched
             }
           })
@@ -58,12 +73,33 @@ function Recent() {
     fetchBlogs();
   }, [user]);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }, [currentPage]);
+
   // Filter blogs based on the search term
-  const filteredBlogs = blogs.filter(blog =>
-    blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    blog.blogbody.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (blog.authorId && blog.authorId.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredBlogs = blogs.filter(
+    (blog) =>
+      blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.blogbody.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (blog.authorId &&
+        blog.authorId.toLowerCase().includes(searchTerm.toLowerCase()))
   );
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentBlogs = filteredBlogs.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage);
+
+  const paginate = (pageNumber) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   return (
     <>
@@ -79,7 +115,7 @@ function Recent() {
               <PencilSquareIcon className="h-full w-full hidden sm:block" />
             </Link>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div className="relative w-full">
               <input
                 type="text"
@@ -95,12 +131,12 @@ function Recent() {
             <div className="container py-5 items-center justify-center">
               <p>Loading...</p>
             </div>
-          ) : filteredBlogs.length === 0 ? (
+          ) : currentBlogs.length === 0 ? (
             <div className="container py-5">
               <p>No blogs found...</p>
             </div>
           ) : (
-            filteredBlogs.map((blog, index) => (
+            currentBlogs.map((blog, index) => (
               <div
                 key={index}
                 className="md:flex shadow-sm bg-white border border-gray-100 hover:border-gray-200 mt-4 hover:shadow-lg hover:shadow-zinc-300 cursor-pointer p-4 mb-4"
@@ -116,7 +152,9 @@ function Recent() {
                 <div className="blog-prev mb-4 md:ml-4 flex-col md:w-[65%]">
                   <div className="mb-2">
                     <Link to={`/postdetails/${blog._id}`}>
-                      <h3 className="text-lg font-semibold text-blue-500 hover:underline">{blog.title}</h3>
+                      <h3 className="text-lg font-semibold text-blue-500 hover:underline">
+                        {blog.title}
+                      </h3>
                     </Link>
 
                     <div
@@ -132,7 +170,7 @@ function Recent() {
                         alt="Avatar"
                         onError={handleImageError}
                         className="inline-block h-8 w-8 object-cover rounded-full mr-2"
-                      />           
+                      />
                       {blog.authorId}
                     </span>
                     <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center">
@@ -149,6 +187,46 @@ function Recent() {
               </div>
             ))
           )}
+
+          {/* Pagination controls */}
+          <div className="flex justify-center mt-4 mb-8 py-4  ">
+            <button
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-3 py-1 mx-1 border rounded ${
+                currentPage === 1
+                  ? "bg-gray-100 text-gray-500"
+                  : "bg-white text-blue-500"
+              }`}
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => paginate(index + 1)}
+                className={`px-3 py-1 mx-1 border rounded ${
+                  currentPage === index + 1
+                    ? "bg-blue-500 text-white"
+                    : "bg-white text-blue-500"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`px-3 py-1 mx-1 border rounded ${
+                currentPage === totalPages
+                  ? "bg-gray-100 text-gray-500"
+                  : "bg-white text-blue-500"
+              }`}
+            >
+              Next
+            </button>
+          </div>
+
         </div>
       </section>
       <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4">
