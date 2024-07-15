@@ -114,7 +114,7 @@ function Profile() {
                 onError={handleAvatarError}
               />
             </div>
-            <div className=" mb-4 w-[100%] md:h-[350px] h-[200px] xl:h-[500px]">
+            <div className=" mb-4 w-[100%] md:h-[350px] h-[200px] xl:h-[400px]">
               {hasChanges ? (
                 <img
                   className="h-full w-full object-cover"

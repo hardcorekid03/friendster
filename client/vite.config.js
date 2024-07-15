@@ -9,15 +9,15 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api/blogs": {
-        target: "https://friendster-server.netlify.app/",
+        target: "http://localhost:4000/",
         secure: false,
       },
       "/api/upload": {
-        target: "https://friendster-server.netlify.app/",
+        target: "http://localhost:4000/",
         secure: false,
       },
       "/api/user": {
-        target: "https://friendster-server.netlify.app/",
+        target: "http://localhost:4000/",
         secure: false,
       },
       "/api/favorites": {
