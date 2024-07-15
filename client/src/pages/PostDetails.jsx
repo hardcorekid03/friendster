@@ -108,7 +108,6 @@ function PostDetails() {
                             alt="Avatar"
                             className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                             onError={handleImageError}
-
                           />
                           {blogDetails.authorUsername}
                         </span>
@@ -138,6 +137,7 @@ function PostDetails() {
                                 </svg>
                               </span>
                             </button>
+
                             <ul className="cursor-pointer  bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32">
                               {blogDetails.authorUsername === user.username && (
                                 <>
@@ -172,13 +172,12 @@ function PostDetails() {
                       </div>
                     </div>
 
-                    <div className="mb-2 leading-relaxed">
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: blogDetails.blogbody,
-                        }}
-                      />
-                    </div>
+                    <div
+                      className="mb-2 leading-relaxed text-xs md:text-sm"
+                      dangerouslySetInnerHTML={{
+                        __html: blogDetails.blogbody,
+                      }}
+                    />
                   </div>
                 </>
               )

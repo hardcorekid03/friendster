@@ -9,7 +9,6 @@ import useFetchBlogs from "../hooks/useFetchBlogs";
 import useSaveChanges from "../hooks/useSaveChanges";
 import { IFF, IFFF } from "./url";
 
-
 function Profile() {
   const { user } = useAuthContext();
   const { userData, imageSrc, setImageSrc } = useFetchUser();
@@ -17,7 +16,9 @@ function Profile() {
 
   const date = new Date(userData.createdAt);
   const isValidDate = !isNaN(date.getTime());
-  const formattedDate = isValidDate ? format(date, 'MMMM dd, yyyy') : 'Invalid date';
+  const formattedDate = isValidDate
+    ? format(date, "MMMM dd, yyyy")
+    : "Invalid date";
 
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const fileInputRef = useRef(null);
@@ -64,7 +65,8 @@ function Profile() {
   };
 
   const handleAvatarError = (event) => {
-    event.target.src = "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
+    event.target.src =
+      "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
   };
 
   return (
@@ -133,7 +135,7 @@ function Profile() {
 
           <div className="bg-gray-50 p-4 border mb-4 md:flex md:justify-between mt-6">
             <div className="userDetails items-center justify-center">
-              <h3 className="font-semibold text-xl">{userData.username}</h3>
+              <h3 className="font-semibold text-xl">@{userData.username}</h3>
               <h3 className="text-sm font-semibold">
                 Location:{" "}
                 <span className="text-md font-normal text-gray-800">
@@ -149,7 +151,7 @@ function Profile() {
               <h3 className="text-sm font-semibold">
                 Joined:{" "}
                 <span className="text-md font-normal text-gray-800">
-                {formattedDate}
+                  {formattedDate}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">

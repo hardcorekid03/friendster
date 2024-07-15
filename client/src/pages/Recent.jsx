@@ -76,7 +76,7 @@ function Recent() {
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "smooth",
     });
   }, [currentPage]);
 
@@ -121,7 +121,10 @@ function Recent() {
                 type="text"
                 placeholder="Search posts..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1); // Reset to page 1 when search term changes
+                }}
                 className="border p-2 pl-10 text-gray-800 bg-white  border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
               />
               <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -158,12 +161,13 @@ function Recent() {
                     </Link>
 
                     <div
+                      className="mb-2 leading-relaxed text-xs md:text-sm"
                       dangerouslySetInnerHTML={{
-                        __html: blog.blogbody.slice(0, 250) + " ....Read more",
+                        __html: blog.blogbody.slice(0, 300) + " ....Read more",
                       }}
                     />
                   </div>
-                  <div className="md:flex justify-between items-center">
+                  <div className="flex justify-between items-center text-sm">
                     <span className="text-regular text-md text-blue-500 cursor-pointer flex items-center">
                       <img
                         src={IFFF + blog.authorImage}
@@ -173,14 +177,14 @@ function Recent() {
                       />
                       {blog.authorId}
                     </span>
-                    <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center">
+                    <span className="text-sm text-gray-400 cursor-pointer flex items-center">
                       Posted:{" "}
                       {`${format(new Date(blog.createdAt), "MMMM dd, yyyy")} `}
                     </span>
                   </div>
                   <div className="md:flex justify-end items-center mt-4">
                     <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center">
-                      Add to favorites
+                      {/* Add to favorites */}
                     </span>
                   </div>
                 </div>
@@ -189,7 +193,7 @@ function Recent() {
           )}
 
           {/* Pagination controls */}
-          <div className="flex justify-center mt-4 mb-8 py-4  ">
+          <div className="flex justify-center mt-4 mb-8 py-4 border text-xs ">
             <button
               onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
@@ -226,7 +230,6 @@ function Recent() {
               Next
             </button>
           </div>
-
         </div>
       </section>
       <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4">

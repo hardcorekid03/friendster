@@ -17,7 +17,7 @@ const BottomNav = () => {
         <div className="flex justify-around">
           {/* Home Icon */}
           <Link to="/">
-            <div className="flex flex-col items-center p-2">
+            <div className="flex flex-col items-center justify-center p-2">
               <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500">
                 <svg
                   className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500"

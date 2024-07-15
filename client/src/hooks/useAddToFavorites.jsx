@@ -1,37 +1,45 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import api from "../api/Api"; // Import the Axios instance
 
-const useAddToFavorites = (user, blogDetails) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
+const useFavorites = (user) => {
+  const [favorites, setFavorites] = useState([]);
 
-  const addToFavorites = async () => {
-    setIsLoading(true);
-    setError(null);
-    setSuccessMessage(null);
+  useEffect(() => {
+    if (user) {
+      const fetchFavorites = async () => {
+        try {
+          const response = await api.get("/api/favorites", {
+            headers: { Authorization: `Bearer ${user.token}` },
+          });
+          setFavorites(response.data);
+        } catch (error) {
+          console.error("Error fetching favorites:", error);
+        }
+      };
+
+      fetchFavorites();
+    }
+  }, [user]);
+
+  const addToFavorites = async (blogId) => {
+    if (!user) return;
 
     try {
-      const response = await axios.post(
-        "/api/favorites/add",
-        { blogId: blogDetails._id },
+      const response = await api.post(
+        "/api/favorites",
+        { blogId },
         {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+          headers: { Authorization: `Bearer ${user.token}` },
         }
       );
-      setSuccessMessage(response.data.message);
-      // Optionally, update the local state or UI to reflect the change
+
+      setFavorites([...favorites, response.data]);
     } catch (error) {
-      console.error('Error adding to favorites:', error);
-      setError("An error occurred while adding to favorites");
-    } finally {
-      setIsLoading(false);
+      console.error("Error adding to favorites:", error);
     }
   };
 
-  return { addToFavorites, isLoading, error, successMessage };
+  return { favorites, addToFavorites };
 };
 
-export default useAddToFavorites;
+export default useFavorites;

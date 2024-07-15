@@ -38,7 +38,8 @@ const UserPost = ({ loading, blogs, handleImageError }) => (
               </Link>
 
               <div
-                dangerouslySetInnerHTML={{
+                      className="mb-2 leading-relaxed text-xs md:text-sm"
+                      dangerouslySetInnerHTML={{
                   __html: blog.blogbody.slice(0, 250) + " ....Read more",
                 }}
               />

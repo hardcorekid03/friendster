@@ -80,7 +80,6 @@ function CreatePost() {
       title,
       slug,
       blogbody,
-      // author: user.username,
     };
 
     if (selectedFile) {
@@ -238,9 +237,9 @@ function CreatePost() {
             />
           </div>
 
-          <div className="px-2 py-8 mt-10">
+          <div className="px-2 py-8 mt-10 ">
             <button
-              className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 inline-flex items-center"
+              className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold  py-2 px-4 inline-flex items-center"
               onClick={handleSubmit}
             >
               <svg
@@ -250,11 +249,11 @@ function CreatePost() {
               >
                 <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
               </svg>
-              <span>Save Post</span>
+              <span className="">Save Post</span>
             </button>
 
             <button
-              className="bg-white border-gray-300 border hover:bg-gray-200 py-2 px-4 inline-flex items-center"
+              className="bg-white border-gray-300 border hover:bg-gray-200 text-gray-700 font-bold py-2 px-4 inline-flex items-center"
               onClick={handleCancel}
             >
               <svg
@@ -264,7 +263,7 @@ function CreatePost() {
                 stroke-width="1.5"
                 stroke="currentColor"
                 className="fill-current w-4 h-4 mr-2"
-                >
+              >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
