@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { IF } from "../url";
+import { IF, IFF, IFFF } from "../url";
 import { format } from "date-fns";
 
 // Separate UserPost component
-const UserPost = ({ loading, blogs, handleImageError, userProfile}) => (
+const UserPost = ({ loading, blogs, handleImageError, }) => (
   <div className="UserPost ">
     {loading ? (
       <div className="container py-5">
@@ -37,8 +37,8 @@ const UserPost = ({ loading, blogs, handleImageError, userProfile}) => (
               </Link>
 
               <div
-                      className="mb-2 leading-relaxed text-xs md:text-sm"
-                      dangerouslySetInnerHTML={{
+                className="mb-2 leading-relaxed text-xs md:text-sm"
+                dangerouslySetInnerHTML={{
                   __html: blog.blogbody.slice(0, 250) + " ....Read more",
                 }}
               />
@@ -46,9 +46,10 @@ const UserPost = ({ loading, blogs, handleImageError, userProfile}) => (
             <div className="md:flex justify-between items-center">
               <span className="text-regular text-md text-blue-500 cursor-pointer flex items-center">
                 <img
-                  src="https://cdn-icons-png.freepik.com/512/168/168725.png"
+                  src={IFFF + blog.authorImage}
                   alt="Avatar"
                   className="inline-block h-8 w-8 object-cover rounded-full mr-2"
+                  onError={handleImageError}
                 />
                 {blog.authorId}
               </span>
