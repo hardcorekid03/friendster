@@ -33,12 +33,14 @@ const useFetchBlogs = () => {
                 }
               );
               const authorDetails = authorResponse.data;
-              return { ...blog, authorId: authorDetails.username }; // Assuming authorId is directly accessible in authorDetails
+              return { ...blog, authorId: authorDetails.username, authorImage: authorDetails.userimage  }; // Assuming authorId is directly accessible in authorDetails
+            
             } catch (error) {
               console.error(
                 `Error fetching author details for blog ${blog._id}:`,
                 error
               );
+              
               return { ...blog, authorId: null }; // Handle error case if author details cannot be fetched
             }
           })
@@ -53,6 +55,7 @@ const useFetchBlogs = () => {
 
     fetchBlogs();
   }, [user]);
+
 
   return { blogs, loading };
 };

@@ -101,7 +101,7 @@ function Profile() {
               className="absolute flex top-3 right-3 hover:bg-gray-700  text-white px-3 py-1 rounded  "
               onClick={handleSVGClick}
             >
-              {!id && (
+              {user && user.id === id && (
                 <>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -180,7 +180,8 @@ function Profile() {
               <h3 className="text-sm font-semibold">
                 Joined:{" "}
                 <span className="text-md font-normal text-gray-800">
-                  {id ? "Unknown" : formattedDate}
+                  {profileData?.createdAt &&
+                    new Date(profileData.createdAt).toLocaleDateString()}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">

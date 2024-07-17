@@ -55,7 +55,9 @@ const Navbar = () => {
               </div>
             </li>
           </Link>
-          <Link to="/profile">
+          {/* <Link to="/profile" > */}
+          <Link to={`/profile/${user.id}`}>
+
             <li className="text-gray-800 text-sm hover:text-blue-400 duration-2000 md:ml-8 md:my-0 mt-7 font-semibold flex ">
               <div className="flex flex-col text-xs group border-b-2 border-transparent hover:border-blue-500 items-center justify-center">
                 <svg
