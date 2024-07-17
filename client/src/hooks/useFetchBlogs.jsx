@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import api from "../api/Api"; // Adjust the import based on your project structure
+import {  useParams } from "react-router-dom";
+
 import { useAuthContext } from "./useAuthContext";
 
 const useFetchBlogs = () => {
   const { user } = useAuthContext();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { id } = useParams();
   useEffect(() => {
     const fetchBlogs = async () => {
       if (!user) {
@@ -14,7 +16,7 @@ const useFetchBlogs = () => {
         return;
       }
       try {
-        const response = await api.get("api/blogs/", {
+        const response = await api.get(`api/blogs/posts/${id}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         const blogsData = response.data;

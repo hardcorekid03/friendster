@@ -30,6 +30,8 @@ const blogPostSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', // Reference to User model
       required: true,
+      // type: String,
+      // required: false,
     },
   },
   { timestamps: true }
