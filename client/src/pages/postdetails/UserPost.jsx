@@ -5,7 +5,7 @@ import { IF } from "../url";
 import { format } from "date-fns";
 
 // Separate UserPost component
-const UserPost = ({ loading, blogs, handleImageError }) => (
+const UserPost = ({ loading, blogs, handleImageError, userProfile}) => (
   <div className="UserPost ">
     {loading ? (
       <div className="container py-5">

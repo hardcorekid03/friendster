@@ -19,12 +19,13 @@ const Navbar = () => {
   }
 
   return (
-    <div className="w-full fixed top-0 left-0 mb-4 z-[99]">
+    <div className="w-full fixed top-0 left-0 mb-4 z-[99] shadow-lg">
       <div className="md:flex items-center justify-between bg-white  md:px-10 px-10">
         {/* logo section */}
-        <div className="cursor-pointer flex items-center gap-1">
+        <div className="cursor-pointer flex items-center gap-1 text-gray-700 font-bold p-4 hover:text-blue-500 ">
           <Link to="/">
-            <img src={logo} style={{ height: 72 }} className="h-10" />
+            {/* <img src={logo} style={{ height: 72 }}  /> */}
+            Prendster
           </Link>
         </div>
         {/* Menu icon */}

@@ -36,6 +36,8 @@ const AppRoutes = () => {
         <Route path="/createpost/:id" element={<CreatePost />} />
 
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:id" element={<Profile />} />
+
         <Route path="/userdetails" element={<UserDetails />} />
 
         <Route

@@ -27,11 +27,13 @@ const blogPostSchema = new Schema(
       required: false,
     },
     authorId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User', // Reference to User model
       required: true,
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model ('BlogPost', blogPostSchema)
+const BlogPost = mongoose.model('BlogPost', blogPostSchema);
+module.exports = BlogPost;

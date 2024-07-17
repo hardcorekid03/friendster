@@ -57,6 +57,8 @@ function CreatePost() {
     }
   }, [id, user, setBlogbody, setTitle, setImage]);
 
+  
+
   const handleReset = () => {
     setSelectedFile(null);
     fileInputRef.current.value = null;

@@ -50,7 +50,8 @@ function Recent() {
               const authorDetails = authorResponse.data;
               return {
                 ...blog,
-                authorId: authorDetails.username,
+                authorUsername: authorDetails.username,
+                authorId: authorDetails._id,
                 authorImage: authorDetails.userimage,
               }; // Assuming authorId is directly accessible in authorDetails
             } catch (error) {
@@ -85,8 +86,8 @@ function Recent() {
     (blog) =>
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.blogbody.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (blog.authorId &&
-        blog.authorId.toLowerCase().includes(searchTerm.toLowerCase()))
+      (blog.authorUsername &&
+        blog.authorUsername.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   // Pagination logic
@@ -175,7 +176,18 @@ function Recent() {
                         onError={handleImageError}
                         className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                       />
-                      {blog.authorId}
+
+                      <Link
+                        to={`/profile/${blog.authorId}`}
+
+                        // to={
+                        //   user.id !== blog.authorId
+                        //     ? `/profile/${blog.authorId}`
+                        //     : "/profile"
+                        // }
+                      >
+                        {blog.authorUsername}
+                      </Link>
                     </span>
                     <span className="text-sm text-gray-400 cursor-pointer flex items-center">
                       Posted:{" "}
@@ -197,7 +209,7 @@ function Recent() {
             <button
               onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
-              className={`px-3 py-1 mx-1 border rounded ${
+              className={`px-3 py-1 mx-1 border  ${
                 currentPage === 1
                   ? "bg-gray-100 text-gray-500"
                   : "bg-white text-blue-500"
@@ -209,7 +221,7 @@ function Recent() {
               <button
                 key={index + 1}
                 onClick={() => paginate(index + 1)}
-                className={`px-3 py-1 mx-1 border rounded ${
+                className={`px-3 py-1 mx-1 border  ${
                   currentPage === index + 1
                     ? "bg-blue-500 text-white"
                     : "bg-white text-blue-500"
@@ -221,7 +233,7 @@ function Recent() {
             <button
               onClick={() => paginate(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className={`px-3 py-1 mx-1 border rounded ${
+              className={`px-3 py-1 mx-1 border  ${
                 currentPage === totalPages
                   ? "bg-gray-100 text-gray-500"
                   : "bg-white text-blue-500"
