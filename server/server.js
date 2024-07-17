@@ -9,7 +9,6 @@ const UserRoutes = require('./routes/UserRoutes');
 
 const imageRoutes = require('./routes/ImageRoutes'); 
 const userImageRoutes = require('./routes/userImageRoutes'); 
-const favoriteRoutes = require('./routes/Favorites'); 
 
 const app = express();
 
@@ -38,7 +37,6 @@ app.use('/api/blogs', BlogRoutes);
 app.use('/api/user', UserRoutes);
 app.use('/api/upload', imageRoutes); // Use imageRoutes for handling image uploads
 app.use('/api/user/images', userImageRoutes); // Use userImageRoutes for user image uploads
-app.use('/api/favorites', favoriteRoutes); // Use favorites routes
 
 
 

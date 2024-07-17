@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import Trending from "./Trending";
 import { useAuthContext } from "../hooks/useAuthContext";
 import defaultImage from "../assets/images/dafaultImage.jpg";
-import useAddToFavorites from "../hooks/useAddToFavorites";
 import useDeleteBlog from "../hooks/useDeleteBlog";
 import api from "../api/Api";
 
@@ -17,7 +16,6 @@ function PostDetails() {
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { addToFavorites } = useAddToFavorites(user, blogDetails);
 
   const handleImageError = (event) => {
     event.target.src = defaultImage;
@@ -47,6 +45,7 @@ function PostDetails() {
           const blogWithAuthorDetails = {
             ...data,
             authorUsername: authorDetails.username,
+            authorId: authorDetails._id,
             authorImage: authorDetails.userimage,
           };
 
@@ -108,9 +107,10 @@ function PostDetails() {
                             alt="Avatar"
                             className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                             onError={handleImageError}
-
                           />
+                          <Link to ={`/profile/${blogDetails.authorId}` } >
                           {blogDetails.authorUsername}
+                          </Link>
                         </span>
                         <span className="text-regular text-sm text-gray-500 cursor-pointer flex items-center">
                           {format(
@@ -138,6 +138,7 @@ function PostDetails() {
                                 </svg>
                               </span>
                             </button>
+
                             <ul className="cursor-pointer  bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32">
                               {blogDetails.authorUsername === user.username && (
                                 <>
@@ -162,7 +163,6 @@ function PostDetails() {
                               </li>
                               <li
                                 className="rounded-sm px-3 py-1 hover:bg-gray-100"
-                                onClickCapture={addToFavorites}
                               >
                                 Add to Favorites
                               </li>
@@ -172,13 +172,12 @@ function PostDetails() {
                       </div>
                     </div>
 
-                    <div className="mb-2 leading-relaxed">
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: blogDetails.blogbody,
-                        }}
-                      />
-                    </div>
+                    <div
+                      className="mb-2 leading-relaxed text-xs md:text-sm"
+                      dangerouslySetInnerHTML={{
+                        __html: blogDetails.blogbody,
+                      }}
+                    />
                   </div>
                 </>
               )

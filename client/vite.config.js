@@ -1,11 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-
-// import { IF, URL } from "./src/pages/url"
-// import {IF, URL} from "./url"
 // https://vitejs.dev/config/
-
 export default defineConfig({
+  
   plugins: [react()],
   server: {
     host: "0.0.0.0",
@@ -14,7 +11,6 @@ export default defineConfig({
       "/api/blogs": {
         target: "http://localhost:4000/",
         secure: false,
-
       },
       "/api/upload": {
         target: "http://localhost:4000/",

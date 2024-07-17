@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import UserPost from "./postdetails/UserPost";
@@ -8,23 +8,45 @@ import useFetchUser from "../hooks/useFetchUser";
 import useFetchBlogs from "../hooks/useFetchBlogs";
 import useSaveChanges from "../hooks/useSaveChanges";
 import { IFF, IFFF } from "./url";
-
+import api from "../api/Api";
 
 function Profile() {
   const { user } = useAuthContext();
   const { userData, imageSrc, setImageSrc } = useFetchUser();
+  const [userDetails, setUserDetails] = useState(null);
   const { blogs, loading, setLoading } = useFetchBlogs();
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      const fetchUserDetails = async () => {
+        try {
+          const response = await api.get(`/api/user/${id}`);
+          const data = response.data;
+          setUserDetails(data);
+        } catch (error) {
+          console.error("Error fetching user details:", error);
+        }
+      };
+
+      fetchUserDetails();
+    }
+  }, [id]);
 
   const date = new Date(userData.createdAt);
   const isValidDate = !isNaN(date.getTime());
-  const formattedDate = isValidDate ? format(date, 'MMMM dd, yyyy') : 'Invalid date';
+  const formattedDate = isValidDate
+    ? format(date, "MMMM dd, yyyy")
+    : "Invalid date";
 
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const avatar = IFFF + userData.userimage;
-  const userBanner = IFF + userData.userbanner;
+  const avatar = id ? IFFF + userDetails?.userimage : IFFF + userData.userimage;
+  const userBanner = id
+    ? IFF + userDetails?.userbanner
+    : IFF + userData.userbanner;
 
   const { handleSaveChanges, hasChanges, setHasChanges } = useSaveChanges(
     user,
@@ -64,9 +86,12 @@ function Profile() {
   };
 
   const handleAvatarError = (event) => {
-    event.target.src = "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
+    event.target.src =
+      "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
   };
 
+  const profileData = id ? userDetails : userData;
+  const userProfile = profileData?._id;
   return (
     <>
       <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
@@ -76,32 +101,36 @@ function Profile() {
               className="absolute flex top-3 right-3 hover:bg-gray-700  text-white px-3 py-1 rounded  "
               onClick={handleSVGClick}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-6 cursor-pointer  "
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
-                />
-              </svg>
+              {user && user.id === id && (
+                <>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="size-6 cursor-pointer  "
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
+                    />
+                  </svg>
 
-              <input
-                type="file"
-                ref={fileInputRef}
-                className="hidden"
-                onChange={handleFileChange}
-              />
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </>
+              )}
             </div>
 
             <div className="absolute  w-[150px] h-[150px] lg:h-[180px] lg:w-[180px] -bottom-2  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
@@ -112,7 +141,7 @@ function Profile() {
                 onError={handleAvatarError}
               />
             </div>
-            <div className=" mb-4 w-[100%] md:h-[350px] h-[200px] xl:h-[500px]">
+            <div className=" mb-4 w-[100%] md:h-[350px] h-[200px] xl:h-[400px]">
               {hasChanges ? (
                 <img
                   className="h-full w-full object-cover"
@@ -133,29 +162,32 @@ function Profile() {
 
           <div className="bg-gray-50 p-4 border mb-4 md:flex md:justify-between mt-6">
             <div className="userDetails items-center justify-center">
-              <h3 className="font-semibold text-xl">{userData.username}</h3>
+              <h3 className="font-semibold text-xl">
+                @{profileData?.username}
+              </h3>
               <h3 className="text-sm font-semibold">
                 Location:{" "}
                 <span className="text-md font-normal text-gray-800">
-                  {userData.location}
+                  {profileData?.location}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">
                 Gender:{" "}
                 <span className="text-md font-normal text-gray-800">
-                  {userData.gender}
+                  {profileData?.gender}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">
                 Joined:{" "}
                 <span className="text-md font-normal text-gray-800">
-                {formattedDate}
+                  {profileData?.createdAt &&
+                    new Date(profileData.createdAt).toLocaleDateString()}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">
                 Bio:{" "}
                 <span className="text-md font-normal italic text-gray-800">
-                  "{userData.bio || "error 404: bio not found"}"
+                  "{profileData?.bio || "error 404: bio not found"}"
                 </span>
               </h3>
             </div>
@@ -205,6 +237,7 @@ function Profile() {
 
           <div className="items-center p-4 sm:p-2 border-b-2 mb-4">
             <UserPost
+              userProfile={userProfile}
               loading={loading}
               blogs={blogs}
               handleImageError={handleImageError}

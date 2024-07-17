@@ -18,6 +18,8 @@ const useFetchUser = () => {
           headers: { Authorization: `Bearer ${user.token}` },
         });
 
+        
+
         if (response.status !== 200) {
           throw new Error('Failed to fetch user data');
         }
@@ -25,6 +27,7 @@ const useFetchUser = () => {
         setUserData(data);
         const defaultImageUrl = data.userbanner; // Adjust based on your data structure
         setImageSrc(defaultImageUrl);
+        
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
