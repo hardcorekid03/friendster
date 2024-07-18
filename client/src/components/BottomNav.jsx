@@ -30,7 +30,7 @@ const BottomNav = () => {
             </div>
           </Link>
           {/* Profile Icon */}
-          <Link to="/profile">
+          <Link to={`/profile/${user.id}`}>
             <div className="flex flex-col items-center p-2">
               <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500">
                 <svg

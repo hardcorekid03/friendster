@@ -33,12 +33,6 @@ function Profile() {
     }
   }, [id]);
 
-  const date = new Date(userData.createdAt);
-  const isValidDate = !isNaN(date.getTime());
-  const formattedDate = isValidDate
-    ? format(date, "MMMM dd, yyyy")
-    : "Invalid date";
-
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -181,7 +175,10 @@ function Profile() {
                 Joined:{" "}
                 <span className="text-md font-normal text-gray-800">
                   {profileData?.createdAt &&
-                    new Date(profileData.createdAt).toLocaleDateString()}
+                    `${format(
+                      new Date(profileData?.createdAt),
+                      "MMMM dd, yyyy"
+                    )} `}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">
