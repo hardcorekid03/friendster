@@ -59,7 +59,7 @@ const UserPost = ({ loading, blogs, handleImageError, }) => (
             </div>
             <div className="md:flex justify-end items-center mt-4">
               <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center">
-                Add to favorites
+                xxx
               </span>
             </div>
           </div>

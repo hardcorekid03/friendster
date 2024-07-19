@@ -8,6 +8,7 @@ const useFetchBlogs = () => {
   const { user } = useAuthContext();
   const [blogs, setBlogs] = useState([]);
   const [blogData, setBlogData] = useState([]);
+  const [authorData, setAuthorData] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
@@ -36,6 +37,7 @@ const useFetchBlogs = () => {
                 }
               );
               const authorDetails = authorResponse.data;
+              setAuthorData (authorDetails )
               return {
                 ...blog,
                 authorId: authorDetails.username,
@@ -64,7 +66,7 @@ const useFetchBlogs = () => {
     fetchBlogs();
   }, [user]);
 
-  return { blogs, loading, blogData};
+  return { blogs, loading, blogData, authorData};
 };
 
 export default useFetchBlogs;

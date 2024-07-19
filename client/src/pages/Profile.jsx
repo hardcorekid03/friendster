@@ -14,14 +14,24 @@ function Profile() {
   const { user } = useAuthContext();
   const { userData, imageSrc, setImageSrc } = useFetchUser();
   const [userDetails, setUserDetails] = useState(null);
-  const { blogs, loading, setLoading } = useFetchBlogs();
+  const { blogs, loading, setLoading, authorData } = useFetchBlogs();
   const { id } = useParams();
 
   useEffect(() => {
     if (id) {
       const fetchUserDetails = async () => {
         try {
-          const response = await api.get(`/api/user/${id}`);
+          let userId;
+
+          if (id) {
+            userId = id;
+          } else {
+            userId = user.id;
+          }
+  
+          const response = await api.get(`/api/user/${userId}`, {
+            headers: { Authorization: `Bearer ${user.token}` },
+          });
           const data = response.data;
           setUserDetails(data);
         } catch (error) {
