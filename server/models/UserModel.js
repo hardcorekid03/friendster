@@ -158,4 +158,5 @@ userSchema.statics.login = async function (identifier, password) {
   return user;
 };
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
+module.exports = User;

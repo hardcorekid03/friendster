@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { IF, IFFF, URL } from "./url";
+import { IF, IFFF } from "./url";
 import { format } from "date-fns";
 import Trending from "./Trending";
 import { useAuthContext } from "../hooks/useAuthContext";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import useDeleteBlog from "../hooks/useDeleteBlog";
 import api from "../api/Api";
+import useFavoriteToggle from "../hooks/useFavoriteToggle";
 
 function PostDetails() {
   const { user } = useAuthContext();
@@ -15,11 +16,13 @@ function PostDetails() {
 
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(true);
-
-
-  const handleImageError = (event) => {
-    event.target.src = defaultImage;
-  };
+  const [isFavorite, setIsFavorite] = useState(false);
+  const handleToggleFavorite = useFavoriteToggle(
+    id,
+    user,
+    isFavorite,
+    setIsFavorite
+  );
 
   useEffect(() => {
     const fetchBlogDetails = async () => {
@@ -50,6 +53,15 @@ function PostDetails() {
           };
 
           setBlogDetails(blogWithAuthorDetails);
+
+          // Check if the blog is a favorite
+          const favoriteResponse = await api.get(
+            `/api/blogs/favorites/check/${id}`,
+            {
+              headers: { Authorization: `Bearer ${user.token}` },
+            }
+          );
+          setIsFavorite(favoriteResponse.data.isFavorite);
         } catch (authorError) {
           console.error(
             `Error fetching author details for blog ${id}:`,
@@ -67,6 +79,10 @@ function PostDetails() {
     fetchBlogDetails();
   }, [id, user]);
 
+  const handleImageError = (event) => {
+    event.target.src = defaultImage;
+  };
+
   const { handleDelete } = useDeleteBlog();
 
   const onDeleteClick = () => {
@@ -80,14 +96,14 @@ function PostDetails() {
   return (
     <>
       <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
-        <div className="bg-white  items-center justify-center p-4  mb-8 ">
-          <div className="container mx-auto flex  py-4  flex-col mb-4 border-b-2 ">
+        <div className="bg-white items-center justify-center p-4 mb-8">
+          <div className="container mx-auto flex py-4 flex-col mb-4 border-b-2">
             {loading ? (
               <p>Loading...</p>
             ) : (
               blogDetails && (
                 <>
-                  <div className=" mb-4 w-[100%] md:h-[400px] h-[250px] p-4 sm:p-2">
+                  <div className="mb-4 w-[100%] md:h-[400px] h-[250px] p-4 sm:p-2">
                     <img
                       className="h-full w-full object-cover"
                       alt="hero"
@@ -103,19 +119,19 @@ function PostDetails() {
                       <div className="font-semibold text-blue-400 cursor-pointer flex items-center justify-between mb-4">
                         <span>
                           <img
-                            src={IFFF + blogDetails.authorImage} // Replace with the actual path to your avatar image
+                            src={IFFF + blogDetails.authorImage}
                             alt="Avatar"
                             className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                             onError={handleImageError}
                           />
-                          <Link to ={`/profile/${blogDetails.authorId}` } >
-                          {blogDetails.authorUsername}
+                          <Link to={`/profile/${blogDetails.authorId}`}>
+                            {blogDetails.authorUsername}
                           </Link>
                         </span>
                         <span className="text-regular text-sm text-gray-500 cursor-pointer flex items-center">
                           {format(
                             new Date(blogDetails.createdAt),
-                            "MMMM/dd/yyyy"
+                            "MMMM dd,yyyy"
                           )}
                           <div className="group inline-block">
                             <button className="outline-none focus:outline-none border ml-2 px-2 py-1 bg-white rounded-sm flex items-center w-10 h-10">
@@ -139,7 +155,7 @@ function PostDetails() {
                               </span>
                             </button>
 
-                            <ul className="cursor-pointer  bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32">
+                            <ul className="cursor-pointer bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32">
                               {blogDetails.authorUsername === user.username && (
                                 <>
                                   <li
@@ -152,19 +168,45 @@ function PostDetails() {
                                     className="rounded-sm px-3 py-1 hover:bg-gray-100"
                                     onClickCapture={onEditClick}
                                   >
-                                    {" "}
                                     Edit
                                   </li>
                                 </>
                               )}
                               <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
-                                {" "}
                                 Share
                               </li>
                               <li
                                 className="rounded-sm px-3 py-1 hover:bg-gray-100"
+                                onClickCapture={handleToggleFavorite}
                               >
-                                Add to Favorites
+                                <span>
+                                  {"  "}
+                                  {isFavorite ? (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="currentColor"
+                                      className="size-6 text-blue-500"
+                                    >
+                                      <path
+                                        fill-rule="evenodd"
+                                        d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z"
+                                        clip-rule="evenodd"
+                                      />
+                                    </svg>
+                                  ) : (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke-width="1.5"
+                                      stroke="currentColor"
+                                      className="size-6 text-gray-400"
+                                    >
+                                      <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                                    </svg>
+                                  )}
+                                </span>
                               </li>
                             </ul>
                           </div>

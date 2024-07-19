@@ -1,4 +1,5 @@
 const BlogPost = require("../models/blogPostModel");
+const User = require("../models/UserModel");
 const mongoose = require("mongoose");
 
 // get all blogs
@@ -10,16 +11,15 @@ const getBlogPosts = async (req, res) => {
 const getBlogPostsForUser = async (req, res) => {
   try {
     if (!req.user) {
-      return res.status(401).json({ error: 'User not authenticated' });
+      return res.status(401).json({ error: "User not authenticated" });
     }
-    const authorId  = req.user._id;
+    const authorId = req.user._id;
     const blog = await BlogPost.find({ authorId }).sort({ createdAt: -1 });
     res.status(200).json(blog);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
-
 
 const getUserBlogPosts = async (req, res) => {
   const { userId } = req.params;
@@ -29,7 +29,9 @@ const getUserBlogPosts = async (req, res) => {
     const blogPosts = await BlogPost.find({ authorId: userId });
 
     if (!blogPosts.length) {
-      return res.status(404).json({ message: "No blog posts found for this user" });
+      return res
+        .status(404)
+        .json({ message: "No blog posts found for this user" });
     }
 
     res.status(200).json(blogPosts);
@@ -37,7 +39,6 @@ const getUserBlogPosts = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch blog posts", error });
   }
 };
-
 
 // get single blog
 const getBlogPost = async (req, res) => {
@@ -102,6 +103,82 @@ const updateBlogPost = async (req, res) => {
   res.status(200).json(blog);
 };
 
+const addFavorite = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { blogId } = req.params;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.favorites.includes(blogId)) {
+      user.favorites.push(blogId);
+      await user.save();
+      return res.status(200).json({ message: "Blog added to favorites" });
+    }
+
+    return res.status(400).json({ message: "Blog is already in favorites" });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error });
+  }
+};
+
+const removeFavorite = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { blogId } = req.params;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.favorites = user.favorites.filter(
+      (favId) => favId.toString() !== blogId
+    );
+    await user.save();
+    return res.status(200).json({ message: "Blog removed from favorites" });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error });
+  }
+};
+
+const checkFavorite = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { blogId } = req.params;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isFavorite = user.favorites.includes(blogId);
+    return res.status(200).json({ isFavorite });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error });
+  }
+};
+
+const getUserFavorites = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Find the user and populate their favorites
+    const user = await User.findById(userId).populate("favorites");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Return the populated favorites
+    res.status(200).json(user.favorites);
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error });
+  }
+};
+
 module.exports = {
   createBlogPost,
   getBlogPosts,
@@ -109,5 +186,9 @@ module.exports = {
   deleteBlog,
   updateBlogPost,
   getBlogPostsForUser,
-  getUserBlogPosts
+  getUserBlogPosts,
+  addFavorite,
+  removeFavorite,
+  checkFavorite,
+  getUserFavorites,
 };
