@@ -10,13 +10,12 @@ const blogPostSchema = new Schema(
     title: {
       type: String,
       required: true,
-      unique:false,
+      unique: false,
     },
     slug: {
       type: String,
       required: true,
-      unique:false,
-
+      unique: false,
     },
     blogbody: {
       type: String,
@@ -28,14 +27,13 @@ const blogPostSchema = new Schema(
     },
     authorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', // Reference to User model
+      ref: "User", // Reference to User model
       required: true,
-      // type: String,
-      // required: false,
     },
+    favoritesCount: { type: Number, default: 0 }, // Add this line
   },
   { timestamps: true }
 );
 
-const BlogPost = mongoose.model('BlogPost', blogPostSchema);
+const BlogPost = mongoose.model("BlogPost", blogPostSchema);
 module.exports = BlogPost;

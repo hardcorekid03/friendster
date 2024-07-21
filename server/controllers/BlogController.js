@@ -116,6 +116,13 @@ const addFavorite = async (req, res) => {
     if (!user.favorites.includes(blogId)) {
       user.favorites.push(blogId);
       await user.save();
+
+      const blog = await BlogPost.findById(blogId);
+      if (blog) {
+        blog.favoritesCount += 1;
+        await blog.save();
+      }
+
       return res.status(200).json({ message: "Blog added to favorites" });
     }
 
@@ -124,7 +131,6 @@ const addFavorite = async (req, res) => {
     return res.status(500).json({ message: "Server error", error });
   }
 };
-
 const removeFavorite = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -135,11 +141,22 @@ const removeFavorite = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.favorites = user.favorites.filter(
-      (favId) => favId.toString() !== blogId
-    );
-    await user.save();
-    return res.status(200).json({ message: "Blog removed from favorites" });
+    if (user.favorites.includes(blogId)) {
+      user.favorites = user.favorites.filter(
+        (favId) => favId.toString() !== blogId
+      );
+      await user.save();
+
+      const blog = await BlogPost.findById(blogId);
+      if (blog) {
+        blog.favoritesCount -= 1;
+        await blog.save();
+      }
+
+      return res.status(200).json({ message: "Blog removed from favorites" });
+    }
+
+    return res.status(400).json({ message: "Blog is not in favorites" });
   } catch (error) {
     return res.status(500).json({ message: "Server error", error });
   }

@@ -120,7 +120,7 @@ function UserDetails() {
       const response = await api.patch(`/api/user/${user.id}`, formData);
       console.log("Form data saved:", response.data);
       setIsEditing(false); // Exit edit mode
-      navigate("/profile");
+      navigate(`/profile/${user.id}`);
     } catch (error) {
       console.error("Error saving form data:", error);
       // Handle error state or display an error message to the user
@@ -350,8 +350,8 @@ function UserDetails() {
                 className="fill-current w-4 h-4 mr-2"
                 >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M6 18 18 6M6 6l12 12"
                 />
               </svg>
