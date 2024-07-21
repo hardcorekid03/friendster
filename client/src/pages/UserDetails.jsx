@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import useFetchUser from "../hooks/useFetchUser";
 import { IFF, IFFF } from "./url";
 import defaultImage from "../assets/images/dafaultImage.jpg";
@@ -139,40 +138,9 @@ function UserDetails() {
 
   return (
     <>
+
       <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
         <div className="items-center justify-center p-4 bg-white ">
-          <div className="relative flex items-center justify-center flex-col ">
-            <div className="absolute w-[150px] h-[150px] bottom-1 md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
-              <img
-                className="h-full w-full border-4 shadow border-white object-cover"
-                src={IFFF + userData.userimage}
-                onError={handleImageError}
-              />
-            </div>
-            <div className="mb-4 w-[100%] h-[350px] p-4 sm:p-2">
-              <img
-                className="h-full w-full object-cover"
-                alt="hero"
-                src={IFF + userData.userbanner}
-                onError={handleImageError}
-              />
-            </div>
-          </div>
-          <div className="flex items-center justify-between p-4 sm:p-2 border-b-2 mb-4">
-            <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
-              Timeline
-            </h3>
-            <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
-              My Posts
-            </h3>
-            <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
-              Favorites
-            </h3>
-            <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
-              Settings
-            </h3>
-          </div>
-
           <div className="items-center p-4">
             <div className="flex items-center justify-between">
               <h3 className="mb-4 text-md font-bold">Update Profile Details</h3>
@@ -329,7 +297,7 @@ function UserDetails() {
               <div className="flex  sm:flex-row items-center gap-1 ">
                 <button
                   type="submit"
-                  className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 inline-flex items-center"
+                  className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 inline-flex items-center"
                   onClick={handleSaveChanges}
                   disabled={!isEditing}
                 >
@@ -341,20 +309,6 @@ function UserDetails() {
                   disabled={!isEditing}
                   onClick={discardChanges}
                 >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                className="fill-current w-4 h-4 mr-2"
-                >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
                   Discard Changes
                 </button>
               </div>

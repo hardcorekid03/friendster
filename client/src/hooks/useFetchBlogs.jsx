@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../api/Api"; // Adjust the import based on your project structure
 import { useParams } from "react-router-dom";
-
 import { useAuthContext } from "./useAuthContext";
 
 const useFetchBlogs = () => {
@@ -9,6 +8,10 @@ const useFetchBlogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [blogData, setBlogData] = useState([]);
   const [authorData, setAuthorData] = useState([]);
+  const [imageSrc, setImageSrc] = useState('');
+  const [reload, setReload] = useState(false);
+
+
 
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
@@ -38,12 +41,13 @@ const useFetchBlogs = () => {
               );
               const authorDetails = authorResponse.data;
               setAuthorData (authorDetails )
+              setImageSrc(authorData.userbanner);
+
               return {
                 ...blog,
                 authorId: authorDetails.username,
                 authorImage: authorDetails.userimage,
                 authorJoined: authorDetails.createdAt,
-
               }; // Assuming authorId is directly accessible in authorDetails
             } catch (error) {
               console.error(
@@ -61,12 +65,13 @@ const useFetchBlogs = () => {
         console.error("Error fetching blogs:", error);
       }
       setLoading(false);
+      setReload(true);
     };
 
     fetchBlogs();
-  }, [user]);
+  }, [user, id]);
 
-  return { blogs, loading, blogData, authorData};
+  return { blogs, loading, blogData, authorData,imageSrc,setImageSrc, reload};
 };
 
 export default useFetchBlogs;
