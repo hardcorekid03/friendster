@@ -150,7 +150,7 @@ function Recent() {
   return (
     <>
       <section className="md:col-span-9 mb-8 lg:p-6 py-4">
-        <div className="items-center justify-center p-4 mb-8 bg-white">
+        <div className="items-center justify-center p-4 bg-white">
           <div className="flex items-center justify-between p-4 sm:p-2">
             <h3 className="text-xl font-semibold">Recent Posts</h3>
 
@@ -283,7 +283,7 @@ function Recent() {
             )}
           </div>
         </div>
-        <div className="flex justify-center  mb-8 p-4  text-sm">
+        <div className="flex justify-center  mb-8 p-4 border mt-4 text-sm">
           <button
             onClick={() => paginate(currentPage - 1)}
             className={`${

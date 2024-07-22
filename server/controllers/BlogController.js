@@ -182,7 +182,6 @@ const checkFavorite = async (req, res) => {
 const getUserFavorites = async (req, res) => {
   try {
     const userId = req.user._id;
-
     // Find the user and populate their favorites
     const user = await User.findById(userId).populate("favorites");
     if (!user) {
