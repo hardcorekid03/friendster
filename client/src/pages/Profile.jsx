@@ -4,22 +4,43 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import UserPost from "./postdetails/UserPost";
 import { format } from "date-fns";
+import useFetchUser from "../hooks/useFetchUser";
 import useFetchBlogs from "../hooks/useFetchBlogs";
 import useSaveChanges from "../hooks/useSaveChanges";
 import { IFF, IFFF } from "./url";
-
+import api from "../api/Api";
 
 function Profile() {
   const { user } = useAuthContext();
-  const { blogs, loading, setLoading, authorData, imageSrc, setImageSrc } = useFetchBlogs();
+  const { userData, imageSrc, setImageSrc } = useFetchUser();
+  const [userDetails, setUserDetails] = useState(null);
+  const { blogs, loading, setLoading } = useFetchBlogs();
   const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      const fetchUserDetails = async () => {
+        try {
+          const response = await api.get(`/api/user/${id}`);
+          const data = response.data;
+          setUserDetails(data);
+        } catch (error) {
+          console.error("Error fetching user details:", error);
+        }
+      };
+
+      fetchUserDetails();
+    }
+  }, [id]);
 
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const avatar =  IFFF + authorData?.userimage;
-  const userBanner =  IFF + authorData?.userbanner;
+  const avatar = id ? IFFF + userDetails?.userimage : IFFF + userData.userimage;
+  const userBanner = id
+    ? IFF + userDetails?.userbanner
+    : IFF + userData.userbanner;
 
   const { handleSaveChanges, hasChanges, setHasChanges } = useSaveChanges(
     user,
@@ -63,7 +84,7 @@ function Profile() {
       "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
   };
 
-  const profileData = authorData;
+  const profileData = id ? userDetails : userData;
   const userProfile = profileData?._id;
   return (
     <>
@@ -136,27 +157,26 @@ function Profile() {
           <div className="bg-gray-50 p-4 border mb-4 md:flex md:justify-between mt-6">
             <div className="userDetails items-center justify-center">
               <h3 className="font-semibold text-xl">
-                @{authorData?.username}
-
+                @{profileData?.username}
               </h3>
               <h3 className="text-sm font-semibold">
                 Location:{" "}
                 <span className="text-md font-normal text-gray-800">
-                  {authorData?.location}
+                  {profileData?.location}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">
                 Gender:{" "}
                 <span className="text-md font-normal text-gray-800">
-                  {authorData?.gender}
+                  {profileData?.gender}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">
                 Joined:{" "}
                 <span className="text-md font-normal text-gray-800">
-                  {authorData?.createdAt &&
+                  {profileData?.createdAt &&
                     `${format(
-                      new Date(authorData?.createdAt),
+                      new Date(profileData?.createdAt),
                       "MMMM dd, yyyy"
                     )} `}
                 </span>

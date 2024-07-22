@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
 import api from "../api/Api"; // Adjust the import based on your project structure
-import { useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
+
 import { useAuthContext } from "./useAuthContext";
 
 const useFetchBlogs = () => {
   const { user } = useAuthContext();
   const [blogs, setBlogs] = useState([]);
-  const [blogData, setBlogData] = useState([]);
-  const [authorData, setAuthorData] = useState([]);
-  const [imageSrc, setImageSrc] = useState('');
-  const [reload, setReload] = useState(false);
-
-
-
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   useEffect(() => {
@@ -26,7 +20,6 @@ const useFetchBlogs = () => {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         const blogsData = response.data;
-        setBlogData (blogsData)
 
         // Fetch author details (including authorId) for each blog
         const blogsWithAuthorDetails = await Promise.all(
@@ -40,21 +33,14 @@ const useFetchBlogs = () => {
                 }
               );
               const authorDetails = authorResponse.data;
-              setAuthorData (authorDetails )
-              setImageSrc(authorData.userbanner);
-
-              return {
-                ...blog,
-                authorId: authorDetails.username,
-                authorImage: authorDetails.userimage,
-                authorJoined: authorDetails.createdAt,
-              }; // Assuming authorId is directly accessible in authorDetails
+              return { ...blog, authorId: authorDetails.username, authorImage: authorDetails.userimage  }; // Assuming authorId is directly accessible in authorDetails
+            
             } catch (error) {
               console.error(
                 `Error fetching author details for blog ${blog._id}:`,
                 error
               );
-
+              
               return { ...blog, authorId: null }; // Handle error case if author details cannot be fetched
             }
           })
@@ -65,13 +51,13 @@ const useFetchBlogs = () => {
         console.error("Error fetching blogs:", error);
       }
       setLoading(false);
-      setReload(true);
     };
 
     fetchBlogs();
-  }, [user, id]);
+  }, [user]);
 
-  return { blogs, loading, blogData, authorData,imageSrc,setImageSrc, reload};
+
+  return { blogs, loading };
 };
 
 export default useFetchBlogs;
