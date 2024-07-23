@@ -74,7 +74,10 @@ function Recent() {
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      if (user) {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
         try {
           const response = await api.get("api/blogs/favorites/myfavorites", {
             headers: { Authorization: `Bearer ${user.token}` },
@@ -83,9 +86,7 @@ function Recent() {
         } catch (error) {
           console.error("Error fetching favorites:", error);
         }
-      }
     };
-
     fetchFavorites();
   }, [user]);
 
