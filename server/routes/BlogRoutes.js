@@ -11,6 +11,7 @@ const {
   removeFavorite,
   checkFavorite,
   getUserFavorites,
+  getUserFavoritesById,
 } = require("../controllers/BlogController");
 const requireAuth = require("../middleware/requireAuth");
 
@@ -42,5 +43,6 @@ router.post("/favorites/:blogId", addFavorite);
 router.delete("/favorites/:blogId", removeFavorite);
 router.get("/favorites/check/:blogId", checkFavorite);
 router.get("/favorites/myfavorites", getUserFavorites);
+router.get("/favorites/myfavorites/:userId", getUserFavoritesById);
 
 module.exports = router;
