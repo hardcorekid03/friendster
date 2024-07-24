@@ -12,11 +12,6 @@ const blogPostSchema = new Schema(
       required: true,
       unique: false,
     },
-    slug: {
-      type: String,
-      required: true,
-      unique: false,
-    },
     blogbody: {
       type: String,
       required: true,

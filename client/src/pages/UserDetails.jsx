@@ -149,7 +149,7 @@ function UserDetails() {
 
                   ${isEditing ? "text-red-600" : "hover:text-blue-400"}`}
                 onClick={
-                  isEditing ? () => navigate("/profile") : handleEditClick
+                  isEditing ? () => navigate(`/profile/${user.id}`) : handleEditClick
                 }
               >
                 {isEditing ? "Cancel" : "Edit Details"}

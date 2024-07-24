@@ -3,9 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import UserPost from "./postdetails/UserPost";
+import UserDetails from "./UserDetails";
 import { format } from "date-fns";
 import useFetchUser from "../hooks/useFetchUser";
 import useFetchBlogs from "../hooks/useFetchBlogs";
+import useFetchUserFavorite from "../hooks/useFetchUserFavorite";
 import useSaveChanges from "../hooks/useSaveChanges";
 import { IFF, IFFF } from "./url";
 import api from "../api/Api";
@@ -14,8 +16,56 @@ function Profile() {
   const { user } = useAuthContext();
   const { userData, imageSrc, setImageSrc } = useFetchUser();
   const [userDetails, setUserDetails] = useState(null);
-  const { blogs, loading, setLoading } = useFetchBlogs();
   const { id } = useParams();
+  const [activeComponent, setActiveComponent] = useState("blogs");
+  const [activeSource, setActiveSource] = useState("blogs");
+
+  const {
+    blogs: myBlogs,
+    loading: myLoading,
+    setLoading: blogSet,
+    handleImageError: blogError,
+    favorites: blogFavorites,
+    handleFavorite: blogHandle,
+    authorDetails,
+  } = useFetchBlogs();
+  const {
+    blogs: myFavs,
+    loading: favLoading,
+    setLoading: favSet,
+    handleImageError: favError,
+    favorites: favFavorites,
+    handleFavorite: favHandle,
+  } = useFetchUserFavorite();
+
+  const handleSourceChange = (source) => {
+    setActiveSource(source);
+  };
+
+  const getData = () => {
+    if (activeSource === "blogs") {
+      return {
+        data: myBlogs,
+        loading: myLoading,
+        setLoading: blogSet,
+        error: blogError,
+        favorites: blogFavorites,
+        handleFavorite: blogHandle,
+      };
+    } else if (activeSource === "favorites") {
+      return {
+        data: myFavs,
+        loading: favLoading,
+        setLoading: favSet,
+        error: favError,
+        favorites: favFavorites,
+        handleFavorite: favHandle,
+      };
+    }
+  };
+
+  const { data, loading, error, favorites, handleFavorite, setLoading } =
+    getData();
 
   useEffect(() => {
     if (id) {
@@ -85,7 +135,6 @@ function Profile() {
   };
 
   const profileData = id ? userDetails : userData;
-  const userProfile = profileData?._id;
   return (
     <>
       <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
@@ -209,18 +258,23 @@ function Profile() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between p-4 sm:p-2 border-b-2 mb-4">
-            <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
-              Timeline
+          <div className="flex items-center justify-between p-4 sm:p-2 border-b-2 border-gray-100 mb-4">
+
+            <h3
+              className="text-md font-semibold hover:text-blue-400 cursor-pointer "
+              onClick={() => handleSourceChange("blogs")}
+            >
+              Posts
             </h3>
-            <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
-              My Posts
-            </h3>
-            <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
+            <h3
+              className="text-md font-semibold hover:text-blue-400 cursor-pointer "
+              onClick={() => handleSourceChange("favorites")}
+            >
               Favorites
             </h3>
             <Link to="/userdetails">
               <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
+              {/* onClick={() => setActiveComponent('userdetails')} */}
                 Settings
               </h3>
             </Link>
@@ -233,12 +287,18 @@ function Profile() {
           </div>
 
           <div className="items-center p-4 sm:p-2 border-b-2 mb-4">
-            <UserPost
-              userProfile={userProfile}
-              loading={loading}
-              blogs={blogs}
-              handleImageError={handleImageError}
-            />
+            {activeComponent === "blogs" && (
+              <UserPost
+                loading={loading}
+                handleImageError={handleImageError}
+                data={data}
+                error={error}
+                favorites={favorites}
+                handleFavorite={handleFavorite}
+              />
+            )}
+
+            {activeComponent === "userdetails" && <UserDetails />}
           </div>
         </div>
       </section>

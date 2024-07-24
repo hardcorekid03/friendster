@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
-import api from '../api/Api'; // Import the Axios instance
 import { IFFF } from "./url";
 import useFetchUser from "../hooks/useFetchUser";
 
 
 function Trending() {
-  const { user } = useAuthContext();
-  const { userData, imageSrc, setImageSrc } = useFetchUser();
-
+  const { userData} = useFetchUser();
   const date = new Date(userData.createdAt || Date.now());
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();
@@ -20,7 +17,7 @@ function Trending() {
 
   return (
     <>
-      <div className="p-4 bg-zinc-100 shadow-lg flex flex-col items-center w-full"
+      <div className="p-4 bg-gradient-to-r from-blue-100 to-blue-200 shadow-lg flex flex-col items-center w-full"
           //  style={{ backgroundImage: `url(${baseUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="flex justify-center border-2 shadow-sm border-white  w-[100px] h-[100px] mb-4 rounded-full overflow-hidden">
