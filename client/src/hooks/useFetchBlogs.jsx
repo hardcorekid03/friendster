@@ -9,7 +9,6 @@ const useFetchBlogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState(new Set()); // State to manage favorite blogs
-
   const { id } = useParams();
 
   const fetchBlogs = async () => {
@@ -35,7 +34,7 @@ const useFetchBlogs = () => {
               }
             );
             const authorDetails = authorResponse.data;
-            return { ...blog, authorId: authorDetails.username, authorImage: authorDetails.userimage  }; // Assuming authorId is directly accessible in authorDetails
+            return { ...blog,authorId: authorDetails.id, authorUsername: authorDetails.username, authorImage: authorDetails.userimage  }; // Assuming authorId is directly accessible in authorDetails
           
           } catch (error) {
             console.error(

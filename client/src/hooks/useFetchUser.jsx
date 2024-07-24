@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import api from '../api/Api';
 import { useAuthContext } from './useAuthContext';
+import { useParams } from 'react-router-dom';
 
 const useFetchUser = () => {
+  const {id} = useParams();
   const { user } = useAuthContext();
   const [userData, setUserData] = useState({});
   const [imageSrc, setImageSrc] = useState('');
@@ -34,7 +36,7 @@ const useFetchUser = () => {
     };
 
     fetchUser();
-  }, [user]);
+  }, [user,id]);
 
   return { userData, imageSrc, setImageSrc };
 };

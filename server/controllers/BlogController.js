@@ -204,7 +204,10 @@ const getUserFavoritesById = async (req, res) => {
     const{userId}  = req.params;
 
     // Find the user and populate their favorites
-    const user = await User.findById(userId).populate("favorites");
+    const user = await User.findById(userId).populate({
+      path: "favorites",
+      options: { sort: { createdAt: -1 } }
+    });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

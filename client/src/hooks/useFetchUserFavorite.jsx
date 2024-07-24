@@ -34,7 +34,7 @@ function useFetchUserFavorite() {
                 }
               );
               const authorDetails = authorResponse.data;
-              return { ...blog, authorId: authorDetails.username, authorImage: authorDetails.userimage  }; // Assuming authorId is directly accessible in authorDetails
+              return { ...blog, authorId: authorDetails._id, authorUsername: authorDetails.username, authorImage: authorDetails.userimage  }; // Assuming authorId is directly accessible in authorDetails
             
             } catch (error) {
               console.error(

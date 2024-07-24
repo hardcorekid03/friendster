@@ -140,42 +140,38 @@ function Profile() {
       <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
         <div className="items-center justify-center p-4 bg-white ">
           <div className="relative flex  items-center justify-center flex-col ">
-            <div
-              className="absolute flex top-3 right-3 hover:bg-gray-700  text-white px-3 py-1 rounded  "
-              onClick={handleSVGClick}
-            >
-              {user && user.id === id && (
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="size-6 cursor-pointer  "
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
-                    />
-                  </svg>
-
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    className="hidden"
-                    onChange={handleFileChange}
+            {user && user.id === id && (
+              <div
+                className="absolute flex top-3 right-3 hover:bg-gray-700  text-white px-3 py-1 rounded  "
+                onClick={handleSVGClick}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-6 cursor-pointer  "
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
                   />
-                </>
-              )}
-            </div>
-
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
+                  />
+                </svg>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+              </div>
+            )}
             <div className="absolute  w-[150px] h-[150px] lg:h-[180px] lg:w-[180px] -bottom-2  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
               <img
                 className="h-full w-full border-4 shadow border-white  object-cover  "
@@ -259,7 +255,6 @@ function Profile() {
           </div>
 
           <div className="flex items-center justify-between p-4 sm:p-2 border-b-2 border-gray-100 mb-4">
-
             <h3
               className="text-md font-semibold hover:text-blue-400 cursor-pointer "
               onClick={() => handleSourceChange("blogs")}
@@ -274,7 +269,7 @@ function Profile() {
             </h3>
             <Link to="/userdetails">
               <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
-              {/* onClick={() => setActiveComponent('userdetails')} */}
+                {/* onClick={() => setActiveComponent('userdetails')} */}
                 Settings
               </h3>
             </Link>

@@ -3,11 +3,9 @@ import { Link } from "react-router-dom";
 import { IF, IFFF } from "../url";
 import { format } from "date-fns";
 
-function UserPost( {loading, data, error, favorites,handleFavorite, authorDetails }) {
-
+function UserPost({ loading, data, error, favorites, handleFavorite }) {
   return (
     <div className="UserPost">
-
       {loading ? (
         <div className="container py-5">
           <p>Loading...</p>
@@ -53,7 +51,10 @@ function UserPost( {loading, data, error, favorites,handleFavorite, authorDetail
                     className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                     onError={error}
                   />
-                  {blog.authorId}
+
+                  <Link to={`/profile/${blog.authorId}`}>
+                    {blog.authorUsername}
+                  </Link>
                 </span>
                 <span className="text-regular text-sm text-gray-400 cursor-pointer flex items-center">
                   Posted:{" "}

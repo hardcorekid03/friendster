@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  PencilSquareIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { IF, IFFF } from "./url";
 import { format } from "date-fns";
 import { useAuthContext } from "../hooks/useAuthContext";
 import defaultImage from "../assets/images/dafaultImage.jpg";
+import ScrollToTopButton from "../components/ScrollToTop";
 import Trending from "./Trending";
 import api from "../api/Api"; // Import the Axios instance
 
@@ -156,17 +154,12 @@ function Recent() {
 
   return (
     <>
+            <ScrollToTopButton />
+
       <section className="md:col-span-9 mb-8 lg:p-6 py-4 custom-dark">
         <div className="items-center justify-center p-4 bg-white">
-          <div className="flex items-center justify-between p-4 sm:p-2">
+          <div className="flex items-center justify-between py-4">
             <h3 className="text-xl font-semibold">Recent Posts</h3>
-
-            <Link
-              to="/createpost"
-              className="text-xl font-semibold hover:text-gray-700 cursor-pointer h-8 w-8 flex items-center justify-center"
-            >
-              <PencilSquareIcon className="h-full w-full hidden sm:block" />
-            </Link>
           </div>
           <div className="flex items-center justify-between mb-4">
             <div className="relative w-full">
@@ -245,7 +238,7 @@ function Recent() {
                       </span>
                     </div>
                     <div
-                      className={`flex  items-center mt-4 justify-end
+                      className={`flex  items-center  justify-end
                              ${
                                favorites.has(blog._id)
                                  ? "text-red-400"
