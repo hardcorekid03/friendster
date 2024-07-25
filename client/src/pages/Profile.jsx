@@ -11,6 +11,7 @@ import useFetchUserFavorite from "../hooks/useFetchUserFavorite";
 import useSaveChanges from "../hooks/useSaveChanges";
 import { IFF, IFFF } from "./url";
 import api from "../api/Api";
+import ImageModal from "../components/ImageModal";
 
 function Profile() {
   const { user } = useAuthContext();
@@ -18,6 +19,8 @@ function Profile() {
   const [userDetails, setUserDetails] = useState(null);
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("blogs");
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [modalImageSrc, setModalImageSrc] = useState("");
 
   const {
     blogs: myBlogs,
@@ -132,10 +135,25 @@ function Profile() {
       "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
   };
 
+  const handleImageClick = (src) => {
+    setModalImageSrc(src);
+    setIsImageModalOpen(true);
+  };
+
   const profileData = id ? userDetails : userData;
 
   return (
     <>
+      <ImageModal
+        isOpen={isImageModalOpen}
+        onClose={() => setIsImageModalOpen(false)}
+      >
+        <img
+          src={modalImageSrc}
+          className="object-cover w-full h-full"
+          alt="modal content"
+        />
+      </ImageModal>
       <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4 ">
         <div className="items-center justify-center p-4 bg-white ">
           <div className="relative flex  items-center justify-center flex-col ">
@@ -171,7 +189,10 @@ function Profile() {
                 />
               </div>
             )}
-            <div className="absolute  w-[150px] h-[150px] lg:h-[180px] lg:w-[180px] -bottom-2  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded ">
+            <div
+              className="absolute  w-[150px] h-[150px] lg:h-[180px] lg:w-[180px] -bottom-2  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded "
+              onClick={() => handleImageClick(avatar)}
+            >
               <img
                 className="h-full w-full border-4 shadow border-white  object-cover  "
                 alt="hero"
@@ -179,7 +200,10 @@ function Profile() {
                 onError={handleAvatarError}
               />
             </div>
-            <div className=" mb-4 w-[100%] md:h-[350px] h-[200px] xl:h-[400px]">
+            <div
+              className=" mb-4 w-[100%] md:h-[350px] h-[200px] xl:h-[400px]"
+              onClick={() => handleImageClick(userBanner)}
+            >
               {hasChanges ? (
                 <img
                   className="h-full w-full object-cover"
@@ -286,11 +310,30 @@ function Profile() {
               }`}
               onClick={() => handleTabChange("settings")}
             >
-              <Link to="/userdetails">
-                <h3 className="text-md font-semibold hover:text-blue-500">
-                  Settings
-                </h3>
-              </Link>
+              {user && user.id === id && (
+                <Link
+                  to="/userdetails"
+                  className="flex  justify-center items-center hover:text-blue-500"
+                >
+                  <h3 className="text-md font-semibold hover:text-blue-500">
+                    Settings
+                  </h3>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                    />
+                  </svg>
+                </Link>
+              )}
             </div>
           </div>
           <div className="flex items-center justify-between p-4 sm:p-2 ">

@@ -22,7 +22,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="w-full fixed top-0 left-0 mb-4 z-[99] shadow-sm ">
+    <div className="w-full fixed top-0 left-0 mb-4 z-[98] shadow-sm ">
       <div className="md:flex items-center justify-between bg-white  md:px-10 px-10">
         {/* logo section */}
         <div className="cursor-pointer flex items-center gap-1 text-gray-700 font-bold  hover:text-blue-500 " 
