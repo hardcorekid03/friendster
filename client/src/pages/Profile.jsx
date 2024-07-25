@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import defaultImage from "../assets/images/dafaultImage.jpg";
+import defaultAvatar from "../assets/images/avatar.jpg";
 import UserPost from "./postdetails/UserPost";
 import UserDetails from "./UserDetails";
-import { format } from "date-fns";
+import { differenceInYears, parseISO, format } from "date-fns";
 import useFetchUser from "../hooks/useFetchUser";
 import useFetchBlogs from "../hooks/useFetchBlogs";
 import useFetchUserFavorite from "../hooks/useFetchUserFavorite";
@@ -131,8 +132,7 @@ function Profile() {
   };
 
   const handleAvatarError = (event) => {
-    event.target.src =
-      "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
+    event.target.src = defaultAvatar;
   };
 
   const handleImageClick = (src) => {
@@ -142,6 +142,12 @@ function Profile() {
 
   const profileData = id ? userDetails : userData;
 
+  const calculateAge = (dob) => {
+    const birthDate = parseISO(dob); // Parse the date string to a Date object
+    const today = new Date();
+    return differenceInYears(today, birthDate);
+  };
+
   return (
     <>
       <ImageModal
@@ -150,7 +156,7 @@ function Profile() {
       >
         <img
           src={modalImageSrc}
-          className="object-cover w-full h-full"
+          className="object-contain w-full h-full"
           alt="modal content"
         />
       </ImageModal>
@@ -223,20 +229,19 @@ function Profile() {
           </div>
 
           <div className="bg-gray-50 p-4 border mb-4 md:flex md:justify-between mt-6">
-            <div className="userDetails items-center justify-center">
+            <div className="items-center justify-center">
               <h3 className="font-semibold text-xl">
-                @{profileData?.username}
+                @{profileData?.username} |{" "}
+                <span className="text-sm">
+                  {profileData?.birthdate && (
+                    <>{calculateAge(profileData.birthdate)} {profileData?.gender} </>
+                  )}
+                </span>
               </h3>
               <h3 className="text-sm font-semibold">
                 Location:{" "}
                 <span className="text-md font-normal text-gray-800">
                   {profileData?.location}
-                </span>
-              </h3>
-              <h3 className="text-sm font-semibold">
-                Gender:{" "}
-                <span className="text-md font-normal text-gray-800">
-                  {profileData?.gender}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">
@@ -249,8 +254,8 @@ function Profile() {
                     )} `}
                 </span>
               </h3>
+
               <h3 className="text-sm font-semibold">
-                Bio:{" "}
                 <span className="text-md font-normal italic text-gray-800">
                   "{profileData?.bio || "error 404: bio not found"}"
                 </span>
