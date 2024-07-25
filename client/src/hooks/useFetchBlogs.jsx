@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../api/Api"; // Adjust the import based on your project structure
-import {  useParams } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 import { useAuthContext } from "./useAuthContext";
 
 const useFetchBlogs = () => {
@@ -9,6 +8,7 @@ const useFetchBlogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState(new Set()); // State to manage favorite blogs
+  const [key, setKey] = useState(0); // State to trigger refetching
   const { id } = useParams();
 
   const fetchBlogs = async () => {
@@ -27,21 +27,22 @@ const useFetchBlogs = () => {
         blogsData.map(async (blog) => {
           try {
             // Assuming blog.authorId is available in the blog data
-            const authorResponse = await api.get(
-              `/api/user/${blog.authorId}`,
-              {
-                headers: { Authorization: `Bearer ${user.token}` },
-              }
-            );
+            const authorResponse = await api.get(`/api/user/${blog.authorId}`, {
+              headers: { Authorization: `Bearer ${user.token}` },
+            });
             const authorDetails = authorResponse.data;
-            return { ...blog,authorId: authorDetails.id, authorUsername: authorDetails.username, authorImage: authorDetails.userimage  }; // Assuming authorId is directly accessible in authorDetails
-          
+            return {
+              ...blog,
+              authorId: authorDetails._id,
+              authorUsername: authorDetails.username,
+              authorImage: authorDetails.userimage,
+            }; // Assuming authorId is directly accessible in authorDetails
           } catch (error) {
             console.error(
               `Error fetching author details for blog ${blog._id}:`,
               error
             );
-            
+
             return { ...blog, authorId: null }; // Handle error case if author details cannot be fetched
           }
         })
@@ -56,7 +57,7 @@ const useFetchBlogs = () => {
 
   useEffect(() => {
     fetchBlogs();
-  }, [user, favorites]); // Add 'favorites' as a dependency here
+  }, [user, id, key]); // Add 'favorites' as a dependency here
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -74,7 +75,7 @@ const useFetchBlogs = () => {
       }
     };
     fetchFavorites();
-  }, [user, id, favorites]);
+  }, [user, id]);
 
   const handleFavorite = async (blogId) => {
     if (favorites.has(blogId)) {
@@ -88,6 +89,7 @@ const useFetchBlogs = () => {
           newFavorites.delete(blogId);
           return newFavorites;
         });
+        setKey((prevKey) => prevKey + 1); // Increment key to refetch blogs
       } catch (error) {
         console.error(
           "Error removing favorite:",
@@ -103,6 +105,7 @@ const useFetchBlogs = () => {
           { headers: { Authorization: `Bearer ${user.token}` } }
         );
         setFavorites((prevFavorites) => new Set(prevFavorites).add(blogId));
+        setKey((prevKey) => prevKey + 1); // Increment key to refetch blogs
       } catch (error) {
         console.error(
           "Error adding favorite:",
@@ -111,8 +114,8 @@ const useFetchBlogs = () => {
       }
     }
   };
-  
-  return { blogs, loading, setLoading,  favorites, handleFavorite};
+
+  return { blogs, loading, setLoading, favorites, handleFavorite };
 };
 
 export default useFetchBlogs;

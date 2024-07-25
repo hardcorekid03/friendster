@@ -27,7 +27,6 @@ function Profile() {
     handleImageError: blogError,
     favorites: blogFavorites,
     handleFavorite: blogHandle,
-    authorDetails,
   } = useFetchBlogs();
   const {
     blogs: myFavs,
@@ -67,21 +66,21 @@ function Profile() {
   const { data, loading, error, favorites, handleFavorite, setLoading } =
     getData();
 
+  const fetchUserDetails = async () => {
+    try {
+      const response = await api.get(`/api/user/${id}`);
+      const data = response.data;
+      setUserDetails(data);
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
+
   useEffect(() => {
     if (id) {
-      const fetchUserDetails = async () => {
-        try {
-          const response = await api.get(`/api/user/${id}`);
-          const data = response.data;
-          setUserDetails(data);
-        } catch (error) {
-          console.error("Error fetching user details:", error);
-        }
-      };
-
       fetchUserDetails();
     }
-  }, [id]);
+  }, [id,user]);
 
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const fileInputRef = useRef(null);
@@ -137,7 +136,7 @@ function Profile() {
   const profileData = id ? userDetails : userData;
   return (
     <>
-      <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
+      <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4 ">
         <div className="items-center justify-center p-4 bg-white ">
           <div className="relative flex  items-center justify-center flex-col ">
             {user && user.id === id && (
@@ -297,9 +296,6 @@ function Profile() {
           </div>
         </div>
       </section>
-      {/* <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
-        <Trending />
-      </section> */}
     </>
   );
 }
