@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useFetchUser from "../hooks/useFetchUser";
-import { IFF, IFFF } from "./url";
-import defaultImage from "../assets/images/dafaultImage.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -15,19 +13,37 @@ function UserDetails() {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
-
-
   const navigate = useNavigate();
-
+  
   const [formData, setFormData] = useState({
     avatar: null,
     username: "",
     email: "",
-    birthdate: "",
+    birthdate: null,
     gender: "",
     location: "",
     bio: "",
-    });
+  });
+
+  useEffect(() => {
+    // Check if userData and user are available before updating formData
+    if (userData) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        username: userData.username || "",
+        email: userData.email || "",
+        gender: userData.gender || "",
+        location: userData.location || "",
+        bio: userData.bio || "",
+        birthdate: userData.birthdate ? new Date(userData.birthdate) : null,
+      }));
+    }
+
+    // Save original formData when entering edit mode
+    if (isEditing) {
+      setOriginalFormData({ ...formData });
+    }
+  }, [userData, isEditing, user]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -40,24 +56,6 @@ function UserDetails() {
       reader.readAsDataURL(file);
     }
   };
-
-  useEffect(() => {
-    // Set formData to userData initially
-    setFormData({
-      ...formData,
-      username: userData.username,
-      email: userData.email,
-      gender: userData.gender,
-      location: userData.location,
-      bio: userData.bio,
-      birthdate: userData.birthdate ? new Date(userData.birthdate) : null,
-    });
-
-    // Save original formData when entering edit mode
-    if (isEditing) {
-      setOriginalFormData({ ...formData });
-    }
-  }, [userData, isEditing]);
 
   const handleDateChange = (date) => {
     setFormData({
@@ -72,10 +70,6 @@ function UserDetails() {
       ...formData,
       [name]: files ? files[0] : value,
     });
-  };
-
-  const handleImageError = (event) => {
-    event.target.src = defaultImage;
   };
 
   const handleEditClick = () => {
@@ -138,8 +132,7 @@ function UserDetails() {
 
   return (
     <>
-
-      <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
+      <section className="md:col-span-12 mb-8 lg:p-6 p-4">
         <div className="items-center justify-center p-4 bg-white ">
           <div className="items-center p-4">
             <div className="flex items-center justify-between">
@@ -148,9 +141,7 @@ function UserDetails() {
                 className={`mb-4 text-md font-bold cursor-pointer 
 
                   ${isEditing ? "text-red-600" : "hover:text-blue-400"}`}
-                onClick={
-                  isEditing ? () => navigate(`/profile/${user.id}`) : handleEditClick
-                }
+                onClick={isEditing ? discardChanges : handleEditClick}
               >
                 {isEditing ? "Cancel" : "Edit Details"}
               </h3>
@@ -270,11 +261,11 @@ function UserDetails() {
                     className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
                     value={formData.location}
                     onChange={handleInputChange}
-                    placeholder="Ex. 12"
                     required=""
                     disabled={!isEditing}
                   />
                 </div>
+
                 <div className="sm:col-span-12">
                   <label
                     htmlFor="bio"
@@ -285,37 +276,37 @@ function UserDetails() {
                   <textarea
                     name="bio"
                     id="bio"
-                    rows="8"
                     className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
-                    placeholder="Write something here..."
+                    rows="5"
                     value={formData.bio}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                   ></textarea>
                 </div>
               </div>
-              <div className="flex  sm:flex-row items-center gap-1 ">
+              <div className="flex flex-col md:flex-row  gap-4">
+
                 <button
                   type="submit"
-                  className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 inline-flex items-center"
+                  className={`px-4 py-2 text-white transition ${
+                    isEditing
+                      ? "bg-blue-500 hover:bg-blue-700"
+                      : "bg-gray-400 cursor-not-allowed"
+                  } `}
                   onClick={handleSaveChanges}
                   disabled={!isEditing}
                 >
-                  Save Changes
+                  Save changes
                 </button>
-                <button
-                  type="button"
-                  className="bg-white border-gray-300 border hover:bg-gray-200 py-2 px-4 inline-flex items-center"
-                  disabled={!isEditing}
-                  onClick={discardChanges}
+                <Link
+                  to={"/"}
+                  className="px-4 py-2 transition bg-white border-gray-300 border hover:bg-gray-200"
                 >
-                  Discard Changes
-                </button>
+                  Go back
+                </Link>
               </div>
             </form>
           </div>
-
-          <div className="items-center p-4 sm:p-2 border-b-2 mb-4"></div>
         </div>
       </section>
     </>

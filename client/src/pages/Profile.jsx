@@ -17,8 +17,7 @@ function Profile() {
   const { userData, imageSrc, setImageSrc } = useFetchUser();
   const [userDetails, setUserDetails] = useState(null);
   const { id } = useParams();
-  const [activeComponent, setActiveComponent] = useState("blogs");
-  const [activeSource, setActiveSource] = useState("blogs");
+  const [activeTab, setActiveTab] = useState("blogs");
 
   const {
     blogs: myBlogs,
@@ -37,12 +36,12 @@ function Profile() {
     handleFavorite: favHandle,
   } = useFetchUserFavorite();
 
-  const handleSourceChange = (source) => {
-    setActiveSource(source);
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
   const getData = () => {
-    if (activeSource === "blogs") {
+    if (activeTab === "blogs") {
       return {
         data: myBlogs,
         loading: myLoading,
@@ -51,7 +50,7 @@ function Profile() {
         favorites: blogFavorites,
         handleFavorite: blogHandle,
       };
-    } else if (activeSource === "favorites") {
+    } else if (activeTab === "favorites") {
       return {
         data: myFavs,
         loading: favLoading,
@@ -80,7 +79,7 @@ function Profile() {
     if (id) {
       fetchUserDetails();
     }
-  }, [id,user]);
+  }, [id, user]);
 
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const fileInputRef = useRef(null);
@@ -134,6 +133,7 @@ function Profile() {
   };
 
   const profileData = id ? userDetails : userData;
+
   return (
     <>
       <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4 ">
@@ -254,24 +254,44 @@ function Profile() {
           </div>
 
           <div className="flex items-center justify-between p-4 sm:p-2 border-b-2 border-gray-100 mb-4">
-            <h3
-              className="text-md font-semibold hover:text-blue-400 cursor-pointer "
-              onClick={() => handleSourceChange("blogs")}
+            <div
+              className={`border-b-2 cursor-pointer ${
+                activeTab === "blogs"
+                  ? "border-blue-500 text-blue-500"
+                  : "border-transparent"
+              }`}
+              onClick={() => handleTabChange("blogs")}
             >
-              Posts
-            </h3>
-            <h3
-              className="text-md font-semibold hover:text-blue-400 cursor-pointer "
-              onClick={() => handleSourceChange("favorites")}
-            >
-              Favorites
-            </h3>
-            <Link to="/userdetails">
-              <h3 className="text-md font-semibold hover:text-blue-400 cursor-pointer ">
-                {/* onClick={() => setActiveComponent('userdetails')} */}
-                Settings
+              <h3 className="text-md font-semibold hover:text-blue-500">
+                Posts
               </h3>
-            </Link>
+            </div>
+            <div
+              className={`border-b-2 cursor-pointer ${
+                activeTab === "favorites"
+                  ? "border-blue-500 text-blue-500"
+                  : "border-transparent"
+              }`}
+              onClick={() => handleTabChange("favorites")}
+            >
+              <h3 className="text-md font-semibold hover:text-blue-500">
+                Favorites
+              </h3>
+            </div>
+            <div
+              className={`border-b-2 cursor-pointer ${
+                activeTab === "settings"
+                  ? "border-blue-500 text-blue-500"
+                  : "border-transparent"
+              }`}
+              onClick={() => handleTabChange("settings")}
+            >
+              <Link to="/userdetails">
+                <h3 className="text-md font-semibold hover:text-blue-500">
+                  Settings
+                </h3>
+              </Link>
+            </div>
           </div>
           <div className="flex items-center justify-between p-4 sm:p-2 ">
             <input
@@ -281,7 +301,7 @@ function Profile() {
           </div>
 
           <div className="items-center p-4 sm:p-2 border-b-2 mb-4">
-            {activeComponent === "blogs" && (
+            {activeTab === "blogs" && (
               <UserPost
                 loading={loading}
                 handleImageError={handleImageError}
@@ -292,7 +312,18 @@ function Profile() {
               />
             )}
 
-            {activeComponent === "userdetails" && <UserDetails />}
+            {activeTab === "favorites" && (
+              <UserPost
+                loading={loading}
+                handleImageError={handleImageError}
+                data={data}
+                error={error}
+                favorites={favorites}
+                handleFavorite={handleFavorite}
+              />
+            )}
+
+            {activeTab === "settings" && <UserDetails />}
           </div>
         </div>
       </section>
