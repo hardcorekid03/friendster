@@ -22,7 +22,6 @@ function PostDetails() {
   const [fetchCommentsFlag, setFetchCommentsFlag] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [favorites, setFavorites] = useState(new Set()); // State to manage favorite blogs
   const itemsPerPage = 5; // Adjust this number as needed
 
   const handleToggleFavorite = useFavoriteToggle(
@@ -295,7 +294,7 @@ function PostDetails() {
                     </div>
 
                     <div
-                      className="mb-2 leading-relaxed text-xs md:text-sm"
+                      className="mb-2 leading-relaxed text-sm md:text-md"
                       dangerouslySetInnerHTML={{
                         __html: blogDetails.blogbody,
                       }}
@@ -323,39 +322,54 @@ function PostDetails() {
                     <div className="mt-4 justify-between">
                       {currentComments.map((comment) => (
                         <div key={comment._id} className="border-b mb-2 pb-2">
-                          <p className="text-sm text-gray-700">
+                          <p className="text-sm md:text-md text-gray-700 mb-2 ">
+                            <Link
+                              to={`/profile/${comment.author._id}`}
+                              className={`hover:underline text-center font-semibold ${
+                                user.id === comment.author._id
+                                  ? "text-green-700"
+                                  : blogDetails.authorId === comment.author._id
+                                  ? "text-blue-700"
+                                  : "text-red-700"
+                              }`}
+                            >
+                              {user.id === comment.author._id
+                                ? "You : "
+                                : blogDetails.authorId === comment.author._id
+                                ? "Author : "
+                                :  `${comment.author.username} : `}
+                            </Link>
+
                             {comment.text}
                           </p>
                           <p className="text-xs text-gray-400">
-                            <Link
-                              to={`/profile/${comment.author._id}`}
-                              className="hover:text-blue-700 hover:underline text-center"
-                            >
-                              {comment.author.username} 
-                            </Link>
                             <span>
-                             {" "} 
+                              {" "}
                               {format(
                                 new Date(comment.createdAt),
-                                "MMMM dd, yyyy"
+                                "MMMM dd, yyyy hh:mm a"
+                              )}
+                            </span>
+
+                            <span className="ml-2">
+                              {(user.id === comment.author._id ||
+                                user.id === blogDetails.authorId) && (
+                                // Show delete button only if the comment author is the current user or the blog author is the current user
+                                <button
+                                  className="text-gray-400 hover:text-red-500"
+                                  onClick={() =>
+                                    handleCommentDelete(comment._id)
+                                  }
+                                >
+                                  Delete
+                                </button>
                               )}
                             </span>
                           </p>
-                          <div className="">
-                            {(user.id === comment.author._id ||
-                              user.id === blogDetails.authorId) && (
-                              // Show delete button only if the comment author is the current user or the blog author is the current user
-                              <button
-                                className="text-gray-300 hover:text-red-500 text-xs"
-                                onClick={() => handleCommentDelete(comment._id)}
-                              >
-                                Delete
-                              </button>
-                            )}
-                          </div>
                         </div>
                       ))}
                     </div>
+                    {totalPages > 1 && (
                     <div className="flex justify-center  mb-8 p-4 border mt-4 text-sm">
                       <button
                         onClick={() => paginate(currentPage - 1)}
@@ -396,6 +410,7 @@ function PostDetails() {
                         Next
                       </button>
                     </div>
+                    )}
                   </div>
                 </>
               )
