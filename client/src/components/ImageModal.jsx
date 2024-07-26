@@ -13,23 +13,11 @@ const ImageModal = ({ isOpen, onClose, children }) => {
         className="bg-transparent relative  p-6 relative max-w-full md:h-[90%]  h-[60%] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="hover:bg-gray-700  text-white px-3 py-1 rounded top-8 right-8 absolute cursor-pointer  ">
-          <button className="text-white" onClick={onClose}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18 18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+        <div
+          className="hover:border-b-2 text-white top-8 right-8 absolute cursor-pointer"
+          onClick={onClose}
+        >
+          <span className="text-white text-xs">Close</span>
         </div>
         {children}
       </div>

@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import Signup from "./Signup";
-import Signin from "./Signin";
-import Recent from "./Recent";
-import PostDetails from "./PostDetails";
-import CreatePost from "./CreatePost";
-import Profile from "./Profile";
-import UserDetails from "./UserDetails";
-import Error404 from "./error/Error404";
-import Error500 from "./error/Error500";
+import Signup from "../pages/Signup"
+import Signin from "../pages/Signin";
+import Recent from "../pages/Recent";
+import PostDetails from "../pages/PostDetails";
+import CreatePost from "../pages/CreatePost";
+import Profile from "../pages/Profile";
+import UserDetails from "../pages/UserDetails";
+import Error404 from "../pages/error/Error404";
+import Error500 from "../pages/error/Error500";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const AppRoutes = () => {

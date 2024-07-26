@@ -321,7 +321,7 @@ function Profile() {
                   className="flex  justify-center items-center hover:text-blue-500"
                 >
                   <h3 className="text-md font-semibold hover:text-blue-500">
-                    Settings
+                    {/* Settings */}
                   </h3>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -375,6 +375,7 @@ function Profile() {
           </div>
         </div>
       </section>
+      
     </>
   );
 }

@@ -13,10 +13,10 @@ function PostDetails() {
   const { user } = useAuthContext();
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
+
   const handleToggleFavorite = useFavoriteToggle(
     id,
     user,
