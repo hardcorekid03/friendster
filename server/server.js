@@ -6,6 +6,7 @@ const path = require('path');
 
 const BlogRoutes = require('./routes/BlogRoutes');
 const UserRoutes = require('./routes/UserRoutes');
+const CommentRoutes = require('./routes/CommentRoutes');
 
 const imageRoutes = require('./routes/ImageRoutes'); 
 const userImageRoutes = require('./routes/userImageRoutes'); 
@@ -37,6 +38,9 @@ app.use('/api/blogs', BlogRoutes);
 app.use('/api/user', UserRoutes);
 app.use('/api/upload', imageRoutes); // Use imageRoutes for handling image uploads
 app.use('/api/user/images', userImageRoutes); // Use userImageRoutes for user image uploads
+app.use("/api/blogs", CommentRoutes); // Use comment routes
+
+
 
 
 

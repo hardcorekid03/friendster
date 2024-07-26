@@ -17,6 +17,14 @@ function PostDetails() {
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
 
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const [fetchCommentsFlag, setFetchCommentsFlag] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [favorites, setFavorites] = useState(new Set()); // State to manage favorite blogs
+  const itemsPerPage = 5; // Adjust this number as needed
+
   const handleToggleFavorite = useFavoriteToggle(
     id,
     user,
@@ -71,6 +79,10 @@ function PostDetails() {
         }
       } catch (error) {
         console.error("Error fetching blog details:", error);
+
+        // Additional error logging
+        console.error(`Status: ${error.response?.status}`);
+        console.error(`Data: ${error.response?.data}`);
       }
 
       setLoading(false);
@@ -91,6 +103,70 @@ function PostDetails() {
 
   const onEditClick = () => {
     navigate(`/createpost/${blogDetails._id}`);
+  };
+
+  // Separate function for fetching comments
+  const fetchComments = async () => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await api.get(`/api/blogs/${id}/comments`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setComments(response.data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, [id, fetchCommentsFlag, user]);
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.post(
+        `/api/blogs/${id}/comments`,
+        { text: commentText },
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
+      setComments([...comments, response.data]);
+      setCommentText("");
+      setFetchCommentsFlag((prevFlag) => !prevFlag); // Toggle fetchCommentsFlag
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
+
+  const handleCommentDelete = async (commentId) => {
+    try {
+      await api.delete(`/api/blogs/${id}/comments/${commentId}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      // Filter out the deleted comment from the comments state
+      setComments(comments.filter((comment) => comment._id !== commentId));
+      setFetchCommentsFlag((prevFlag) => !prevFlag); // Toggle fetchCommentsFlag
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentComments = comments.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(comments.length / itemsPerPage);
+
+  const paginate = (pageNumber) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
   };
 
   return (
@@ -117,7 +193,7 @@ function PostDetails() {
                         {blogDetails.title}
                       </h1>
                       <div className="font-semibold text-blue-400 cursor-pointer flex items-center justify-between mb-4">
-                        <span>
+                        <div>
                           <img
                             src={IFFF + blogDetails.authorImage}
                             alt="Avatar"
@@ -127,13 +203,13 @@ function PostDetails() {
                           <Link to={`/profile/${blogDetails.authorId}`}>
                             {blogDetails.authorUsername}
                           </Link>
-                        </span>
-                        <span className="text-regular text-sm text-gray-500 cursor-pointer flex items-center">
+                        </div>
+                        <div className="text-regular text-sm text-gray-500 cursor-pointer flex items-center">
                           {format(
                             new Date(blogDetails.createdAt),
                             "MMMM dd,yyyy"
                           )}
-                                                    <div
+                          <div
                             className="rounded-sm px-3 py-1 hover:bg-gray-100"
                             onClickCapture={handleToggleFavorite}
                           >
@@ -214,8 +290,7 @@ function PostDetails() {
                               </li>
                             </ul>
                           </div>
-
-                        </span>
+                        </div>
                       </div>
                     </div>
 
@@ -225,6 +300,102 @@ function PostDetails() {
                         __html: blogDetails.blogbody,
                       }}
                     />
+                  </div>
+
+                  <div className="mt-4">
+                    <h2 className="text-xl font-bold mb-2">Comments</h2>
+                    <form onSubmit={handleCommentSubmit}>
+                      <textarea
+                        className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-4 mb-4 outline-blue-500"
+                        rows="3"
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                        placeholder="Add a comment"
+                      ></textarea>
+                      <button
+                        type="submit"
+                        className="bg-blue-500 text-white px-4 py-2"
+                      >
+                        Submit
+                      </button>
+                    </form>
+
+                    <div className="mt-4 justify-between">
+                      {currentComments.map((comment) => (
+                        <div key={comment._id} className="border-b mb-2 pb-2">
+                          <p className="text-sm text-gray-700">
+                            {comment.text}
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            <Link
+                              to={`/profile/${comment.author._id}`}
+                              className="hover:text-blue-700 hover:underline text-center"
+                            >
+                              {comment.author.username} 
+                            </Link>
+                            <span>
+                             {" "} 
+                              {format(
+                                new Date(comment.createdAt),
+                                "MMMM dd, yyyy"
+                              )}
+                            </span>
+                          </p>
+                          <div className="">
+                            {(user.id === comment.author._id ||
+                              user.id === blogDetails.authorId) && (
+                              // Show delete button only if the comment author is the current user or the blog author is the current user
+                              <button
+                                className="text-gray-300 hover:text-red-500 text-xs"
+                                onClick={() => handleCommentDelete(comment._id)}
+                              >
+                                Delete
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-center  mb-8 p-4 border mt-4 text-sm">
+                      <button
+                        onClick={() => paginate(currentPage - 1)}
+                        className={`${
+                          currentPage === 1
+                            ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                            : "bg-white text-blue-500"
+                        } px-3 py-1 mx-1 rounded-l`}
+                        disabled={currentPage === 1}
+                      >
+                        Prev
+                      </button>
+                      {Array.from(
+                        { length: totalPages },
+                        (_, index) => index + 1
+                      ).map((pageNumber) => (
+                        <button
+                          key={pageNumber}
+                          onClick={() => paginate(pageNumber)}
+                          className={`${
+                            currentPage === pageNumber
+                              ? "bg-blue-500 text-white"
+                              : "bg-white text-blue-500"
+                          } px-3 py-2`}
+                        >
+                          {pageNumber}
+                        </button>
+                      ))}
+                      <button
+                        onClick={() => paginate(currentPage + 1)}
+                        className={`${
+                          currentPage === totalPages
+                            ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                            : "bg-white text-blue-500"
+                        } px-3 py-1 mx-1 rounded-r`}
+                        disabled={currentPage === totalPages}
+                      >
+                        Next
+                      </button>
+                    </div>
                   </div>
                 </>
               )

@@ -11,6 +11,7 @@ import api from "../api/Api"; // Import the Axios instance
 
 function Recent() {
   const { user } = useAuthContext();
+
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
@@ -153,7 +154,7 @@ function Recent() {
 
   return (
     <>
-      <ScrollToTopButton />
+            <ScrollToTopButton />
 
       <section className="md:col-span-9 mb-8 lg:p-6 py-4 custom-dark">
         <div className="items-center justify-center p-4 bg-white">
@@ -216,7 +217,7 @@ function Recent() {
                       />
                     </div>
                     <div className="flex justify-between items-center text-sm">
-                      <div className="text-regular text-md text-blue-500 cursor-pointer flex items-center">
+                      <span className="text-regular text-md text-blue-500 cursor-pointer flex items-center">
                         <img
                           src={IFFF + blog.authorImage}
                           alt="Avatar"
@@ -227,7 +228,7 @@ function Recent() {
                         <Link to={`/profile/${blog.authorId}`}>
                           {blog.authorUsername}
                         </Link>
-                      </div>
+                      </span>
                       <span className="text-sm text-gray-400 cursor-pointer flex items-center">
                         Posted:{" "}
                         {`${format(
