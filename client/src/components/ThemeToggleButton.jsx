@@ -1,29 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useTheme } from '../context/ThemeContext'; // Import the useTheme hook
 
 const ThemeToggleButton = () => {
-  const [theme, setTheme] = useState(() => {
-    // Get the theme from local storage, or default to 'light'
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme ? savedTheme : 'light';
-  });
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-
-    // Remove the old theme class
-    root.classList.remove(theme === 'light' ? 'dark' : 'light');
-
-    // Add the new theme class
-    root.classList.add(theme);
-
-    // Save the new theme to local storage
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    // Toggle between 'light' and 'dark'
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  };
+  const { theme, toggleTheme } = useTheme(); // Use the context
 
   return (
     <>
