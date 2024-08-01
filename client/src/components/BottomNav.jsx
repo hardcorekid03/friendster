@@ -2,25 +2,23 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 
-
 const BottomNav = () => {
   const { user } = useAuthContext();
-  
+
   if (!user) {
     return null;
   }
 
   return (
-
-    <div className="fixed bottom-0 left-0 right-0  shadow-lg rounded-md bg-zinc-50 mx-2 ">
+    <div className="fixed bottom-0 left-0 right-0 shadow-lg  bg-zinc-50  dark:bg-spot-dark2 ">
       <div className="w-full p-2 sm:p-4">
         <div className="flex justify-around">
           {/* Home Icon */}
           <Link to="/">
             <div className="flex flex-col items-center justify-center p-2">
-              <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500">
+              <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500 dark:hover:border-spot-green ">
                 <svg
-                  className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500"
+                  className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500 dark:text-spot-light dark:group-hover:text-spot-green"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -32,9 +30,9 @@ const BottomNav = () => {
           {/* Profile Icon */}
           <Link to={`/profile/${user.id}`}>
             <div className="flex flex-col items-center p-2">
-              <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500">
+              <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500 dark:hover:border-spot-green ">
                 <svg
-                  className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500"
+                  className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500 dark:text-spot-light dark:group-hover:text-spot-green"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -46,12 +44,12 @@ const BottomNav = () => {
           {/* Create Icon */}
           <Link to="/createpost">
             <div className="flex flex-col items-center p-2">
-              <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500">
+              <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500 dark:hover:border-spot-green ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500"
+                  className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500 dark:text-spot-light dark:group-hover:text-spot-green"
                 >
                   <path
                     fillRule="evenodd"
@@ -64,9 +62,9 @@ const BottomNav = () => {
           </Link>
           {/* Latest Icon */}
           <div className="flex flex-col items-center p-2">
-            <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500">
+            <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500 dark:hover:border-spot-green ">
               <svg
-                className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500"
+                className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500 dark:text-spot-light dark:group-hover:text-spot-green"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -76,9 +74,9 @@ const BottomNav = () => {
           </div>
           {/* Settings Icon */}
           <div className="flex flex-col items-center p-2">
-            <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500">
+            <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500 dark:hover:border-spot-green ">
               <svg
-                className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500"
+                className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500 dark:text-spot-light dark:group-hover:text-spot-green"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >

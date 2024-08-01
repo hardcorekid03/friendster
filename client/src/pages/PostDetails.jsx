@@ -170,11 +170,11 @@ function PostDetails() {
 
   return (
     <>
-      <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4">
-        <div className="bg-white items-center justify-center p-4 mb-8">
-          <div className="container mx-auto flex py-4 flex-col mb-4 border-b-2">
+      <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4 ">
+        <div className="bg-white items-center justify-center p-4 mb-8 dark:bg-spot-dark2">
+          <div className="container mx-auto flex py-4 flex-col mb-4 ">
             {loading ? (
-              <p>Loading...</p>
+              <p className="dark:text-spot-light">Loading...</p>
             ) : (
               blogDetails && (
                 <>
@@ -188,7 +188,7 @@ function PostDetails() {
                   </div>
                   <div className="p-4 sm:p-2">
                     <div className="justify-center mb-2 border-b-2">
-                      <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
+                      <h1 className="title-font md:text-4xl text-2xl mb-4 font-medium text-gray-900 dark:text-spot-light dark:hover:text-spot-green">
                         {blogDetails.title}
                       </h1>
                       <div className="font-semibold text-blue-400 cursor-pointer flex items-center justify-between mb-4">
@@ -199,17 +199,20 @@ function PostDetails() {
                             className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                             onError={handleImageError}
                           />
-                          <Link to={`/profile/${blogDetails.authorId}`}>
+                          <Link
+                            to={`/profile/${blogDetails.authorId}`}
+                            className="dark:text-spot-green"
+                          >
                             {blogDetails.authorUsername}
                           </Link>
                         </div>
-                        <div className="text-regular text-sm text-gray-500 cursor-pointer flex items-center">
+                        <div className="text-regular text-sm text-gray-500 cursor-pointer flex items-center dark:text-spot-light">
                           {format(
                             new Date(blogDetails.createdAt),
                             "MMMM dd,yyyy"
                           )}
                           <div
-                            className="rounded-sm px-3 py-1 hover:bg-gray-100"
+                            className="rounded-sm px-3 py-1  "
                             onClickCapture={handleToggleFavorite}
                           >
                             <span>
@@ -220,7 +223,7 @@ function PostDetails() {
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24"
                                     fill="currentColor"
-                                    class="size-6"
+                                    className="size-6"
                                   >
                                     <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
                                   </svg>
@@ -245,8 +248,8 @@ function PostDetails() {
                               )}
                             </span>
                           </div>
-                          <div className="group inline-block">
-                            <button className="outline-none focus:outline-none border ml-2 px-2 py-1 bg-white rounded-sm flex items-center w-10 h-10">
+                          <div className="group inline-block dark:text-spot-light ">
+                            <button className="outline-none focus:outline-none border ml-2 px-2 py-1 bg-white rounded-sm flex items-center w-10 h-10 dark:bg-spot-dark2 dark:border-spot-light">
                               <span className="pr-1 flex-1">
                                 <svg
                                   aria-hidden="true"
@@ -267,24 +270,24 @@ function PostDetails() {
                               </span>
                             </button>
 
-                            <ul className="cursor-pointer bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32">
+                            <ul className="cursor-pointer bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32 dark:bg-spot-dark2 dark:border-none dark:text-spot-light">
                               {blogDetails.authorUsername === user.username && (
                                 <>
                                   <li
-                                    className="rounded-sm px-3 py-1 hover:bg-gray-100"
+                                    className="rounded-sm px-3 py-1 hover:bg-gray-100 dark:hover:bg-spot-dark3"
                                     onClickCapture={onDeleteClick}
                                   >
                                     Delete
                                   </li>
                                   <li
-                                    className="rounded-sm px-3 py-1 hover:bg-gray-100"
+                                    className="rounded-sm px-3 py-1 hover:bg-gray-100 dark:hover:bg-spot-dark3"
                                     onClickCapture={onEditClick}
                                   >
                                     Edit
                                   </li>
                                 </>
                               )}
-                              <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                              <li className="rounded-sm px-3 py-1 hover:bg-gray-100 dark:hover:bg-spot-dark3">
                                 Share
                               </li>
                             </ul>
@@ -294,7 +297,7 @@ function PostDetails() {
                     </div>
 
                     <div
-                      className="mb-2 leading-relaxed text-sm md:text-md"
+                      className="mb-2 leading-relaxed text-sm md:text-md dark:text-spot-light"
                       dangerouslySetInnerHTML={{
                         __html: blogDetails.blogbody,
                       }}
@@ -302,10 +305,12 @@ function PostDetails() {
                   </div>
 
                   <div className="mt-4">
-                    <h2 className="text-xl font-bold mb-2">Comments</h2>
+                    <h2 className="text-xl font-bold mb-2 dark:text-spot-light">
+                      Comments
+                    </h2>
                     <form onSubmit={handleCommentSubmit}>
                       <textarea
-                        className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-4 mb-4 outline-blue-500"
+                        className="border p-2 mb-4  text-gray-800 focus:outline-none border-gray-300 bg-white w-full text-sm px-4 py-3 outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                         rows="3"
                         value={commentText}
                         onChange={(e) => setCommentText(e.target.value)}
@@ -313,8 +318,8 @@ function PostDetails() {
                       ></textarea>
                       <button
                         type="submit"
-                        className="bg-blue-500 text-white px-4 py-2"
-                      >
+                        className="mr-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex items-center dark:bg-spot-green dark:hover:bg-spot-green/80 "
+                        >
                         Submit
                       </button>
                     </form>
@@ -322,10 +327,10 @@ function PostDetails() {
                     <div className="mt-4 justify-between">
                       {currentComments.map((comment) => (
                         <div key={comment._id} className="border-b mb-2 pb-2">
-                          <p className="text-sm md:text-md text-gray-700 mb-2 ">
+                          <p className="text-sm md:text-md text-gray-700 mb-2 dark:text-spot-light">
                             <Link
                               to={`/profile/${comment.author._id}`}
-                              className={`hover:underline text-center font-semibold ${
+                              className={`hover:underline text-center font-bold ${
                                 user.id === comment.author._id
                                   ? "text-green-700"
                                   : blogDetails.authorId === comment.author._id
@@ -337,12 +342,12 @@ function PostDetails() {
                                 ? "You : "
                                 : blogDetails.authorId === comment.author._id
                                 ? "Author : "
-                                :  `${comment.author.username} : `}
+                                : `${comment.author.username} : `}
                             </Link>
 
                             {comment.text}
                           </p>
-                          <p className="text-xs text-gray-400">
+                          <p className="text-xs text-gray-400 dark:text-spot-light">
                             <span>
                               {" "}
                               {format(
@@ -356,7 +361,7 @@ function PostDetails() {
                                 user.id === blogDetails.authorId) && (
                                 // Show delete button only if the comment author is the current user or the blog author is the current user
                                 <button
-                                  className="text-gray-400 hover:text-red-500"
+                                  className="text-gray-400 text-xs hover:text-red-500 dark:text-spot-light dark:hover:text-red-500 "
                                   onClick={() =>
                                     handleCommentDelete(comment._id)
                                   }
@@ -370,46 +375,46 @@ function PostDetails() {
                       ))}
                     </div>
                     {totalPages > 1 && (
-                    <div className="flex justify-center  mb-8 p-4 border mt-4 text-sm">
-                      <button
-                        onClick={() => paginate(currentPage - 1)}
-                        className={`${
-                          currentPage === 1
-                            ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                            : "bg-white text-blue-500"
-                        } px-3 py-1 mx-1 rounded-l`}
-                        disabled={currentPage === 1}
-                      >
-                        Prev
-                      </button>
-                      {Array.from(
-                        { length: totalPages },
-                        (_, index) => index + 1
-                      ).map((pageNumber) => (
+                      <div className="flex justify-center  mb-8 p-4 border mt-4 text-sm">
                         <button
-                          key={pageNumber}
-                          onClick={() => paginate(pageNumber)}
+                          onClick={() => paginate(currentPage - 1)}
                           className={`${
-                            currentPage === pageNumber
-                              ? "bg-blue-500 text-white"
+                            currentPage === 1
+                              ? "bg-gray-100 text-gray-500 cursor-not-allowed"
                               : "bg-white text-blue-500"
-                          } px-3 py-2`}
+                          } px-3 py-1 mx-1 rounded-l`}
+                          disabled={currentPage === 1}
                         >
-                          {pageNumber}
+                          Prev
                         </button>
-                      ))}
-                      <button
-                        onClick={() => paginate(currentPage + 1)}
-                        className={`${
-                          currentPage === totalPages
-                            ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                            : "bg-white text-blue-500"
-                        } px-3 py-1 mx-1 rounded-r`}
-                        disabled={currentPage === totalPages}
-                      >
-                        Next
-                      </button>
-                    </div>
+                        {Array.from(
+                          { length: totalPages },
+                          (_, index) => index + 1
+                        ).map((pageNumber) => (
+                          <button
+                            key={pageNumber}
+                            onClick={() => paginate(pageNumber)}
+                            className={`${
+                              currentPage === pageNumber
+                                ? "bg-blue-500 text-white"
+                                : "bg-white text-blue-500"
+                            } px-3 py-2`}
+                          >
+                            {pageNumber}
+                          </button>
+                        ))}
+                        <button
+                          onClick={() => paginate(currentPage + 1)}
+                          className={`${
+                            currentPage === totalPages
+                              ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                              : "bg-white text-blue-500"
+                          } px-3 py-1 mx-1 rounded-r`}
+                          disabled={currentPage === totalPages}
+                        >
+                          Next
+                        </button>
+                      </div>
                     )}
                   </div>
                 </>

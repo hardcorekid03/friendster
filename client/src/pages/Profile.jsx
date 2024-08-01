@@ -160,12 +160,12 @@ function Profile() {
           alt="modal content"
         />
       </ImageModal>
-      <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4 ">
-        <div className="items-center justify-center p-4 bg-white ">
-          <div className="relative flex  items-center justify-center flex-col ">
+      <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4 mb-4 md:mb-2">
+        <div className="items-center justify-center p-4 dark:bg-spot-dark2 text-spot-light">
+          <div className="relative flex items-center justify-center flex-col">
             {user && user.id === id && (
               <div
-                className="absolute flex top-3 right-3 hover:bg-gray-700  text-white px-3 py-1 rounded  "
+                className="absolute flex top-3 right-3 hover:bg-spot-dark2 text-spot-light px-3 py-1 rounded"
                 onClick={handleSVGClick}
               >
                 <svg
@@ -174,7 +174,7 @@ function Profile() {
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  className="size-6 cursor-pointer  "
+                  className="size-6 cursor-pointer"
                 >
                   <path
                     strokeLinecap="round"
@@ -196,31 +196,31 @@ function Profile() {
               </div>
             )}
             <div
-              className="absolute  w-[150px] h-[150px] lg:h-[180px] lg:w-[180px] -bottom-2  md:left-10 sm:left-50 bg-transparent text-white px-3 py-1 rounded "
+              className="cursor-pointer absolute w-[150px] h-[150px] lg:h-[180px] lg:w-[180px] -bottom-2 md:left-10 sm:left-50 bg-transparent text-spot-light px-3 py-1 rounded"
               onClick={() => handleImageClick(avatar)}
             >
               <img
-                className="h-full w-full border-4 shadow border-white  object-cover  "
-                alt="hero"
+                className="h-full w-full border-2 shadow border-spot-light object-cover border-zinc-100"
+                alt="avatar"
                 src={avatar}
                 onError={handleAvatarError}
               />
             </div>
             <div
-              className=" mb-4 w-[100%] md:h-[350px] h-[200px] xl:h-[400px]"
+              className="mb-4 w-[100%] md:h-[350px] h-[200px] xl:h-[400px]"
               onClick={() => handleImageClick(userBanner)}
             >
               {hasChanges ? (
                 <img
                   className="h-full w-full object-cover"
-                  alt="hero"
+                  alt="banner"
                   src={imageSrc}
                   onError={handleImageError}
                 />
               ) : (
                 <img
                   className="h-full w-full object-cover"
-                  alt="hero"
+                  alt="banner"
                   src={userBanner}
                   onError={handleImageError}
                 />
@@ -228,25 +228,29 @@ function Profile() {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-4 border mb-4 md:flex md:justify-between mt-6">
-            <div className="items-center justify-center">
-              <h3 className="font-semibold text-xl">
-                @{profileData?.username} |{" "}
-                <span className="text-sm">
+          <div className="dark:bg-spot-dark2 p-4 border mb-4 md:flex md:justify-between mt-6 text-gray-700 dark:text-spot-light">
+            <div className="items-center justify-center t">
+              <h3 className="font-semibold text-xl text-gray-700 dark:text-spot-green">
+                @{profileData?.username}{" "}
+                <span className="text-sm text-gray-700 dark:text-spot-light">
+                  |{" "}
                   {profileData?.birthdate && (
-                    <>{calculateAge(profileData.birthdate)} {profileData?.gender} </>
+                    <>
+                      {calculateAge(profileData.birthdate)}{" "}
+                      {profileData?.gender}{" "}
+                    </>
                   )}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">
                 Location:{" "}
-                <span className="text-md font-normal text-gray-800">
+                <span className="text-md font-normal text-gray-700 dark:text-spot-light">
                   {profileData?.location}
                 </span>
               </h3>
               <h3 className="text-sm font-semibold">
                 Joined:{" "}
-                <span className="text-md font-normal text-gray-800">
+                <span className="text-md font-normaltext-gray-700 dark:text-spot-light">
                   {profileData?.createdAt &&
                     `${format(
                       new Date(profileData?.createdAt),
@@ -254,9 +258,8 @@ function Profile() {
                     )} `}
                 </span>
               </h3>
-
               <h3 className="text-sm font-semibold">
-                <span className="text-md font-normal italic text-gray-800">
+                <span className="text-md font-normal italic text-gray-700 dark:text-spot-light">
                   "{profileData?.bio || "error 404: bio not found"}"
                 </span>
               </h3>
@@ -266,13 +269,13 @@ function Profile() {
               {isImageUploaded && (
                 <>
                   <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  w-full mb-2 md:mb-0 md:w-auto md:mr-2"
+                    className="bg-spot-green hover:bg-green-700 text-spot-light font-bold py-2 px-4 w-full mb-2 md:mb-0 md:w-auto md:mr-2"
                     onClick={handleSaveChanges}
                   >
                     Save Changes
                   </button>
                   <button
-                    className="bg-white border-gray-300 border hover:bg-gray-200 font-bold py-2 px-4  w-full md:w-auto"
+                    className="bg-spot-dark2 border-spot-dark2 border hover:bg-spot-dark text-spot-light font-bold py-2 px-4 w-full md:w-auto"
                     onClick={handleDiscardChanges}
                   >
                     Discard Changes
@@ -282,45 +285,41 @@ function Profile() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between p-4 sm:p-2 border-b-2 border-gray-100 mb-4">
+          <div className="flex items-center justify-between p-4 sm:p-2 border-b mb-4">
             <div
-              className={`border-b-2 cursor-pointer ${
+              className={` cursor-pointer  ${
                 activeTab === "blogs"
-                  ? "border-blue-500 text-blue-500"
-                  : "border-transparent"
+                  ? " text-blue-500 dark:text-spot-green"
+                  : "text-gray-700 border-transparent hover:text-blue-500 dark:hover:text-spot-green dark:text-spot-light"
               }`}
               onClick={() => handleTabChange("blogs")}
             >
-              <h3 className="text-md font-semibold hover:text-blue-500">
-                Posts
-              </h3>
+              <h3 className="text-md font-semibold  ">Posts</h3>
             </div>
             <div
-              className={`border-b-2 cursor-pointer ${
+              className={`cursor-pointer ${
                 activeTab === "favorites"
-                  ? "border-blue-500 text-blue-500"
-                  : "border-transparent"
+                  ? " text-blue-500 dark:text-spot-green"
+                  : "text-gray-700 border-transparent hover:text-blue-500 dark:hover:text-spot-green dark:text-spot-light"
               }`}
               onClick={() => handleTabChange("favorites")}
             >
-              <h3 className="text-md font-semibold hover:text-blue-500">
-                Favorites
-              </h3>
+              <h3 className="text-md font-semibold  ">Favorites</h3>
             </div>
             <div
-              className={`border-b-2 cursor-pointer ${
+              className={`cursor-pointer ${
                 activeTab === "settings"
-                  ? "border-blue-500 text-blue-500"
-                  : "border-transparent"
+                  ? " text-blue-500 dark:text-spot-green"
+                  : "text-gray-700 border-transparent hover:text-blue-500 dark:hover:text-spot-green dark:text-spot-light"
               }`}
               onClick={() => handleTabChange("settings")}
             >
               {user && user.id === id && (
                 <Link
                   to="/userdetails"
-                  className="flex  justify-center items-center hover:text-blue-500"
+                  className="flex justify-center items-center hover:text-spot-green"
                 >
-                  <h3 className="text-md font-semibold hover:text-blue-500">
+                  <h3 className="text-md font-semibold hover:text-spot-green">
                     {/* Settings */}
                   </h3>
                   <svg
@@ -343,12 +342,12 @@ function Profile() {
           </div>
           <div className="flex items-center justify-between p-4 sm:p-2 ">
             <input
-              className="w-full border-2 border-gray-300 focus:border-blue-500 focus:outline-none focus:border-opacity-100 px-4 py-2"
+              className="border p-2  text-gray-800 focus:outline-none border-gray-300 bg-white w-full text-sm px-4 py-3 outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
               placeholder="Write something...."
             />
           </div>
 
-          <div className="items-center p-4 sm:p-2 border-b-2 mb-4">
+          <div className="items-center p-4 sm:p-2  mb-4 border-spot-dark">
             {activeTab === "blogs" && (
               <UserPost
                 loading={loading}
@@ -375,7 +374,6 @@ function Profile() {
           </div>
         </div>
       </section>
-      
     </>
   );
 }

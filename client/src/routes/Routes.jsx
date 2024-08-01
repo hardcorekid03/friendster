@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import Signup from "../pages/Signup"
+import Signup from "../pages/Signup";
 import Signin from "../pages/Signin";
 import Recent from "../pages/Recent";
 import PostDetails from "../pages/PostDetails";
@@ -31,11 +31,27 @@ const AppRoutes = () => {
           element={user ? <Recent /> : <Navigate to="/signin" />}
         />
 
-        <Route path="/postdetails/:id" element={<PostDetails />} />
-        <Route path="/createpost" element={<CreatePost />} />
-        <Route path="/createpost/:id" element={<CreatePost />} />
-        <Route path="/profile/:id" element={<Profile />} />
-        <Route path="/userdetails" element={<UserDetails />} />
+        <Route
+          path="/postdetails/:id"
+          element={user ? <PostDetails /> : <Navigate to="/signin" />}
+        />
+
+        <Route
+          path="/createpost"
+          element={user ? <CreatePost /> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/createpost/:id"
+          element={user ? <CreatePost /> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/profile/:id"
+          element={user ? <Profile /> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/userdetails"
+          element={user ? <UserDetails /> : <Navigate to="/signin" />}
+        />
 
         <Route
           path="/signin"

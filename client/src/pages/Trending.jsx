@@ -17,7 +17,7 @@ function Trending() {
 
   return (
     <>
-      <div className="p-4 bg-gradient-to-r from-blue-100 to-blue-200 shadow-lg flex flex-col items-center w-full"
+      <div className="p-4 bg-gray-200 shadow-lg flex flex-col items-center w-full  border dark:border-spot-dark2 dark:bg-spot-dark2"
           //  style={{ backgroundImage: `url(${baseUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="flex justify-center border-2 shadow-sm border-white  w-[100px] h-[100px] mb-4 rounded-full overflow-hidden">
@@ -28,32 +28,27 @@ function Trending() {
             onError={handleImageError}
           />
         </div>
-        <label className="block text-sm font-semibold mb-2" htmlFor="name">
-          {userData.username}
+        <label className="block text-sm font-semibold mb-2 dark:text-spot-light dark:hover:text-spot-green">
+          @{userData.username}
         </label>
-      </div>
-      <div className="bg-white p-6">
-        <label className="block text-sm font-medium mb-2">
-          Bio:
-          <span className="text-blue-400 font-normal">
+        <label className="block text-sm font-medium">
+          <span className="text-blue-400 font-normal dark:text-spot-light">
             {" "}
             {userData.bio || ""}
           </span>
         </label>
-        <label className="block text-sm font-medium mb-2">
+      </div>
+      <div className="bg-white p-6 dark:bg-spot-dark dark:text-spot-light border-2 dark:border-spot-dark2">
+        <label className="block text-sm font-medium mb-2 ">
           Location:{" "}
-          <span className="text-blue-400 font-normal">
+          <span className="text-blue-400 font-normal dark:text-spot-light">
             {" "}
             {userData.location}
           </span>
         </label>
-        <label className="block text-sm font-medium mb-2">
-          Gender:{" "}
-          <span className="text-blue-400 font-normal"> {userData.gender}</span>
-        </label>
-        <label className="block text-sm font-medium mb-2">
+        <label className="block text-sm font-medium mb-2 ">
           Joined:{" "}
-          <span className="text-blue-400 font-normal">
+          <span className="text-blue-400 font-normal  dark:text-spot-light">
             {month + " " + year}
           </span>
         </label>

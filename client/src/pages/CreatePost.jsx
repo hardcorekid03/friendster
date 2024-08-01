@@ -153,7 +153,7 @@ function CreatePost() {
   return (
     <>
       <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
-        <div className="p-4 bg-white mb-8">
+        <div className="p-4 bg-white mb-8 dark:bg-spot-dark2 dark:text-spot-light">
           <div>
             <Toaster />
           </div>
@@ -174,7 +174,7 @@ function CreatePost() {
 
             {/* Conditional rendering */}
 
-            <div className="relative cursor-pointer flex items-center justify-center bg-gray-00 border-dashed border-2 border-gray-300 hover:border-blue-300 hover:shadow w-[100%] md:h-[250px] h-[250px] p-2">
+            <div className="relative cursor-pointer flex items-center justify-center bg-gray-00 border-dashed border-2 border-gray-300 hover:border-blue-300 hover:shadow w-[100%] md:h-[250px] h-[250px] p-2 dark:hover:border-spot-green">
               <div className="absolute top-2 right-2 bg-gray-400 text-white px-3 py-1 rounded ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -234,8 +234,8 @@ function CreatePost() {
 
           <div className="preview-img p-2">
             <input
-              className="w-full border border-gray-300 focus:border-blue-500 focus:outline-none focus:border-opacity-100 px-4 py-2"
-              placeholder="Enter blog title"
+          className="border  text-gray-800 focus:outline-none border-gray-300 bg-white w-full text-sm px-4 py-3 outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
+          placeholder="Enter blog title"
               value={title}
               onChange={handleTitleChange}
             />
@@ -252,14 +252,14 @@ function CreatePost() {
 
           <div className="px-2 py-8 mt-10 ">
             <button
-              className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold  py-2 px-4 inline-flex items-center"
+              className="mr-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex items-center dark:bg-spot-green dark:hover:bg-spot-green/80 "
               onClick={handleSubmit}
             >
               <span className="">Save Post</span>
             </button>
 
             <button
-              className="bg-white border-gray-300 border hover:bg-gray-200 text-gray-700 font-bold py-2 px-4 inline-flex items-center"
+              className="bg-white border-gray-300 border hover:bg-gray-200 text-gray-700  py-2 px-4 inline-flex items-center dark:border-none dark:text-white dark:bg-spot-dark3 dark:hover:bg-spot-dark3/80"
               onClick={handleCancel}
             >
               <span>Cancel</span>
