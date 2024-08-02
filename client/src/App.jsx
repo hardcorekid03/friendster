@@ -6,7 +6,7 @@ function App() {
   return (
     <>
     
-      <div className="dark:bg-spot-dark pt-4 ">
+      <div className="dark:bg-spot-dark pt-4 h-screen ">
         <Navbar />
         <Home />
         <div className="md:hidden">

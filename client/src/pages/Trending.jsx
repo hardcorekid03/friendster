@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useAuthContext } from "../hooks/useAuthContext";
 import { IFFF } from "./url";
 import useFetchUser from "../hooks/useFetchUser";
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 
 function Trending() {
   const { userData} = useFetchUser();
+  const { user } = useAuthContext();
+
   const date = new Date(userData.createdAt || Date.now());
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();
@@ -28,9 +30,9 @@ function Trending() {
             onError={handleImageError}
           />
         </div>
-        <label className="block text-sm font-semibold mb-2 dark:text-spot-light dark:hover:text-spot-green">
-          @{userData.username}
-        </label>
+        <Link to={`/profile/${user.id}`} className="block text-sm font-semibold mb-2 dark:text-spot-light dark:hover:text-spot-green"> 
+        @{userData.username}
+        </Link>
         <label className="block text-sm font-medium">
           <span className="text-blue-400 font-normal dark:text-spot-light">
             {" "}

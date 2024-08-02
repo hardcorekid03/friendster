@@ -64,6 +64,7 @@ function Profile() {
         handleFavorite: favHandle,
       };
     }
+    
   };
 
   const { data, loading, error, favorites, handleFavorite, setLoading } =
@@ -309,15 +310,15 @@ function Profile() {
             <div
               className={`cursor-pointer ${
                 activeTab === "settings"
-                  ? " text-blue-500 dark:text-spot-green"
+                  ? "text-blue-500 dark:text-spot-green"
                   : "text-gray-700 border-transparent hover:text-blue-500 dark:hover:text-spot-green dark:text-spot-light"
               }`}
               onClick={() => handleTabChange("settings")}
             >
               {user && user.id === id && (
                 <Link
-                  to="/userdetails"
-                  className="flex justify-center items-center hover:text-spot-green"
+                  to={`/userdetails/${user.id}`}
+                  className="flex justify-center items-center dark:hover:text-spot-green"
                 >
                   <h3 className="text-md font-semibold hover:text-spot-green">
                     {/* Settings */}

@@ -49,7 +49,7 @@ const AppRoutes = () => {
           element={user ? <Profile /> : <Navigate to="/signin" />}
         />
         <Route
-          path="/userdetails"
+          path="/userdetails/:id"
           element={user ? <UserDetails /> : <Navigate to="/signin" />}
         />
 

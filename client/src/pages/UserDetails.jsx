@@ -14,7 +14,7 @@ function UserDetails() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     avatar: null,
     username: "",
@@ -133,7 +133,7 @@ function UserDetails() {
   return (
     <>
       <section className="md:col-span-12 mb-8 lg:p-6 p-4">
-        <div className="items-center justify-center p-4 bg-white ">
+        <div className="items-center justify-center p-4 bg-white  dark:text-spot-light dark:bg-spot-dark2 rounded-lg">
           <div className="items-center p-4">
             <div className="flex items-center justify-between">
               <h3 className="mb-4 text-md font-bold">Update Profile Details</h3>
@@ -159,7 +159,7 @@ function UserDetails() {
                     type="file"
                     name="avatar"
                     id="avatar"
-                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                     placeholder="Type product name"
                     onChange={handleFileChange}
                     required=""
@@ -179,7 +179,7 @@ function UserDetails() {
                     type="text"
                     name="username"
                     id="username"
-                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 focus:outline-none outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                     value={formData.username}
                     onChange={handleInputChange}
                     placeholder="Product brand"
@@ -198,7 +198,7 @@ function UserDetails() {
                     type="text"
                     name="email"
                     id="email"
-                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 focus:outline-none outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                     value={formData.email}
                     onChange={handleInputChange}
                     required=""
@@ -217,7 +217,7 @@ function UserDetails() {
                     wrapperClassName="w-full"
                     id="birthdate"
                     name="birthdate"
-                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 focus:outline-none outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                     selected={formData.birthdate}
                     onChange={handleDateChange}
                     dateFormat="MMMM dd, yyyy" // Adjust date format as needed
@@ -237,7 +237,7 @@ function UserDetails() {
                   <select
                     name="gender"
                     id="gender"
-                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 focus:outline-none outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                     value={formData.gender}
                     onChange={handleInputChange}
                     disabled={!isEditing}
@@ -258,7 +258,7 @@ function UserDetails() {
                     type="text"
                     name="location"
                     id="location"
-                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 focus:outline-none outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                     value={formData.location}
                     onChange={handleInputChange}
                     required=""
@@ -276,7 +276,7 @@ function UserDetails() {
                   <textarea
                     name="bio"
                     id="bio"
-                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 focus:outline-none outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                     rows="5"
                     value={formData.bio}
                     onChange={handleInputChange}
@@ -284,26 +284,31 @@ function UserDetails() {
                   ></textarea>
                 </div>
               </div>
-              <div className="flex flex-col md:flex-row  gap-4">
-
+              <div className="flex flex-col md:flex-row  gap-4 mb-8 md:mb-0">
                 <button
                   type="submit"
                   className={`px-4 py-2 text-white transition ${
                     isEditing
-                      ? "bg-blue-500 hover:bg-blue-700"
-                      : "bg-gray-400 cursor-not-allowed"
+                      ? "bg-blue-500 hover:bg-blue-700 dark:bg-spot-green dark:hover:bg-spot-green/80 "
+                      : "bg-gray-400 cursor-not-allowed dark:bg-gray-400  "
                   } `}
                   onClick={handleSaveChanges}
                   disabled={!isEditing}
                 >
                   Save changes
                 </button>
-                <Link
-                  to={"/"}
-                  className="px-4 py-2 transition bg-white border-gray-300 border hover:bg-gray-200"
+
+                <button
+                  type="submit"
+                  className="bg-white border-gray-300 block transition border hover:bg-gray-200 text-gray-700 py-2 px-4 dark:border-none dark:text-white dark:bg-spot-dark3 dark:hover:bg-spot-dark3/80"
                 >
-                  Go back
-                </Link>
+                  <Link
+                    to={`/profile/${user.id}`}
+                    className="w-full h-full block text-inherit no-underline"
+                  >
+                    Go back
+                  </Link>
+                </button>
               </div>
             </form>
           </div>

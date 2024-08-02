@@ -31,10 +31,10 @@ function Signin() {
         <Toaster />
       </div>
       <section className="md:col-span-12 lg:p-6 sm:p-4 flex items-center justify-center ">
-        <div className="bg-white rounded-lg shadow-lg p-6 w-full sm:max-w-md">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-full sm:max-w-md dark:bg-spot-dark2 ">
           <div className="text-center mb-4">
             {/* <img src={logo} alt="logo" className="w-40 inline-block" /> */}
-            <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+            <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-spot-light">
               Sign in to your account
             </h2>
           </div>
@@ -43,7 +43,7 @@ function Signin() {
               <div>
                 <label
                   htmlFor="identifier"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-sm font-medium leading-6 text-gray-900 dark:text-spot-light"
                 >
                   Username or Email
                 </label>
@@ -64,7 +64,7 @@ function Signin() {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-sm font-medium leading-6 text-gray-900 dark:text-spot-light"
                 >
                   Password
                 </label>
@@ -75,7 +75,7 @@ function Signin() {
                     type={showPassword ? "text" : "password"}
                     autoComplete="new-password"
                     required
-                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500 "
                     placeholder="Enter password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -96,7 +96,7 @@ function Signin() {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="flex w-full justify-center bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600  dark:bg-spot-green dark:hover:bg-spot-green/80"
                   disabled={isLoading}
                 >
                   {isLoading ? "Signing in..." : "Sign in"}

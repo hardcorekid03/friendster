@@ -286,8 +286,8 @@ function Recent() {
       onClick={() => paginate(currentPage - 1)}
       className={`${
         currentPage === 1
-          ? "bg-gray-100 text-gray-500 dark:bg-spot-dark2 dark:text-spot-light cursor-not-allowed"
-          : "bg-white dark:bg-spot-dark text-blue-500 dark:text-spot-green"
+          ? "bg-gray-100 text-gray-500 dark:bg-spot-dark dark:text-spot-light cursor-not-allowed"
+          : "bg-white dark:bg-spot-dark2 text-blue-500 dark:text-spot-green"
       } px-3 py-1 mx-1 rounded-l`}
       disabled={currentPage === 1}
     >
@@ -301,7 +301,7 @@ function Recent() {
           className={`${
             currentPage === pageNumber
               ? "bg-blue-500 dark:bg-spot-green text-white"
-              : "bg-white dark:bg-spot-dark text-blue-500 dark:text-spot-green"
+              : "bg-white dark:bg-spot-dark2 text-blue-500 dark:text-spot-green"
           } px-3 py-2`}
         >
           {pageNumber}
@@ -312,8 +312,8 @@ function Recent() {
       onClick={() => paginate(currentPage + 1)}
       className={`${
         currentPage === totalPages
-          ? "bg-gray-100 text-gray-500 dark:bg-spot-dark2 dark:text-spot-light cursor-not-allowed"
-          : "bg-white dark:bg-spot-dark text-blue-500 dark:text-spot-green"
+          ? "bg-gray-100 text-gray-500 dark:bg-spot-dark dark:text-spot-light cursor-not-allowed"
+          : "bg-white dark:bg-spot-dark2 text-blue-500 dark:text-spot-green"
       } px-3 py-1 mx-1 rounded-r`}
       disabled={currentPage === totalPages}
     >

@@ -1,18 +1,27 @@
 import React, { useState } from "react";
 import {
   Navbar,
-  MobileNav,
   Typography,
   Button,
   IconButton,
+  Collapse,
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
 } from "@material-tailwind/react";
+import {
+  UserCircleIcon,
+  ChevronDownIcon,
+  MoonIcon,
+  PowerIcon,
+  SunIcon,
+} from "@heroicons/react/24/solid";
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Link } from "react-router-dom";
 import Trending from "../pages/Trending";
-import ThemeToggleButton from "./ThemeToggleButton";
 import { useTheme } from "../context/ThemeContext";
-import logo from "../assets/images/nav-logo.svg";
 
 export function NavbarDefault() {
   const { user } = useAuthContext();
@@ -30,6 +39,7 @@ export function NavbarDefault() {
   const handleLogout = () => {
     logout();
   };
+
   if (!user) {
     return null;
   }
@@ -78,9 +88,7 @@ export function NavbarDefault() {
           />
         </svg>
 
-        <Link to="/" className="flex items-center">
-          Trending
-        </Link>
+        <span className="flex items-center">Trending</span>
       </Typography>
       <Typography
         as="li"
@@ -94,42 +102,139 @@ export function NavbarDefault() {
           fill="currentColor"
           className="size-5"
         >
-          <path
-            fillRule="evenodd"
-            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
-            clipRule="evenodd"
-          />
+          <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
         </svg>
 
-        <Link to="/" className="flex items-center">
-          Recent
-        </Link>
+        <span className="flex items-center">Find People</span>
       </Typography>
-      <Link to={`/profile/${user.id}`}>
-        <Typography
-          as="li"
-          variant="small"
-          color="blue-gray"
-          className="flex items-center justify-center gap-x-2 p-2 font-medium hover:text-blue-500 dark:hover:text-spot-green dark:hover:bg-spot-dark/30 dark:hover:rounded"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="size-5 "
-          >
-            <path
-              fillRule="evenodd"
-              d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-              clipRule="evenodd"
-            />
-          </svg>
-
-          <span className="flex items-center">Profile</span>
-        </Typography>
-      </Link>
     </ul>
   );
+
+  // profile menu component
+  const profileMenuItems = [
+    {
+      label: "My Profile",
+      icon: UserCircleIcon,
+    },
+    {
+      label: theme === "dark" ? "Light Mode" : "Dark Mode",
+      icon: theme === "dark" ? SunIcon : MoonIcon,
+      action: toggleTheme,
+    },
+    {
+      label: "Sign Out",
+      icon: PowerIcon,
+      action: handleLogout,
+    },
+  ];
+
+  function ProfileMenu() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const closeMenu = () => setIsMenuOpen(false);
+
+    return (
+      <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
+        <MenuHandler>
+          <Button
+            variant="text"
+            color="blue-gray"
+            className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
+          >
+            <span className="dark:text-spot-light dark:hover:text-spot-green">
+              {" "}
+              {user.username}
+            </span>
+            <ChevronDownIcon
+              strokeWidth={2.5}
+              className={`h-3 w-3 transition-transform ${
+                isMenuOpen ? "rotate-180" : ""
+              }`}
+            />
+          </Button>
+        </MenuHandler>
+        <MenuList className="p-1 ">
+          {profileMenuItems.map(({ label, icon, action }, key) => {
+            const isLastItem = key === profileMenuItems.length - 1;
+            // Define content for each menu item
+            const content = (
+              <>
+                {React.createElement(icon, {
+                  className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
+                  strokeWidth: 2,
+                })}
+                <Typography
+                  as="span"
+                  variant="small"
+                  className="font-normal"
+                  color={isLastItem ? "red" : "inherit"}
+                >
+                  {label}
+                </Typography>
+              </>
+            );
+
+            // Determine the MenuItem based on the label
+            return label === "My Profile" ? (
+              <Link
+                to={`/profile/${user.id}`}
+                key={label}
+              >
+                <MenuItem
+                  onClick={closeMenu}
+                  className="flex items-center gap-2 rounded "
+                >
+                  {content}
+                </MenuItem>
+              </Link>
+            ) : label === "Dark Mode" ? (
+              <MenuItem
+                key={label}
+                onClick={action} // Call the toggleTheme action
+                className="flex items-center gap-2 rounded"
+              >
+                {React.createElement(icon, {
+                  className: `h-4 w-4`,
+                  strokeWidth: 2,
+                })}
+                <Typography
+                  as="span"
+                  variant="small"
+                  className="font-normal "
+                  color="inherit"
+                >
+                  {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                </Typography>
+              </MenuItem>
+            ) : label === "Sign Out" ? (
+              <MenuItem
+                key={label}
+                onClick={action} // Call the handleLogout action
+                className="flex items-center gap-2 rounded hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+              >
+                {content}
+              </MenuItem>
+            ) : (
+              <MenuItem
+                key={label}
+                onClick={
+                  action
+                    ? () => {
+                        action();
+                        closeMenu();
+                      }
+                    : closeMenu
+                }
+                className="flex items-center gap-2 rounded"
+              >
+                {content}
+              </MenuItem>
+            );
+          })}
+        </MenuList>
+      </Menu>
+    );
+  }
 
   return (
     <Navbar className="mx-auto max-w-screen-xl px-4 py-2 lg:px-8 lg:py-4 dark:bg-spot-dark2 dark:border-spot-dark2 rounded-lg ">
@@ -144,17 +249,9 @@ export function NavbarDefault() {
         </Typography>
         <div className="hidden lg:block">{navList}</div>
         <div className="flex items-center gap-x-1">
-          <Button variant="text" size="sm" className="hidden lg:inline-block">
-            <ThemeToggleButton />
-          </Button>
-          <Button
-            variant="gradient"
-            size="sm"
-            className="hidden lg:inline-block bg-gray-100 text-gray-700"
-            onClick={handleLogout}
-          >
-            <span>Sign Out</span>
-          </Button>
+          <span variant="text" size="sm" className="hidden lg:inline-block">
+            <ProfileMenu />
+          </span>
         </div>
         <IconButton
           variant="text"
@@ -194,7 +291,7 @@ export function NavbarDefault() {
           )}
         </IconButton>
       </div>
-      <MobileNav open={openNav} className="text-gray-700 ">
+      <Collapse open={openNav} className="text-gray-700 ">
         <div className="container mx-auto  ">
           <Trending />
           <div className="flex items-center gap-x-1 pt-4 ">
@@ -251,7 +348,6 @@ export function NavbarDefault() {
                 </span>
               )}
             </Button>
-
             <Button
               fullWidth
               variant="text"
@@ -282,7 +378,7 @@ export function NavbarDefault() {
             </Button>
           </div>
         </div>
-      </MobileNav>
+      </Collapse>
     </Navbar>
   );
 }
