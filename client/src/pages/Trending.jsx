@@ -2,10 +2,10 @@ import { IFFF } from "./url";
 import useFetchUser from "../hooks/useFetchUser";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
-
+import defaultAvatar from "../assets/images/avatar.jpg"
 
 function Trending() {
-  const { userData} = useFetchUser();
+  const { userData } = useFetchUser();
   const { user } = useAuthContext();
 
   const date = new Date(userData.createdAt || Date.now());
@@ -14,13 +14,13 @@ function Trending() {
 
   const userImage = IFFF + userData.userimage;
   const handleImageError = (event) => {
-    event.target.src = "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
+    event.target.src = defaultAvatar;
   };
 
   return (
     <>
-      <div className="p-4 bg-gray-200 shadow-lg flex flex-col items-center w-full  border dark:border-spot-dark2 dark:bg-spot-dark2"
-          //  style={{ backgroundImage: `url(${baseUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      <div
+        className="p-4 bg-gray-200 shadow-lg flex flex-col items-center w-full  border dark:border-spot-dark2 dark:bg-spot-dark2"
       >
         <div className="flex justify-center border-2 shadow-sm border-white  w-[100px] h-[100px] mb-4 rounded-full overflow-hidden">
           <img
@@ -30,11 +30,14 @@ function Trending() {
             onError={handleImageError}
           />
         </div>
-        <Link to={`/profile/${user.id}`} className="block text-sm font-semibold mb-2 dark:text-spot-light dark:hover:text-spot-green"> 
-        @{userData.username}
+        <Link
+          to={`/profile/${user.id}`}
+          className="block text-sm font-semibold mb-2 hover:text-blue-500 dark:text-spot-light dark:hover:text-spot-green"
+        >
+          @{userData.username}
         </Link>
         <label className="block text-sm font-medium">
-          <span className="text-blue-400 font-normal dark:text-spot-light">
+          <span className="text-gray-700 font-normal dark:text-spot-light">
             {" "}
             {userData.bio || ""}
           </span>

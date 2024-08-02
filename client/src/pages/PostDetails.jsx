@@ -319,7 +319,7 @@ function PostDetails() {
                       <button
                         type="submit"
                         className="mr-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex items-center dark:bg-spot-green dark:hover:bg-spot-green/80 "
-                        >
+                      >
                         Submit
                       </button>
                     </form>
@@ -380,8 +380,8 @@ function PostDetails() {
                           onClick={() => paginate(currentPage - 1)}
                           className={`${
                             currentPage === 1
-                              ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                              : "bg-white text-blue-500"
+                              ? "bg-gray-100 text-gray-500 dark:bg-spot-dark dark:text-spot-light cursor-not-allowed"
+                              : "bg-white dark:bg-spot-dark2 text-blue-500 dark:text-spot-green"
                           } px-3 py-1 mx-1 rounded-l`}
                           disabled={currentPage === 1}
                         >
@@ -396,8 +396,8 @@ function PostDetails() {
                             onClick={() => paginate(pageNumber)}
                             className={`${
                               currentPage === pageNumber
-                                ? "bg-blue-500 text-white"
-                                : "bg-white text-blue-500"
+                                ? "bg-blue-500 dark:bg-spot-green text-white"
+                                : "bg-white dark:bg-spot-dark2 text-blue-500 dark:text-spot-green"
                             } px-3 py-2`}
                           >
                             {pageNumber}
@@ -407,8 +407,8 @@ function PostDetails() {
                           onClick={() => paginate(currentPage + 1)}
                           className={`${
                             currentPage === totalPages
-                              ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                              : "bg-white text-blue-500"
+                              ? "bg-gray-100 text-gray-500 dark:bg-spot-dark dark:text-spot-light cursor-not-allowed"
+                              : "bg-white dark:bg-spot-dark2 text-blue-500 dark:text-spot-green"
                           } px-3 py-1 mx-1 rounded-r`}
                           disabled={currentPage === totalPages}
                         >

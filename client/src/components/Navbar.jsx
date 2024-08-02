@@ -141,7 +141,7 @@ export function NavbarDefault() {
             color="blue-gray"
             className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
           >
-            <span className="dark:text-spot-light dark:hover:text-spot-green">
+            <span className="text-gray-600  hover:text-blue-500 dark:text-spot-light dark:hover:text-spot-green">
               {" "}
               {user.username}
             </span>
