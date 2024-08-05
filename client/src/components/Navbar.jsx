@@ -153,7 +153,7 @@ export function NavbarDefault() {
             />
           </Button>
         </MenuHandler>
-        <MenuList className="p-1 ">
+        <MenuList className="p-1 dark:bg-spot-dark2 dark:text-spot-light  border dark:border-spot-dark3 z-[96]">
           {profileMenuItems.map(({ label, icon, action }, key) => {
             const isLastItem = key === profileMenuItems.length - 1;
             // Define content for each menu item
@@ -166,7 +166,7 @@ export function NavbarDefault() {
                 <Typography
                   as="span"
                   variant="small"
-                  className="font-normal"
+                  className="font-normal flex items-center gap-2 "
                   color={isLastItem ? "red" : "inherit"}
                 >
                   {label}
@@ -176,22 +176,19 @@ export function NavbarDefault() {
 
             // Determine the MenuItem based on the label
             return label === "My Profile" ? (
-              <Link
-                to={`/profile/${user.id}`}
-                key={label}
-              >
+              <Link to={`/profile/${user.id}`} key={label}>
                 <MenuItem
                   onClick={closeMenu}
-                  className="flex items-center gap-2 rounded "
+                  className="flex items-center gap-2 rounded hover:bg-blue-100 dark:hover:bg-spot-dark3"
                 >
                   {content}
                 </MenuItem>
               </Link>
-            ) : label === "Dark Mode" ? (
+            ) : label === (theme === "dark" ? "Light Mode" : "Dark Mode") ? (
               <MenuItem
                 key={label}
                 onClick={action} // Call the toggleTheme action
-                className="flex items-center gap-2 rounded"
+                className="flex items-center gap-2 rounded hover:bg-blue-100 dark:hover:bg-spot-dark3"
               >
                 {React.createElement(icon, {
                   className: `h-4 w-4`,
@@ -200,7 +197,7 @@ export function NavbarDefault() {
                 <Typography
                   as="span"
                   variant="small"
-                  className="font-normal "
+                  className="font-normal"
                   color="inherit"
                 >
                   {theme === "dark" ? "Light Mode" : "Dark Mode"}
@@ -237,8 +234,8 @@ export function NavbarDefault() {
   }
 
   return (
-    <Navbar className="mx-auto max-w-screen-xl px-4 py-2 lg:px-8 lg:py-4 dark:bg-spot-dark2 dark:border-spot-dark2 rounded-lg ">
-      <div className="container mx-auto flex items-center justify-between text-gray-700  md:px-0 px-2">
+    <Navbar className="z-[98] mx-auto max-w-screen-xl px-4 py-2 lg:px-8 lg:py-4 dark:bg-spot-dark2 dark:border-spot-dark2 rounded-lg ">
+      <div className="container mx-auto flex items-center justify-between  text-gray-700  md:px-0 px-2">
         <Typography
           as="a"
           href="#"

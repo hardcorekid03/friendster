@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 import logo from "../assets/images/nav-logo.svg";
 
@@ -38,14 +38,14 @@ function Signin() {
               Sign in to your account
             </h2>
           </div>
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm ">
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="identifier"
                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-spot-light"
                 >
-                  Username or Email
+                  {/* Username or Email */}
                 </label>
                 <div className="mt-2">
                   <input
@@ -54,7 +54,7 @@ function Signin() {
                     type="text"
                     autoComplete="identifier"
                     required
-                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500"
+                    className="border  text-gray-800 border-gray-300 bg-white w-full text-sm px-4 py-3  focus:outline-none outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                     placeholder="Enter username or email"
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
@@ -66,7 +66,7 @@ function Signin() {
                   htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-spot-light"
                 >
-                  Password
+                  {/* Password */}
                 </label>
                 <div className="mt-2 relative">
                   <input
@@ -75,7 +75,7 @@ function Signin() {
                     type={showPassword ? "text" : "password"}
                     autoComplete="new-password"
                     required
-                    className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500 "
+                    className="border  text-gray-800 focus:outline-none border-gray-300 bg-white w-full text-sm px-4 py-3 outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                     placeholder="Enter password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -104,18 +104,22 @@ function Signin() {
               </div>
             </form>
 
-            <p className="mt-10 text-center text-sm text-gray-500">
+            <p className="mt-10 text-center text-sm text-gray-500 dark:text-spot-light">
               Don't have an account?{" "}
               <Link
                 to="/signup"
-                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 dark:text-spot-green"
               >
                 Sign up
               </Link>
             </p>
 
             <div className="error mt-5 ">
-              {error && <p className="error text-red-500 0">{error}</p>}
+              {error && (
+                <div className=" border border-red-500 p-4 w-full flex justify-center items-center">
+                  <p className="error text-red-500 ">{error}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -64,7 +64,6 @@ function Profile() {
         handleFavorite: favHandle,
       };
     }
-    
   };
 
   const { data, loading, error, favorites, handleFavorite, setLoading } =
@@ -159,6 +158,7 @@ function Profile() {
           src={modalImageSrc}
           className="object-contain w-full h-full"
           alt="modal content"
+          onError={handleAvatarError}
         />
       </ImageModal>
       <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4 mb-4 md:mb-2">
@@ -270,13 +270,13 @@ function Profile() {
               {isImageUploaded && (
                 <>
                   <button
-                    className="bg-spot-green hover:bg-green-700 text-spot-light font-bold py-2 px-4 w-full mb-2 md:mb-0 md:w-auto md:mr-2"
+                    className="mr-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex items-center dark:bg-spot-green dark:hover:bg-spot-green/80 "
                     onClick={handleSaveChanges}
                   >
                     Save Changes
                   </button>
                   <button
-                    className="bg-spot-dark2 border-spot-dark2 border hover:bg-spot-dark text-spot-light font-bold py-2 px-4 w-full md:w-auto"
+                    className="bg-white border-gray-300 border hover:bg-gray-200 text-gray-700  py-2 px-4 inline-flex items-center dark:border-none dark:text-white dark:bg-spot-dark3 dark:hover:bg-spot-dark3/80"
                     onClick={handleDiscardChanges}
                   >
                     Discard Changes

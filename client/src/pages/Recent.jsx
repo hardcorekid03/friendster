@@ -190,7 +190,7 @@ function Recent() {
         currentBlogs.map((blog) => (
           <div
             key={blog._id}
-            className="md:flex shadow-sm bg-white dark:bg-spot-dark2 border border-gray-100 dark:border-spot-dark3/40 rounded-lg hover:border-gray-200 dark:hover:border-spot-light dark:hover:bg-spot-dark3/20 mt-4 hover:shadow-lg dark:hover:shadow-spot-dark cursor-pointer p-4 mb-4"
+            className="md:flex shadow-sm bg-white dark:bg-spot-dark2 border border-gray-100 dark:border-spot-dark3/40 rounded-lg hover:border-gray-200 hover:bg-gray-50  dark:hover:border-spot-light dark:hover:bg-spot-dark3/20 mt-4 hover:shadow-lg dark:hover:shadow-spot-dark cursor-pointer p-4 mb-4"
           >
             <div className="blog-img mb-4 md:w-[35%] h-[220px] sm:w-[75%] overflow-hidden">
               <img
