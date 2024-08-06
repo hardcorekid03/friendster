@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 
-const BottomNav = () => {
+const BottomNav = ({ filterMode, setFilterMode }) => {
   const { user } = useAuthContext();
 
   if (!user) {
@@ -16,7 +16,10 @@ const BottomNav = () => {
           {/* Home Icon */}
           <Link to="/">
             <div className="flex flex-col items-center justify-center p-2">
-              <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500 dark:hover:border-spot-green ">
+              <div
+                className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500 dark:hover:border-spot-green "
+                onClickCapture={() => setFilterMode("all")}
+              >
                 <svg
                   className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500 dark:text-spot-light dark:group-hover:text-spot-green"
                   fill="currentColor"
@@ -60,30 +63,41 @@ const BottomNav = () => {
               </div>
             </div>
           </Link>
-          {/* Latest Icon */}
-          <div className="flex flex-col items-center p-2">
-            <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500 dark:hover:border-spot-green ">
-              <svg
-                className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500 dark:text-spot-light dark:group-hover:text-spot-green"
-                fill="currentColor"
-                viewBox="0 0 24 24"
+          {/* Popular Icon */}
+          <Link to="/">
+            <div className="flex flex-col items-center p-2">
+              <div
+                className=" p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500 dark:hover:border-spot-green "
+                onClickCapture={() => setFilterMode("favorites")}
               >
-                <path d="M8.625 0c.61 7.189-5.625 9.664-5.625 15.996 0 4.301 3.069 7.972 9 8.004 5.931.032 9-4.414 9-8.956 0-4.141-2.062-8.046-5.952-10.474.924 2.607-.306 4.988-1.501 5.808.07-3.337-1.125-8.289-4.922-10.378zm4.711 13c3.755 3.989 1.449 9-1.567 9-1.835 0-2.779-1.265-2.769-2.577.019-2.433 2.737-2.435 4.336-6.423z" />
-              </svg>
+                <svg
+                  className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500 dark:text-spot-light dark:group-hover:text-spot-green"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M8.625 0c.61 7.189-5.625 9.664-5.625 15.996 0 4.301 3.069 7.972 9 8.004 5.931.032 9-4.414 9-8.956 0-4.141-2.062-8.046-5.952-10.474.924 2.607-.306 4.988-1.501 5.808.07-3.337-1.125-8.289-4.922-10.378zm4.711 13c3.755 3.989 1.449 9-1.567 9-1.835 0-2.779-1.265-2.769-2.577.019-2.433 2.737-2.435 4.336-6.423z" />
+                </svg>
+              </div>
             </div>
-          </div>
+          </Link>
+
           {/* Settings Icon */}
-          <div className="flex flex-col items-center p-2">
-            <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500 dark:hover:border-spot-green ">
-              <svg
-                className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-blue-500 dark:text-spot-light dark:group-hover:text-spot-green"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M19.14 12.94c.04-.32.06-.66.06-1s-.02-.68-.06-1l2.03-1.58c.18-.14.23-.41.12-.62l-1.92-3.32c-.11-.21-.36-.28-.57-.22l-2.39.96c-.49-.38-1.02-.7-1.58-.93l-.36-2.49c-.04-.23-.23-.39-.46-.39h-3.84c-.23 0-.42.16-.46.39l-.36 2.49c-.56.23-1.09.55-1.58.93l-2.39-.96c-.21-.06-.45.01-.57.22L2.69 9.74c-.11.21-.06.48.12.62l2.03 1.58c-.04.32-.06.66-.06 1s.02.68.06 1l-2.03 1.58c-.18.14-.23.41-.12.62l1.92 3.32c.11.21.36.28.57.22l2.39-.96c.49.38 1.02.7 1.58.93l.36 2.49c.04.23.23.39.46.39h3.84c.23 0 .42-.16.46-.39l.36-2.49c.56-.23 1.09-.55 1.58-.93l2.39.96c.21.06.45-.01.57-.22l1.92-3.32c.11-.21.06-.48-.12-.62l-2.03-1.58zm-7.14 3.56c-1.95 0-3.53-1.58-3.53-3.53s1.58-3.53 3.53-3.53 3.53 1.58 3.53 3.53-1.58 3.53-3.53 3.53z" />
-              </svg>
+          <Link to="/find-people">
+            <div className="flex flex-col items-center p-2">
+              <div className="p-2 sm:p-4 group border-t-2 border-transparent hover:border-blue-500 dark:hover:border-spot-green ">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700
+                group-hover:text-blue-500 dark:text-spot-light
+                dark:group-hover:text-spot-green"
+                >
+                  <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
+                </svg>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

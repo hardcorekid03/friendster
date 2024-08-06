@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 body,
 html {
   margin: 0;
   padding: 0;
-  background-color:#F8FAFC;
-  font-family: 'Inter', sans-serif !important;
+  background-color: #f8fafc;
+  font-family: "Inter", sans-serif !important;
 }
 .active-link {
   font-weight: bold;
@@ -28,24 +28,39 @@ html {
 }
 
 .bottom-nav-button:hover {
-  background-color: #e2e8f0; 
+  background-color: #e2e8f0;
   transform: translateY(-2px);
 }
 
-li>ul { transform: translatex(100%) scale(0) }
-li:hover>ul { transform: translatex(101%) scale(1) }
-li > button svg { transform: rotate(-90deg) }
-li:hover > button svg { transform: rotate(-270deg) }
+li > ul {
+  transform: translatex(100%) scale(0);
+}
+li:hover > ul {
+  transform: translatex(101%) scale(1);
+}
+li > button svg {
+  transform: rotate(-90deg);
+}
+li:hover > button svg {
+  transform: rotate(-270deg);
+}
 
-.group:hover .group-hover\:scale-100 { transform: scale(1) }
-.group:hover .group-hover\:-rotate-180 { transform: rotate(180deg) }
-.scale-0 { transform: scale(0) }
-.min-w-32 { min-width: 8rem }
+.group:hover .group-hover\:scale-100 {
+  transform: scale(1);
+}
+.group:hover .group-hover\:-rotate-180 {
+  transform: rotate(180deg);
+}
+.scale-0 {
+  transform: scale(0);
+}
+.min-w-32 {
+  min-width: 8rem;
+}
 
 .ScrollTop {
   width: 45px;
   height: 45px;
-  background: linear-gradient(to right, #0397d5, #3a89ff);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,7 +93,7 @@ li:hover > button svg { transform: rotate(-270deg) }
 }
 
 .ScrollTop:hover .arrow {
-  animation: slide-in-bottom 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  animation: slide-in-bottom 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 @keyframes slide-in-bottom {

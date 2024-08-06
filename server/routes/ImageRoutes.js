@@ -60,7 +60,7 @@ router.post("/uploadProfile", (req, res) => {
   });
 });
 
-// Endpoint for file upload
+// Endpoint for blog images
 router.post("/", (req, res) => {
   upload(req, res, (err) => {
     if (err) {
@@ -70,8 +70,6 @@ router.post("/", (req, res) => {
     res.status(200).json("Image has been uploaded successfully!");
   });
 });
-
-
 
 // DELETE endpoint for deleting images
 router.delete("/:imageName", (req, res) => {

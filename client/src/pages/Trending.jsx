@@ -41,19 +41,20 @@ function Trending() {
           </div>
           <Link
             to={`/profile/${user.id}`}
-            className="block text-white bg-black px-2 py-1 text-sm font-semibold mb-2 hover:text-blue-500 dark:text-spot-light dark:hover:text-spot-green"
+            className="rounded-md block text-white px-2 py-1 text-sm font-semibold mb-2 "
           >
             @{userData.username}
           </Link>
-          <label className="block text-sm font-medium">
-            <span className="text-gray-100 bg-black px-2 font-normal dark:text-spot-light">
-              {userData.bio || ""}
-            </span>
-          </label>
         </div>
       </div>
 
-      <div className="bg-white p-6 dark:bg-spot-dark dark:text-spot-light  dark:border-spot-dark2">
+      <div className="bg-white p-4 dark:bg-spot-dark dark:text-spot-light  dark:border-spot-dark2">
+        <label className="block text-sm font-medium mb-2">
+          Bio:{" "}
+          <span className="text-blue-400 font-normal dark:text-spot-light">
+            {userData.bio}
+          </span>
+        </label>
         <label className="block text-sm font-medium mb-2 ">
           Location:{" "}
           <span className="text-blue-400 font-normal dark:text-spot-light">

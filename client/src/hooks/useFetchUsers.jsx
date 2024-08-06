@@ -3,10 +3,10 @@ import api from "../api/Api";
 import { useAuthContext } from "./useAuthContext";
 import { useParams } from "react-router-dom";
 
-const useFetchUser = () => {
+const useFetchUsers = () => {
   const { id } = useParams();
   const { user } = useAuthContext();
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState([]);
   const [imageSrc, setImageSrc] = useState("");
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const useFetchUser = () => {
       }
 
       try {
-        const response = await api.get(`/api/user/${user.id}`, {
+        const response = await api.get("/api/user/", {
           headers: { Authorization: `Bearer ${user.token}` },
         });
 
@@ -25,17 +25,15 @@ const useFetchUser = () => {
         }
         const data = response.data;
         setUserData(data);
-        const defaultImageUrl = data.userbanner; // Adjust based on your data structure
-        setImageSrc(defaultImageUrl);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
     fetchUser();
-  }, [user, id]);
+  }, [user]);
 
   return { userData, imageSrc, setImageSrc };
 };
 
-export default useFetchUser;
+export default useFetchUsers;

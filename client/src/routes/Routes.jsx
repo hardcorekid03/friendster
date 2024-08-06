@@ -7,11 +7,13 @@ import PostDetails from "../pages/PostDetails";
 import CreatePost from "../pages/CreatePost";
 import Profile from "../pages/Profile";
 import UserDetails from "../pages/UserDetails";
+import People from "../pages/People";
 import Error404 from "../pages/error/Error404";
 import Error500 from "../pages/error/Error500";
+
 import { useAuthContext } from "../hooks/useAuthContext";
 
-const AppRoutes = () => {
+const AppRoutes = ({ filterMode, setFilterMode }) => {
   const { user } = useAuthContext();
   const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -28,12 +30,23 @@ const AppRoutes = () => {
       <Routes>
         <Route
           path="/"
-          element={user ? <Recent /> : <Navigate to="/signin" />}
+          element={
+            user ? (
+              <Recent filterMode={filterMode} setFilterMode={setFilterMode} />
+            ) : (
+              <Navigate to="/signin" />
+            )
+          }
         />
 
         <Route
           path="/postdetails/:id"
           element={user ? <PostDetails /> : <Navigate to="/signin" />}
+        />
+
+        <Route
+          path="/find-people"
+          element={user ? <People /> : <Navigate to="/signin" />}
         />
 
         <Route

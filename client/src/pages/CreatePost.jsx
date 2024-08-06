@@ -23,8 +23,7 @@ function CreatePost() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [blogbody, setBlogbody] = useState("");
   const [image, setImage] = useState(null);
-  const { title, setTitle, } =
-    useTitleAndSlug();
+  const { title, setTitle } = useTitleAndSlug();
   const [error, setError] = useState("");
 
   const debouncedHandleChange = useRef(
@@ -57,19 +56,14 @@ function CreatePost() {
     }
   }, [id, user, setBlogbody, setTitle, setImage]);
 
-  
   const handleTitleChange = (e) => {
     const newTitle = e.target.value;
     setTitle(newTitle);
-
   };
 
   const resetTitleAndSlug = () => {
-    setTitle('');
-
+    setTitle("");
   };
-
-
 
   const handleReset = () => {
     setSelectedFile(null);
@@ -234,8 +228,8 @@ function CreatePost() {
 
           <div className="preview-img p-2">
             <input
-          className="border  text-gray-800 focus:outline-none border-gray-300 bg-white w-full text-sm px-4 py-3 outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
-          placeholder="Enter blog title"
+              className="border  text-gray-800 focus:outline-none border-gray-300 bg-white w-full text-sm px-4 py-3 outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
+              placeholder="Enter blog title"
               value={title}
               onChange={handleTitleChange}
             />

@@ -26,7 +26,9 @@ const getUserBlogPosts = async (req, res) => {
 
   try {
     // Fetch all blog posts by the specific user
-    const blogPosts = await BlogPost.find({ authorId: userId }).sort({ createdAt: -1 });
+    const blogPosts = await BlogPost.find({ authorId: userId }).sort({
+      createdAt: -1,
+    });
 
     if (!blogPosts.length) {
       return res
@@ -185,9 +187,9 @@ const getUserFavorites = async (req, res) => {
     // Find the user and populate their favorites
     const user = await User.findById(userId).populate({
       path: "favorites",
-      options: { sort: { createdAt: -1 } }
+      options: { sort: { createdAt: -1 } },
     });
-    
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -201,12 +203,12 @@ const getUserFavorites = async (req, res) => {
 
 const getUserFavoritesById = async (req, res) => {
   try {
-    const{userId}  = req.params;
+    const { userId } = req.params;
 
     // Find the user and populate their favorites
     const user = await User.findById(userId).populate({
       path: "favorites",
-      options: { sort: { createdAt: -1 } }
+      options: { sort: { createdAt: -1 } },
     });
     if (!user) {
       return res.status(404).json({ message: "User not found" });

@@ -23,7 +23,7 @@ import { Link } from "react-router-dom";
 import Trending from "../pages/Trending";
 import { useTheme } from "../context/ThemeContext";
 
-export function NavbarDefault() {
+export function NavbarDefault({ filterMode, setFilterMode }) {
   const { user } = useAuthContext();
   const { theme, toggleTheme } = useTheme(); // Use the context
   const [openNav, setOpenNav] = React.useState(false);
@@ -55,6 +55,7 @@ export function NavbarDefault() {
           variant="small"
           color="blue-gray"
           className="flex items-center justify-center gap-x-2 p-2 font-medium hover:text-blue-500 dark:hover:text-spot-green dark:hover:bg-spot-dark/30 dark:hover:rounded"
+          onClickCapture={() => setFilterMode("all")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -68,45 +69,49 @@ export function NavbarDefault() {
           <span className="flex items-center">Home</span>
         </Typography>
       </Link>
-
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="flex items-center justify-center gap-x-2 p-2 font-medium hover:text-blue-500 dark:hover:text-spot-green dark:hover:bg-spot-dark/30 dark:hover:rounded"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="size-5"
+      <Link to="/">
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="flex items-center justify-center gap-x-2 p-2 font-medium hover:text-blue-500 dark:hover:text-spot-green dark:hover:bg-spot-dark/30 dark:hover:rounded"
+          onClickCapture={() => setFilterMode("favorites")}
         >
-          <path
-            fillRule="evenodd"
-            d="M12.963 2.286a.75.75 0 0 0-1.071-.136 9.742 9.742 0 0 0-3.539 6.176 7.547 7.547 0 0 1-1.705-1.715.75.75 0 0 0-1.152-.082A9 9 0 1 0 15.68 4.534a7.46 7.46 0 0 1-2.717-2.248ZM15.75 14.25a3.75 3.75 0 1 1-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 0 1 1.925-3.546 3.75 3.75 0 0 1 3.255 3.718Z"
-            clipRule="evenodd"
-          />
-        </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="size-5"
+          >
+            <path
+              fillRule="evenodd"
+              d="M12.963 2.286a.75.75 0 0 0-1.071-.136 9.742 9.742 0 0 0-3.539 6.176 7.547 7.547 0 0 1-1.705-1.715.75.75 0 0 0-1.152-.082A9 9 0 1 0 15.68 4.534a7.46 7.46 0 0 1-2.717-2.248ZM15.75 14.25a3.75 3.75 0 1 1-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 0 1 1.925-3.546 3.75 3.75 0 0 1 3.255 3.718Z"
+              clipRule="evenodd"
+            />
+          </svg>
 
-        <span className="flex items-center">Trending</span>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="flex items-center justify-center gap-x-2 p-2 font-medium hover:text-blue-500 dark:hover:text-spot-green dark:hover:bg-spot-dark/30 dark:hover:rounded"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="size-5"
+          <span className="flex items-center">Most Popular</span>
+        </Typography>
+      </Link>
+      <Link to="/find-people">
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="flex items-center justify-center gap-x-2 p-2 font-medium hover:text-blue-500 dark:hover:text-spot-green dark:hover:bg-spot-dark/30 dark:hover:rounded"
         >
-          <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
-        </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="size-5"
+          >
+            <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
+          </svg>
 
-        <span className="flex items-center">Find People</span>
-      </Typography>
+          <span className="flex items-center">Our Members</span>
+        </Typography>
+      </Link>
     </ul>
   );
 
