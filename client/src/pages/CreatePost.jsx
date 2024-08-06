@@ -9,6 +9,7 @@ import defaultImage from "../assets/images/dafaultImage.jpg";
 import { useAuthContext } from "../hooks/useAuthContext";
 import debounce from "lodash/debounce"; // Import debounce from lodash
 import { IF } from "./url";
+import TiptapEditor from "../components/Editor";
 
 function CreatePost() {
   const { user } = useAuthContext();
@@ -25,6 +26,7 @@ function CreatePost() {
   const [image, setImage] = useState(null);
   const { title, setTitle } = useTitleAndSlug();
   const [error, setError] = useState("");
+  const [blogDetails, setBlogDetails] = useState(null);
 
   const debouncedHandleChange = useRef(
     debounce((event) => {
@@ -44,6 +46,7 @@ function CreatePost() {
             headers: { Authorization: `Bearer ${user.token}` },
           });
           const data = response.data;
+          setBlogDetails(data); // Set blog data without author details in case of error
           setBlogbody(data.blogbody);
           setTitle(data.title);
           setImage(data.image);
@@ -115,6 +118,40 @@ function CreatePost() {
     try {
       let response;
       if (id) {
+        // delete previous image before uploading new image
+        const blogImage = blogDetails.image;
+        const deletePreviousImage = async (blogImage) => {
+          const imageUrl = blogImage;
+          if (imageUrl) {
+            const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+            try {
+              const imageResponse = await api.delete(
+                `/api/upload/${imageName}`,
+                {
+                  headers: { Authorization: `Bearer ${user.token}` },
+                }
+              );
+
+              if (imageResponse.status !== 200) {
+                throw new Error(
+                  `Failed to delete the image: ${imageResponse.statusText}`
+                );
+              }
+              console.log(`Deleted previous image: ${imageName}`);
+            } catch (err) {
+              console.error("Error deleting previous image:", err);
+            }
+          } else {
+            console.log("No valid image URL to delete");
+          }
+        };
+
+        if (blogImage) {
+          await deletePreviousImage(blogImage);
+        }
+
+        // delete previous image before uploading new image
+
         response = await api.patch(`/api/blogs/${id}`, blog, {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -243,7 +280,7 @@ function CreatePost() {
               className="h-full w-full"
             />
           </div>
-
+          {/* <TiptapEditor /> */}
           <div className="px-2 py-8 mt-10 ">
             <button
               className="mr-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex items-center dark:bg-spot-green dark:hover:bg-spot-green/80 "

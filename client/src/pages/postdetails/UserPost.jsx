@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IF, IFFF } from "../url";
 import { format } from "date-fns";
-
+import defaultImage from "../../assets/images/dafaultImage.jpg";
 function UserPost({ loading, data, error, favorites, handleFavorite }) {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 5; // Adjust this number based on your preference
@@ -17,6 +17,10 @@ function UserPost({ loading, data, error, favorites, handleFavorite }) {
 
   // Pagination handler
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const handleImageError = (event) => {
+    event.target.src = defaultImage;
+  };
 
   return (
     <div className="UserPost mb-8">
@@ -39,7 +43,7 @@ function UserPost({ loading, data, error, favorites, handleFavorite }) {
                 <img
                   src={IF + blog.image}
                   alt={blog.title}
-                  onError={error}
+                  onError={handleImageError}
                   className="h-full w-full object-cover"
                 />
               </div>

@@ -92,4 +92,29 @@ router.delete("/:imageName", (req, res) => {
   }
 });
 
+// DELETE endpoint for deleting user image
+router.delete("/uploadProfile/:imageName", (req, res) => {
+  const { imageName } = req.params;
+  const imagePath = path.join(
+    __dirname,
+    "../assets/images/profiles",
+    imageName
+  ); // Adjust path accordingly
+
+  try {
+    // Check if the file exists
+    if (fs.existsSync(imagePath)) {
+      // Delete the file
+      fs.unlinkSync(imagePath);
+      console.log(`Deleted image: ${imageName}`);
+      res.status(200).json({ message: "Image deleted successfully" });
+    } else {
+      res.status(404).json({ error: "Image not found" });
+    }
+  } catch (err) {
+    console.error("Error deleting image:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "./useAuthContext";
 import toast from "react-hot-toast";
-import api from '../api/Api'; // Import the Axios instance
+import api from "../api/Api"; // Import the Axios instance
 
 function useDeleteBlog() {
   const [loading, setLoading] = useState(false);
@@ -32,13 +32,15 @@ function useDeleteBlog() {
       // Delete the associated image if it exists
       if (blogDetails.image) {
         const imageUrl = blogDetails.image;
-        const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);       
+        const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
         const imageResponse = await api.delete(`/api/upload/${imageName}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
 
         if (imageResponse.status !== 200) {
-          throw new Error(`Failed to delete the image: ${imageResponse.statusText}`);
+          throw new Error(
+            `Failed to delete the image: ${imageResponse.statusText}`
+          );
         }
       }
 

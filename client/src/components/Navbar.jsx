@@ -48,7 +48,7 @@ export function NavbarDefault({ filterMode, setFilterMode }) {
   };
 
   const navList = (
-    <ul className="text-gray-500 mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row justify-center items-center lg:gap-6 dark:text-spot-light ">
+    <ul className="text-gray-500 mt-2 mb-4 flex flex-col md:flex-row gap-2 lg:mb-0 lg:mt-0 lg:flex-row justify-center items-center lg:gap-6 dark:text-spot-light ">
       <Link to="/">
         <Typography
           as="li"
@@ -249,15 +249,15 @@ export function NavbarDefault({ filterMode, setFilterMode }) {
         >
           Prendster
         </Typography>
-        <div className="hidden lg:block">{navList}</div>
+        <div className="hidden md:block">{navList}</div>
         <div className="flex items-center gap-x-1">
-          <span variant="text" size="sm" className="hidden lg:inline-block">
+          <span variant="text" size="sm" className="hidden md:inline-block">
             <ProfileMenu />
           </span>
         </div>
         <IconButton
           variant="text"
-          className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden dark:text-spot-light"
+          className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent md:hidden dark:text-spot-light"
           ripple={false}
           onClick={() => setOpenNav(!openNav)}
         >
