@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useFetchUsers from "../hooks/useFetchUsers";
-import { IFF, IFFF } from "./url";
+import { IFFF } from "./url";
 import { differenceInYears, parseISO, format } from "date-fns";
+import defaultAvatar from "../assets/images/avatar.jpg";
 
 function People() {
-  const { userData, imageSrc, setImageSrc } = useFetchUsers();
+  const { userData } = useFetchUsers();
   const calculateAge = (dob) => {
     const birthDate = parseISO(dob); // Parse the date string to a Date object
     const today = new Date();
     return differenceInYears(today, birthDate);
+  };
+
+  const handleAvatarError = (event) => {
+    event.target.src = defaultAvatar;
   };
 
   return (
@@ -33,6 +38,7 @@ function People() {
                     alt="team"
                     className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
                     src={IFFF + member.userimage}
+                    onError={handleAvatarError}
                   />
                   <div className="flex-grow">
                     <span className="text-gray-900 title-font font-medium dark:text-spot-light ">

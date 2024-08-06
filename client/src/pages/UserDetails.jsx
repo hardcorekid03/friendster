@@ -8,7 +8,7 @@ import api from "../api/Api";
 
 function UserDetails() {
   const { user } = useAuthContext();
-  const { userData } = useFetchUser();
+  const { userData, userImg } = useFetchUser();
   const [originalFormData, setOriginalFormData] = useState({}); // Store original formData
   const [isEditing, setIsEditing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -109,17 +109,49 @@ function UserDetails() {
     }
 
     try {
+      // delete previous image before uploading new image
+      const blogImage = userImg;
+      const deletePreviousImage = async (blogImage) => {
+        const imageUrl = blogImage;
+        if (imageUrl) {
+          const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+          try {
+            const imageResponse = await api.delete(
+              `/api/upload/uploadProfile/${imageName}`,
+              {
+                headers: { Authorization: `Bearer ${user.token}` },
+              }
+            );
+
+            if (imageResponse.status !== 200) {
+              throw new Error(
+                `Failed to delete the image: ${imageResponse.statusText}`
+              );
+            }
+            console.log(`Deleted previous image: ${imageName}`);
+          } catch (err) {
+            console.error("Error deleting previous image:", err);
+          }
+        } else {
+          console.log("No valid image URL to delete");
+        }
+      };
+
+      if (blogImage) {
+        await deletePreviousImage(blogImage);
+      }
+
+      // delete previous image before uploading new image
+
       // Perform API request to save formData
       const response = await api.patch(`/api/user/${user.id}`, formData);
-      console.log("Form data saved:", response.data);
+      console.log("Form data saved:", response.data.username);
       setIsEditing(false); // Exit edit mode
       navigate(`/profile/${user.id}`);
     } catch (error) {
       console.error("Error saving form data:", error);
       // Handle error state or display an error message to the user
     }
-
-    const blog = {};
   };
 
   const discardChanges = () => {

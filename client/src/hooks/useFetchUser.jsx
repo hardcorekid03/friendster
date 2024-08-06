@@ -8,6 +8,7 @@ const useFetchUser = () => {
   const { user } = useAuthContext();
   const [userData, setUserData] = useState({});
   const [imageSrc, setImageSrc] = useState("");
+  const [userImg, setUserImg] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -26,7 +27,10 @@ const useFetchUser = () => {
         const data = response.data;
         setUserData(data);
         const defaultImageUrl = data.userbanner; // Adjust based on your data structure
+        const img = data.userimage; // Adjust based on your data structure
+
         setImageSrc(defaultImageUrl);
+        setUserImg(img);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -35,7 +39,7 @@ const useFetchUser = () => {
     fetchUser();
   }, [user, id]);
 
-  return { userData, imageSrc, setImageSrc };
+  return { userData, imageSrc, setImageSrc, userImg, setUserImg };
 };
 
 export default useFetchUser;
