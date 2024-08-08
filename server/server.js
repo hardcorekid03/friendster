@@ -16,7 +16,11 @@ const app = express();
 // Enable CORS for specified origins
 app.use(
   cors({
-    origin: ["https://prendster.netlify.app", "http://localhost:5173"],
+    origin: [
+      "https://prendster.netlify.app",
+      "http://localhost:5173",
+      "https://friendsterr.vercel.app",
+    ],
   })
 );
 
