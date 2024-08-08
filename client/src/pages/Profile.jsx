@@ -266,17 +266,17 @@ function Profile() {
               </h3>
             </div>
 
-            <div className="text-xs mt-4 md:mt-0 flex flex-col items-center md:flex-row md:items-center">
+            <div className="text-xs flex flex-col items-center md:flex-row ">
               {isImageUploaded && (
                 <>
                   <button
-                    className="mr-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex items-center dark:bg-spot-green dark:hover:bg-spot-green/80 "
+                    className=" whitespace-nowrap items-center justify-center md:mr-2 mb-1 md:mb-0 mr-0 w-full md:w-w-1/2 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex  dark:bg-spot-green dark:hover:bg-spot-green/80 "
                     onClick={handleSaveChanges}
                   >
                     Save Changes
                   </button>
                   <button
-                    className="bg-white border-gray-300 border hover:bg-gray-200 text-gray-700  py-2 px-4 inline-flex items-center dark:border-none dark:text-white dark:bg-spot-dark3 dark:hover:bg-spot-dark3/80"
+                    className="bg-white whitespace-nowrap items-center justify-center w-full md:w-1/2 border-gray-300 border hover:bg-gray-200 text-gray-700  py-2 px-4 inline-flex  dark:border-none dark:text-white dark:bg-spot-dark3 dark:hover:bg-spot-dark3/80"
                     onClick={handleDiscardChanges}
                   >
                     Discard Changes

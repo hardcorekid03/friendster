@@ -9,7 +9,7 @@ import ScrollToTopButton from "../components/ScrollToTop";
 import Trending from "./Trending";
 import api from "../api/Api"; // Import the Axios instance
 
-function Recent({ filterMode, setFilterMode }) {
+function Recent({ filterMode }) {
   const { user } = useAuthContext();
 
   const [blogs, setBlogs] = useState([]);

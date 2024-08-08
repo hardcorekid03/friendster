@@ -1,10 +1,17 @@
 import { useState } from "react";
 import api from "../api/Api";
 
-const useSaveChanges = (user, imageSrc, selectedFile, setIsImageUploaded, setSelectedFile, setOriginalImageSrc, setLoading) => {
-
+const useSaveChanges = (
+  user,
+  imageSrc,
+  selectedFile,
+  setIsImageUploaded,
+  setSelectedFile,
+  setOriginalImageSrc,
+  setLoading
+) => {
   const [hasChanges, setHasChanges] = useState(false);
-  
+
   const handleSaveChanges = async (e) => {
     e.preventDefault();
     if (!user) {
@@ -12,11 +19,13 @@ const useSaveChanges = (user, imageSrc, selectedFile, setIsImageUploaded, setSel
       return;
     }
     const blog = {};
-    
+
     if (selectedFile) {
       const data = new FormData();
       const alphanumericKey = Math.random().toString(36).slice(2, 9);
-      const filename = `user-${alphanumericKey}-${Date.now()}-banner-${selectedFile.name}`;
+      const filename = `user-${alphanumericKey}-${Date.now()}-banner-${
+        selectedFile.name
+      }`;
 
       data.append("img", filename);
       data.append("file", selectedFile);
