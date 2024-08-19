@@ -33,7 +33,7 @@ function People() {
           {userData.map((member, index) => (
             <div key={index} className="p-2 lg:w-1/3 md:w-1/2 w-full ">
               <Link to={`/profile/${member._id}`}>
-                <div className="cursor-pointer h-full flex items-center border-gray-200 border p-4 rounded-lg hover:border-blue-500 hover:bg-blue-50 dark:bg-spot-dark2 dark:hover:border-spot-green dark:hover:bg-spot-dark3/10">
+                <div className="cursor-pointer h-full flex items-center border-spot-light border p-4 rounded-lg hover:border-blue-500 hover:bg-blue-50 dark:bg-spot-dark2 dark:hover:border-spot-green dark:hover:bg-spot-dark3/10">
                   <img
                     alt="team"
                     className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
