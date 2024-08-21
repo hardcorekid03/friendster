@@ -40,7 +40,7 @@ function Signup() {
     });
 
     if (!error) {
-      toast.error(error.message);
+      alert(error);
     }
   };
 

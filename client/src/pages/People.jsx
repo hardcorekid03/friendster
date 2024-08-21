@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import useFetchUsers from "../hooks/useFetchUsers";
-import { IFFF } from "./url";
 import { differenceInYears, parseISO, format } from "date-fns";
 import defaultAvatar from "../assets/images/avatar.jpg";
 
@@ -37,7 +36,7 @@ function People() {
                   <img
                     alt="team"
                     className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                    src={IFFF + member.userimage}
+                    src={member.userimage}
                     onError={handleAvatarError}
                   />
                   <div className="flex-grow">

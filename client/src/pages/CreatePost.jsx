@@ -7,11 +7,8 @@ import toast, { Toaster } from "react-hot-toast";
 import api from "../api/Api"; // Adjust the path as per your file structure
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import { useAuthContext } from "../hooks/useAuthContext";
-import debounce from "lodash/debounce"; // Import debounce from lodash
-import { IF } from "./url";
 import app from "../config/firebase";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import TiptapEditor from "../components/Editor";
 
 function CreatePost() {
   const { user } = useAuthContext();
@@ -27,21 +24,15 @@ function CreatePost() {
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const [uploading, setUploading] = useState(false);
   const [imageURL, setImageURL] = useState("");
 
   const handleImageError = (event) => {
     event.target.src = defaultImage;
   };
 
-  const debouncedHandleChange = useRef(
-    debounce((event) => {
-      if (event.target.files[0]) {
-        setSelectedFile(event.target.files[0]);
-        setImage(event.target.files[0]); // Update the image state with the new file
-      }
-    }, 300)
-  ).current;
+  const handleImageChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
 
   useEffect(() => {
     if (id && user) {
@@ -89,76 +80,43 @@ function CreatePost() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!user) {
       setLoading(false);
       return;
     }
+
+    let finalImageURL = imageURL;
+
+    if (selectedFile) {
+      try {
+        setLoading(true);
+        const alphanumericKey = Math.random().toString(36).slice(2, 9);
+        const filename = `blog-${alphanumericKey}-${Date.now()}`;
+
+        const storage = getStorage(app);
+        const storageRef = ref(storage, "images/blogs/" + filename);
+
+        await uploadBytes(storageRef, selectedFile);
+        const downloadURL = await getDownloadURL(storageRef);
+        finalImageURL = downloadURL; // Update the finalImageURL with the uploaded image URL
+      } catch (error) {
+        setError("Failed to upload image.");
+        toast.error("Failed to upload image.");
+        setLoading(false);
+        return;
+      }
+    }
+
     const blog = {
       title,
       blogbody,
-      image: imageURL,
+      image: finalImageURL || null, // Use the finalImageURL in the blog object
     };
-
-    // if (selectedFile) {
-    //   const data = new FormData();
-    //   const alphanumericKey = Math.random().toString(36).slice(2, 9);
-    //   const filename = `blog-${alphanumericKey}-${Date.now()}${
-    //     selectedFile.name
-    //   }`;
-    //   data.append("img", filename);
-    //   data.append("file", selectedFile);
-    //   blog.image = filename;
-    //   try {
-    //     const imgUpload = await api.post("/api/upload/", data, {
-    //       headers: {
-    //         Authorization: `Bearer ${user.token}`,
-    //       },
-    //     });
-    //     console.log(imgUpload.data);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // } else if (id && image) {
-    //   blog.image = image;
-    // }
 
     try {
       let response;
       if (id) {
-        // // delete previous image before uploading new image
-        // const blogImage = blogDetails.image;
-        // const deletePreviousImage = async (blogImage) => {
-        //   const imageUrl = blogImage;
-        //   if (imageUrl) {
-        //     const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-        //     try {
-        //       const imageResponse = await api.delete(
-        //         `/api/upload/${imageName}`,
-        //         {
-        //           headers: { Authorization: `Bearer ${user.token}` },
-        //         }
-        //       );
-
-        //       if (imageResponse.status !== 200) {
-        //         throw new Error(
-        //           `Failed to delete the image: ${imageResponse.statusText}`
-        //         );
-        //       }
-        //       console.log(`Deleted previous image: ${imageName}`);
-        //     } catch (err) {
-        //       console.error("Error deleting previous image:", err);
-        //     }
-        //   } else {
-        //     console.log("No valid image URL to delete");
-        //   }
-        // };
-
-        // if (blogImage) {
-        //   await deletePreviousImage(blogImage);
-        // }
-
-        // // delete previous image before uploading new image
-
         response = await api.patch(`/api/blogs/${id}`, blog, {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -183,36 +141,12 @@ function CreatePost() {
         navigate("/");
       }
     } catch (error) {
-      setError(error.response.data.error);
+      setError(error.response?.data?.error || "Something went wrong.");
       toast.error("All fields are required");
+    } finally {
+      setLoading(false);
     }
   };
-
-  async function handleImageUpload(e) {
-    setSelectedFile(e.target.files[0]);
-    setImage(e.target.files[0]); // Update the image state with the new file
-    const image = e.target.files[0];
-    if (image) {
-      try {
-        setUploading(true);
-        const alphanumericKey = Math.random().toString(36).slice(2, 9);
-        const filename = `blog-${alphanumericKey}-${Date.now()}-${image.name}`;
-
-        const storage = getStorage(app);
-        const storageRef = ref(storage, "images/blogs/" + filename);
-
-        await uploadBytes(storageRef, image);
-        const downloadURL = await getDownloadURL(storageRef);
-
-        console.log("SUCCESS!" + downloadURL);
-        setImageURL(downloadURL);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setUploading(false);
-      }
-    }
-  }
 
   return (
     <>
@@ -232,7 +166,7 @@ function CreatePost() {
                 accept="image/*"
                 id="picture"
                 ref={fileInputRef}
-                onChange={handleImageUpload}
+                onChange={handleImageChange}
               />
             </div>
 
@@ -267,7 +201,7 @@ function CreatePost() {
                 />
               ) : image && id ? (
                 <img
-                  src={IF + image} // Assuming `IF` resolves to the correct image path
+                  src={image} // Assuming `IF` resolves to the correct image path
                   alt="Selected File"
                   className="object-contain w-full h-full cursor-pointer"
                   onClick={handleSvgClick}
@@ -317,15 +251,10 @@ function CreatePost() {
           <div className="px-2 py-8 mt-10 ">
             <button
               className="mr-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex items-center dark:bg-spot-green dark:hover:bg-spot-green/80 "
-              disabled={uploading}
-            >
-              {uploading ? "Uploading..." : "Upload Image"}
-            </button>
-            <button
-              className="mr-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex items-center dark:bg-spot-green dark:hover:bg-spot-green/80 "
               onClick={handleSubmit}
+              disabled={loading}
             >
-              <span className="">Save Post</span>
+              {loading ? "Uploading..." : "Save Post"}
             </button>
 
             <button

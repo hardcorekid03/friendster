@@ -9,10 +9,10 @@ import { differenceInYears, parseISO, format } from "date-fns";
 import useFetchUser from "../hooks/useFetchUser";
 import useFetchBlogs from "../hooks/useFetchBlogs";
 import useFetchUserFavorite from "../hooks/useFetchUserFavorite";
-import useSaveChanges from "../hooks/useSaveChanges";
-import { IFF, IFFF } from "./url";
 import api from "../api/Api";
 import ImageModal from "../components/ImageModal";
+import app from "../config/firebase";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 function Profile() {
   const { user } = useAuthContext();
@@ -22,6 +22,10 @@ function Profile() {
   const [activeTab, setActiveTab] = useState("blogs");
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [modalImageSrc, setModalImageSrc] = useState("");
+  const [originalImageSrc, setOriginalImageSrc] = useState("");
+  const [imageURL, setImageURL] = useState("");
+  const [errors, setErrors] = useState("");
+  const [hasChanges, setHasChanges] = useState(false);
 
   const {
     blogs: myBlogs,
@@ -89,19 +93,68 @@ function Profile() {
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const avatar = id ? IFFF + userDetails?.userimage : IFFF + userData.userimage;
-  const userBanner = id
-    ? IFF + userDetails?.userbanner
-    : IFF + userData.userbanner;
+  const avatar = id ? userDetails?.userimage : userData.userimage;
+  const userBanner = id ? userDetails?.userbanner : userData.userbanner;
 
-  const { handleSaveChanges, hasChanges, setHasChanges } = useSaveChanges(
-    user,
-    imageSrc,
-    selectedFile,
-    setIsImageUploaded,
-    setSelectedFile,
-    setLoading
-  );
+  const handleSaveChanges = async (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
+    let finalImageURL = imageURL;
+    const blog = {};
+
+    if (selectedFile) {
+      try {
+        setLoading(true);
+        const alphanumericKey = Math.random().toString(36).slice(2, 9);
+        const filename = `banner-${alphanumericKey}-${Date.now()}`;
+        const storage = getStorage(app);
+        const storageRef = ref(storage, "images/banners/" + filename);
+        await uploadBytes(storageRef, selectedFile);
+        const downloadURL = await getDownloadURL(storageRef);
+        finalImageURL = downloadURL; // Update the finalImageURL with the uploaded image URL
+        blog.userbanner = finalImageURL;
+      } catch (error) {
+        setErrors("Failed to upload image.");
+        setLoading(false);
+        return;
+      }
+    }
+
+    try {
+      let response;
+      if (id) {
+        response = await api.patch(`/api/user/${user.id}`, blog, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+      } else {
+        response = await api.post("/api/blogs", blog, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+      }
+
+      if (response.status === 200) {
+        console.log(finalImageURL);
+        setIsImageUploaded(false);
+        setSelectedFile(null);
+        setOriginalImageSrc(imageSrc);
+        setHasChanges(true);
+        alert("FUCK!");
+      }
+    } catch (error) {
+      setErrors(error.response?.data?.error || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSVGClick = () => {
     fileInputRef.current.click();
@@ -272,8 +325,9 @@ function Profile() {
                   <button
                     className=" whitespace-nowrap items-center justify-center md:mr-2 mb-1 md:mb-0 mr-0 w-full md:w-w-1/2 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex  dark:bg-spot-green dark:hover:bg-spot-green/80 "
                     onClick={handleSaveChanges}
+                    disabled={loading}
                   >
-                    Save Changes
+                    {loading ? "Uploading..." : "Save Post"}
                   </button>
                   <button
                     className="bg-white whitespace-nowrap items-center justify-center w-full md:w-1/2 border-gray-300 border hover:bg-gray-200 text-gray-700  py-2 px-4 inline-flex  dark:border-none dark:text-white dark:bg-spot-dark3 dark:hover:bg-spot-dark3/80"

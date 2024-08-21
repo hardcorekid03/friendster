@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { IF, IFFF } from "../url";
 import { format } from "date-fns";
 import defaultImage from "../../assets/images/dafaultImage.jpg";
 function UserPost({ loading, data, error, favorites, handleFavorite }) {
@@ -30,7 +29,7 @@ function UserPost({ loading, data, error, favorites, handleFavorite }) {
             className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-spot-white"
             role="status"
           >
-            <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
               Loading...
             </span>
           </div>
@@ -48,7 +47,7 @@ function UserPost({ loading, data, error, favorites, handleFavorite }) {
             >
               <div className="blog-img mb-4 md:w-[35%] h-[220px] sm:w-[75%]">
                 <img
-                  src={IF + blog.image}
+                  src={blog.image}
                   alt={blog.title}
                   onError={handleImageError}
                   className="h-full w-full object-cover"
@@ -72,7 +71,7 @@ function UserPost({ loading, data, error, favorites, handleFavorite }) {
                 <div className="md:flex justify-between items-center">
                   <span className="text-regular text-md text-blue-500 dark:text-spot-green cursor-pointer flex items-center">
                     <img
-                      src={IFFF + blog.authorImage}
+                      src={blog.authorImage}
                       alt="Avatar"
                       className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                       onError={error}

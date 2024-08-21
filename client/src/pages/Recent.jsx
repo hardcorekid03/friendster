@@ -209,7 +209,7 @@ function Recent({ filterMode }) {
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-regular text-md text-blue-500 dark:text-spot-green cursor-pointer flex items-center">
                           <img
-                            src={IFFF + blog.authorImage}
+                            src={blog.authorImage}
                             alt="Avatar"
                             onError={handleImageError}
                             className="inline-block h-8 w-8 object-cover rounded-full mr-2"

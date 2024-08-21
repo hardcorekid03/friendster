@@ -4,6 +4,14 @@ import useFetchUser from "../hooks/useFetchUser";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useAuthContext } from "../hooks/useAuthContext";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
+import app from "../config/firebase";
 import api from "../api/Api";
 
 function UserDetails() {
@@ -12,8 +20,10 @@ function UserDetails() {
   const [originalFormData, setOriginalFormData] = useState({}); // Store original formData
   const [isEditing, setIsEditing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [isImageUploaded, setIsImageUploaded] = useState(false);
   const navigate = useNavigate();
+
+  const [imageURL, setImageURL] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     avatar: null,
@@ -45,16 +55,8 @@ function UserDetails() {
     }
   }, [userData, isEditing, user]);
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setIsImageUploaded(true);
-        setSelectedFile(file);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleImageChange = (e) => {
+    setSelectedFile(e.target.files[0]);
   };
 
   const handleDateChange = (date) => {
@@ -84,65 +86,30 @@ function UserDetails() {
       return;
     }
 
-    if (selectedFile) {
-      const data = new FormData();
-      const alphanumericKey = Math.random().toString(36).slice(2, 9);
-      const filename = `user-${alphanumericKey}-${Date.now()}-banner-${
-        selectedFile.name
-      }`;
+    let finalImageURL = imageURL;
 
-      data.append("img", filename);
-      data.append("file", selectedFile);
-      formData.userimage = filename;
+    if (selectedFile) {
       try {
-        const imgUpload = await api.post("/api/upload/uploadProfile", data, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        console.log(imgUpload.data);
-        setIsImageUploaded(false);
-      } catch (err) {
-        console.log("Error uploading image:", err);
+        setLoading(true);
+        const alphanumericKey = Math.random().toString(36).slice(2, 9);
+        const filename = `profile-${alphanumericKey}-${Date.now()}`;
+
+        const storage = getStorage(app);
+        const storageRef = ref(storage, "images/profile/" + filename);
+
+        await uploadBytes(storageRef, selectedFile);
+        const downloadURL = await getDownloadURL(storageRef);
+        finalImageURL = downloadURL; // Update the finalImageURL with the uploaded image URL
+        formData.userimage = finalImageURL;
+      } catch (error) {
+        setError("Failed to upload image.");
+        toast.error("Failed to upload image.");
+        setLoading(false);
+        return;
       }
     }
 
     try {
-      // delete previous image before uploading new image
-      const blogImage = userImg;
-      const deletePreviousImage = async (blogImage) => {
-        const imageUrl = blogImage;
-        if (imageUrl) {
-          const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-          try {
-            const imageResponse = await api.delete(
-              `/api/upload/uploadProfile/${imageName}`,
-              {
-                headers: { Authorization: `Bearer ${user.token}` },
-              }
-            );
-
-            if (imageResponse.status !== 200) {
-              throw new Error(
-                `Failed to delete the image: ${imageResponse.statusText}`
-              );
-            }
-            console.log(`Deleted previous image: ${imageName}`);
-          } catch (err) {
-            console.error("Error deleting previous image:", err);
-          }
-        } else {
-          console.log("No valid image URL to delete");
-        }
-      };
-
-      if (blogImage) {
-        await deletePreviousImage(blogImage);
-      }
-
-      // delete previous image before uploading new image
-
       // Perform API request to save formData
       const response = await api.patch(`/api/user/${user.id}`, formData);
       console.log("Form data saved:", response.data.username);
@@ -193,7 +160,7 @@ function UserDetails() {
                     id="avatar"
                     className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                     placeholder="Type product name"
-                    onChange={handleFileChange}
+                    onChange={handleImageChange}
                     required=""
                     disabled={!isEditing}
                     ref={fileInputRef} // Add this line
@@ -327,7 +294,7 @@ function UserDetails() {
                   onClick={handleSaveChanges}
                   disabled={!isEditing}
                 >
-                  Save changes
+                  {loading ? "Uploading..." : "Save Changes"}
                 </button>
 
                 <button

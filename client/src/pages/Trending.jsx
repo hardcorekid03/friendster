@@ -1,4 +1,3 @@
-import { IFFF, IFF } from "./url";
 import useFetchUser from "../hooks/useFetchUser";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -12,8 +11,8 @@ function Trending() {
   const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();
 
-  const userImage = IFFF + userData.userimage;
-  const userBanner = IFF + userData.userbanner;
+  const userImage = userData.userimage;
+  const userBanner = userData.userbanner;
 
   const handleImageError = (event) => {
     event.target.src = defaultAvatar;
