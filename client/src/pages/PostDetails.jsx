@@ -193,7 +193,7 @@ function PostDetails() {
                       className="h-full w-full object-cover"
                       alt="hero"
                       onError={handleImageError}
-                      src={IF + blogDetails.image}
+                      src={blogDetails.image}
                     />
                   </div>
                   <div className="p-4 sm:p-2">

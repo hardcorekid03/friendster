@@ -8,6 +8,7 @@ import defaultImage from "../assets/images/dafaultImage.jpg";
 import ScrollToTopButton from "../components/ScrollToTop";
 import api from "../api/Api"; // Import the Axios instance
 import RecentPosts from "../components/RecentPosts";
+import Calendar from "../components/Calendar";
 
 function Recent({ filterMode }) {
   const { user } = useAuthContext();
@@ -183,7 +184,7 @@ function Recent({ filterMode }) {
                   >
                     <div className="blog-img mb-4 md:w-[35%] h-[220px] sm:w-[75%] overflow-hidden">
                       <img
-                        src={IF + blog.image}
+                        src={blog.image}
                         alt={blog.title}
                         onError={handleImageError}
                         className="blog-img h-full w-full object-cover inset-0 transform transition-transform duration-300 hover:scale-110"
@@ -287,6 +288,7 @@ function Recent({ filterMode }) {
       </section>
       <section className="sm:block hidden md:col-span-3 md:mb-8 lg:p-6 sm:p-0 md:p-4 ">
         <RecentPosts />
+        <Calendar />
       </section>
     </>
   );

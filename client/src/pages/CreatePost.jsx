@@ -9,15 +9,13 @@ import defaultImage from "../assets/images/dafaultImage.jpg";
 import { useAuthContext } from "../hooks/useAuthContext";
 import debounce from "lodash/debounce"; // Import debounce from lodash
 import { IF } from "./url";
+import app from "../config/firebase";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import TiptapEditor from "../components/Editor";
 
 function CreatePost() {
   const { user } = useAuthContext();
   const { id } = useParams();
-
-  const handleImageError = (event) => {
-    event.target.src = defaultImage;
-  };
 
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -27,6 +25,14 @@ function CreatePost() {
   const { title, setTitle } = useTitleAndSlug();
   const [error, setError] = useState("");
   const [blogDetails, setBlogDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const [uploading, setUploading] = useState(false);
+  const [imageURL, setImageURL] = useState("");
+
+  const handleImageError = (event) => {
+    event.target.src = defaultImage;
+  };
 
   const debouncedHandleChange = useRef(
     debounce((event) => {
@@ -90,67 +96,68 @@ function CreatePost() {
     const blog = {
       title,
       blogbody,
+      image: imageURL,
     };
 
-    if (selectedFile) {
-      const data = new FormData();
-      const alphanumericKey = Math.random().toString(36).slice(2, 9);
-      const filename = `blog-${alphanumericKey}-${Date.now()}${
-        selectedFile.name
-      }`;
-      data.append("img", filename);
-      data.append("file", selectedFile);
-      blog.image = filename;
-      try {
-        const imgUpload = await api.post("/api/upload/", data, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
-        console.log(imgUpload.data);
-      } catch (err) {
-        console.log(err);
-      }
-    } else if (id && image) {
-      blog.image = image;
-    }
+    // if (selectedFile) {
+    //   const data = new FormData();
+    //   const alphanumericKey = Math.random().toString(36).slice(2, 9);
+    //   const filename = `blog-${alphanumericKey}-${Date.now()}${
+    //     selectedFile.name
+    //   }`;
+    //   data.append("img", filename);
+    //   data.append("file", selectedFile);
+    //   blog.image = filename;
+    //   try {
+    //     const imgUpload = await api.post("/api/upload/", data, {
+    //       headers: {
+    //         Authorization: `Bearer ${user.token}`,
+    //       },
+    //     });
+    //     console.log(imgUpload.data);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // } else if (id && image) {
+    //   blog.image = image;
+    // }
 
     try {
       let response;
       if (id) {
-        // delete previous image before uploading new image
-        const blogImage = blogDetails.image;
-        const deletePreviousImage = async (blogImage) => {
-          const imageUrl = blogImage;
-          if (imageUrl) {
-            const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-            try {
-              const imageResponse = await api.delete(
-                `/api/upload/${imageName}`,
-                {
-                  headers: { Authorization: `Bearer ${user.token}` },
-                }
-              );
+        // // delete previous image before uploading new image
+        // const blogImage = blogDetails.image;
+        // const deletePreviousImage = async (blogImage) => {
+        //   const imageUrl = blogImage;
+        //   if (imageUrl) {
+        //     const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+        //     try {
+        //       const imageResponse = await api.delete(
+        //         `/api/upload/${imageName}`,
+        //         {
+        //           headers: { Authorization: `Bearer ${user.token}` },
+        //         }
+        //       );
 
-              if (imageResponse.status !== 200) {
-                throw new Error(
-                  `Failed to delete the image: ${imageResponse.statusText}`
-                );
-              }
-              console.log(`Deleted previous image: ${imageName}`);
-            } catch (err) {
-              console.error("Error deleting previous image:", err);
-            }
-          } else {
-            console.log("No valid image URL to delete");
-          }
-        };
+        //       if (imageResponse.status !== 200) {
+        //         throw new Error(
+        //           `Failed to delete the image: ${imageResponse.statusText}`
+        //         );
+        //       }
+        //       console.log(`Deleted previous image: ${imageName}`);
+        //     } catch (err) {
+        //       console.error("Error deleting previous image:", err);
+        //     }
+        //   } else {
+        //     console.log("No valid image URL to delete");
+        //   }
+        // };
 
-        if (blogImage) {
-          await deletePreviousImage(blogImage);
-        }
+        // if (blogImage) {
+        //   await deletePreviousImage(blogImage);
+        // }
 
-        // delete previous image before uploading new image
+        // // delete previous image before uploading new image
 
         response = await api.patch(`/api/blogs/${id}`, blog, {
           headers: {
@@ -181,6 +188,32 @@ function CreatePost() {
     }
   };
 
+  async function handleImageUpload(e) {
+    setSelectedFile(e.target.files[0]);
+    setImage(e.target.files[0]); // Update the image state with the new file
+    const image = e.target.files[0];
+    if (image) {
+      try {
+        setUploading(true);
+        const alphanumericKey = Math.random().toString(36).slice(2, 9);
+        const filename = `blog-${alphanumericKey}-${Date.now()}-${image.name}`;
+
+        const storage = getStorage(app);
+        const storageRef = ref(storage, "images/blogs/" + filename);
+
+        await uploadBytes(storageRef, image);
+        const downloadURL = await getDownloadURL(storageRef);
+
+        console.log("SUCCESS!" + downloadURL);
+        setImageURL(downloadURL);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setUploading(false);
+      }
+    }
+  }
+
   return (
     <>
       <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
@@ -199,7 +232,7 @@ function CreatePost() {
                 accept="image/*"
                 id="picture"
                 ref={fileInputRef}
-                onChange={debouncedHandleChange} // Use debounced handler
+                onChange={handleImageUpload}
               />
             </div>
 
@@ -282,6 +315,12 @@ function CreatePost() {
           </div>
           {/* <TiptapEditor /> */}
           <div className="px-2 py-8 mt-10 ">
+            <button
+              className="mr-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex items-center dark:bg-spot-green dark:hover:bg-spot-green/80 "
+              disabled={uploading}
+            >
+              {uploading ? "Uploading..." : "Upload Image"}
+            </button>
             <button
               className="mr-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 inline-flex items-center dark:bg-spot-green dark:hover:bg-spot-green/80 "
               onClick={handleSubmit}
