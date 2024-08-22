@@ -46,7 +46,7 @@ app.use((req, res, next) => {
 // Routes
 app.use("/api/blogs", BlogRoutes);
 app.use("/api/user", UserRoutes);
-app.use("/api/upload", imageRoutes); // Use imageRoutes for handling image uploads
+// app.use("/api/upload", imageRoutes); // Use imageRoutes for handling image uploads
 // app.use("/api/user/images", userImageRoutes); // Use userImageRoutes for user image uploads
 app.use("/api/blogs", CommentRoutes); // Use comment routes
 
