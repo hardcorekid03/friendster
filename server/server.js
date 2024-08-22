@@ -36,7 +36,7 @@ app.use(express.json());
 // app.use(
 //   "/profiles",
 //   express.static(path.join(__dirname, "assets/images/profiles"))
-);
+// );
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
