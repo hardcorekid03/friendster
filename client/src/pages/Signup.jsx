@@ -87,7 +87,7 @@ function Signup() {
                     selected={birthdateString}
                     onChange={(date) => setbirthdateString(date)}
                     dateFormat="dd/MM/yyyy"
-                    placeholderText="Select a date"
+                    placeholderText="Enter birthdate"
                     className="border  text-gray-800 border-gray-300 bg-white w-full text-sm px-4 py-3  focus:outline-none outline-blue-500 dark:text-spot-light dark:bg-spot-dark2 dark:focus:bg-spot-dark  dark:border-spot-light  dark:focus:border-spot-green"
                     required
                     showYearDropdown
