@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-
-import logo from "../assets/images/nav-logo.svg";
 
 function Signin() {
   const [identifier, setIdentifier] = useState("");
@@ -15,10 +12,6 @@ function Signin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login(identifier, password);
-
-    if (error) {
-      toast.error(error);
-    }
   };
 
   const togglePasswordVisibility = () => {

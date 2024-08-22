@@ -284,7 +284,7 @@ function CreatePost() {
               className="bg-white border-gray-300 border hover:bg-gray-200 text-gray-700  py-2 px-4 inline-flex items-center dark:border-none dark:text-white dark:bg-spot-dark3 dark:hover:bg-spot-dark3/80"
               onClick={handleCancel}
             >
-              <span>Cancel.</span>
+              <span>Cancel</span>
             </button>
           </div>
         </div>

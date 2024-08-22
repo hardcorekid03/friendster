@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { useSignup } from "../hooks/useSignup";
 import { Link } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -37,10 +36,6 @@ function Signup() {
       location,
       gender,
     });
-
-    if (!error) {
-      toast.success("Welcome");
-    }
   };
 
   return (
