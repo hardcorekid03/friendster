@@ -43,10 +43,12 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    favorites: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'BlogPost'
-    }]
+    favorites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "BlogPost",
+      },
+    ],
   },
   { timestamps: true }
 );
@@ -80,8 +82,7 @@ userSchema.statics.signup = async function (
   }
 
   if (username.length < 8) {
-    toast.error("Username must be at least 8 characters long");
-    return;
+    throw new Error("Username must be at least 8 characters long");
   }
 
   if (!/^[a-zA-Z0-9_]+$/.test(username)) {
@@ -158,5 +159,5 @@ userSchema.statics.login = async function (identifier, password) {
   return user;
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;

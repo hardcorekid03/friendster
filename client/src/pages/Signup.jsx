@@ -40,9 +40,6 @@ function Signup() {
 
   return (
     <>
-      <div>
-        <Toaster />
-      </div>
       <section className="md:col-span-12 lg:p-6 sm:p-4 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full sm:max-w-md dark:bg-spot-dark2">
           <div className="text-center mb-4">

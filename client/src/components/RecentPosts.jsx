@@ -36,7 +36,7 @@ function RecentPosts() {
       </div>
       <div className="relative flex flex-col justify-center w-full">
         {loading ? (
-          <p className="p-4">Loading...</p>
+          <p className="text-sm p-4 dark:text-spot-light">Loading...</p>
         ) : (
           blogs.slice(0, 5).map((blog, index) => (
             <Link to={`/postdetails/${blog._id}`} key={blog._id}>
