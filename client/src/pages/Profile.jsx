@@ -296,7 +296,7 @@ function Profile() {
                 <img
                   className="h-full w-full object-cover"
                   alt="banner"
-                  src={imageSrc}
+                  src={imageSrc || defaultImage}
                   onError={handleImageError}
                 />
               ) : (
