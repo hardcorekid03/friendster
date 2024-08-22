@@ -18,6 +18,7 @@ app.use(
   cors({
     origin: [
       "https://prendster.netlify.app",
+      "http://prendster.evbgroup.biz",
       "http://localhost:5173",
       "https://friendsterr.vercel.app",
     ],
