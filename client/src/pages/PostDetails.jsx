@@ -7,6 +7,7 @@ import useDeleteBlog from "../hooks/useDeleteBlog";
 import api from "../api/Api";
 import useFavoriteToggle from "../hooks/useFavoriteToggle";
 import RecentPosts from "../components/RecentPosts";
+import DeleteConfirmation from "../components/DeleteConfirmation";
 
 function PostDetails() {
   const { user } = useAuthContext();
@@ -22,6 +23,8 @@ function PostDetails() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Adjust this number as needed
+
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const handleToggleFavorite = useFavoriteToggle(
     id,
@@ -96,7 +99,17 @@ function PostDetails() {
   const { handleDelete } = useDeleteBlog();
 
   const onDeleteClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setShowDeleteConfirmation(true);
+  };
+
+  const confirmDelete = () => {
     handleDelete(blogDetails._id, blogDetails);
+    setShowDeleteConfirmation(false); // Close the alert after deletion
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirmation(false); // Close the alert without deletion
   };
 
   const onEditClick = () => {
@@ -169,11 +182,20 @@ function PostDetails() {
 
   return (
     <>
-      <section className="md:col-span-9 md:mb-8 lg:p-6 sm:p-4 ">
-        <div className="bg-white items-center justify-center p-4 mb-8 dark:bg-spot-dark2">
-          <div className="container mx-auto flex py-4 flex-col mb-4 ">
+      <section className="md:col-span-9 md:mb-8 mb-12 lg:p-6 sm:p-4 ">
+        <div className="bg-white items-center justify-center p-4 dark:bg-spot-dark2">
+          {showDeleteConfirmation && (
+            <div className="container mx-auto flex  py-4 px-2  flex-col">
+              <DeleteConfirmation
+                onDelete={confirmDelete}
+                onCancel={cancelDelete}
+              />
+            </div>
+          )}
+
+          <div className="container mx-auto flex  flex-col">
             {loading ? (
-              <div className="container flex py-5 items-center justify-center dark:text-spot-light">
+              <div className="container flex  items-center justify-center dark:text-spot-light">
                 <div
                   className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-spot-white"
                   role="status"
@@ -191,7 +213,7 @@ function PostDetails() {
                       className="h-full w-full object-cover"
                       alt="banner"
                       onError={handleImageError}
-                      src={blogDetails.image}
+                      src={blogDetails.image || defaultImage}
                     />
                   </div>
                   <div className="p-4 sm:p-2">
@@ -202,7 +224,7 @@ function PostDetails() {
                       <div className="font-semibold text-blue-400 cursor-pointer flex items-center justify-between mb-4">
                         <div>
                           <img
-                            src={blogDetails.authorImage}
+                            src={blogDetails.authorImage || defaultImage}
                             alt="Avatar"
                             className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                             onError={handleImageError}
@@ -244,11 +266,10 @@ function PostDetails() {
 
                             <ul className="cursor-pointer bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top min-w-32 dark:bg-spot-dark2 dark:border-none dark:text-spot-light">
                               <div
-                                className="rounded-sm px-3 py-1  "
+                                className="rounded-sm px-3 py-1"
                                 onClickCapture={handleToggleFavorite}
                               >
                                 <span>
-                                  {"  "}
                                   {isFavorite ? (
                                     <div className="text-red-400">
                                       <svg
@@ -261,7 +282,7 @@ function PostDetails() {
                                       </svg>
                                     </div>
                                   ) : (
-                                    <div className="">
+                                    <div>
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
@@ -281,22 +302,22 @@ function PostDetails() {
                                 </span>
                               </div>
                               {blogDetails.authorUsername === user.username && (
-                                <>
+                                <div className="relative">
                                   <li
-                                    className="rounded-sm px-3 py-1 hover:bg-gray-100 dark:hover:bg-spot-dark3"
+                                    className="rounded-sm px-3 py-1 hover:bg-gray-100 dark:hover:bg-spot-dark3 cursor-pointer"
                                     onClickCapture={onDeleteClick}
                                   >
                                     Delete
                                   </li>
                                   <li
-                                    className="rounded-sm px-3 py-1 hover:bg-gray-100 dark:hover:bg-spot-dark3"
+                                    className="rounded-sm px-3 py-1 hover:bg-gray-100 dark:hover:bg-spot-dark3 cursor-pointer"
                                     onClickCapture={onEditClick}
                                   >
                                     Edit
                                   </li>
-                                </>
+                                </div>
                               )}
-                              <li className="rounded-sm px-3 py-1 hover:bg-gray-100 dark:hover:bg-spot-dark3">
+                              <li className="rounded-sm px-3 py-1 hover:bg-gray-100 dark:hover:bg-spot-dark3 cursor-pointer">
                                 Share
                               </li>
                             </ul>

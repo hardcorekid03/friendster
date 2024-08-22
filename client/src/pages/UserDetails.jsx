@@ -90,6 +90,23 @@ function UserDetails() {
 
     if (selectedFile) {
       try {
+        if (userImg) {
+          // Delete the existing image if it exists
+          const imageUrl = userImg;
+          const imagePath = imageUrl.split("/o/")[1]?.split("?")[0]; // Extract the path from the URL
+
+          if (imagePath) {
+            // Create a reference to the image in Firebase Storage
+            const storage = getStorage(app); // Ensure Firebase app is initialized
+            const imageRef = ref(
+              storage,
+              decodeURIComponent(imagePath.replace("images%2F", "images/"))
+            );
+            // Delete the image from Firebase Storage
+            await deleteObject(imageRef);
+          }
+        }
+
         setLoading(true);
         const alphanumericKey = Math.random().toString(36).slice(2, 9);
         const filename = `profile-${alphanumericKey}-${Date.now()}`;
@@ -102,8 +119,6 @@ function UserDetails() {
         finalImageURL = downloadURL; // Update the finalImageURL with the uploaded image URL
         formData.userimage = finalImageURL;
       } catch (error) {
-        setError("Failed to upload image.");
-        toast.error("Failed to upload image.");
         setLoading(false);
         return;
       }

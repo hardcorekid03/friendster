@@ -12,10 +12,6 @@ function useDeleteBlog() {
   const navigate = useNavigate();
 
   const handleDelete = async (id, blogDetails) => {
-    if (!window.confirm("Are you sure you want to delete this post?")) {
-      return;
-    }
-
     setLoading(true);
 
     try {

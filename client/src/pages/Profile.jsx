@@ -12,7 +12,15 @@ import useFetchUserFavorite from "../hooks/useFetchUserFavorite";
 import api from "../api/Api";
 import ImageModal from "../components/ImageModal";
 import app from "../config/firebase";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import toast, { Toaster } from "react-hot-toast";
+
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
 
 function Profile() {
   const { user } = useAuthContext();
@@ -109,6 +117,23 @@ function Profile() {
 
     if (selectedFile) {
       try {
+        if (userDetails.userbanner) {
+          // Delete the existing image if it exists
+          const imageUrl = userDetails.userbanner;
+          const imagePath = imageUrl.split("/o/")[1]?.split("?")[0]; // Extract the path from the URL
+
+          if (imagePath) {
+            // Create a reference to the image in Firebase Storage
+            const storage = getStorage(app); // Ensure Firebase app is initialized
+            const imageRef = ref(
+              storage,
+              decodeURIComponent(imagePath.replace("images%2F", "images/"))
+            );
+            // Delete the image from Firebase Storage
+            await deleteObject(imageRef);
+          }
+        }
+
         setLoading(true);
         const alphanumericKey = Math.random().toString(36).slice(2, 9);
         const filename = `banner-${alphanumericKey}-${Date.now()}`;
@@ -147,7 +172,7 @@ function Profile() {
         setSelectedFile(null);
         setOriginalImageSrc(imageSrc);
         setHasChanges(true);
-        alert("FUCK!");
+        toast.success("Upload Successful!");
       }
     } catch (error) {
       setErrors(error.response?.data?.error || "Something went wrong.");
@@ -203,6 +228,9 @@ function Profile() {
 
   return (
     <>
+      <div>
+        <Toaster />
+      </div>
       <ImageModal
         isOpen={isImageModalOpen}
         onClose={() => setIsImageModalOpen(false)}
@@ -256,7 +284,7 @@ function Profile() {
               <img
                 className="h-full w-full border-2 shadow border-spot-light object-cover border-zinc-100"
                 alt="avatar"
-                src={avatar}
+                src={avatar || defaultAvatar}
                 onError={handleAvatarError}
               />
             </div>
@@ -275,7 +303,7 @@ function Profile() {
                 <img
                   className="h-full w-full object-cover"
                   alt="banner"
-                  src={userBanner}
+                  src={userBanner || defaultImage}
                   onError={handleImageError}
                 />
               )}

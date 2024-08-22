@@ -173,11 +173,11 @@ function CreatePost() {
 
   return (
     <>
+      <div>
+        <Toaster />
+      </div>
       <section className="md:col-span-12 md:mb-8 mb-12 lg:p-6 sm:p-4">
         <div className="p-4 bg-white mb-8 dark:bg-spot-dark2 dark:text-spot-light">
-          <div>
-            <Toaster />
-          </div>
           <div className=" mb-2 p-2">
             <div className="hidden preview-img mb-2">
               <label className="text-sm text-gray-400 font-medium  peer-disabled:cursor-not-allowed peer-disabled:opacity-70">

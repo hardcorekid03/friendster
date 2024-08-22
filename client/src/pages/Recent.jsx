@@ -184,7 +184,7 @@ function Recent({ filterMode }) {
                   >
                     <div className="blog-img mb-4 md:w-[35%] h-[220px] sm:w-[75%] overflow-hidden">
                       <img
-                        src={blog.image}
+                        src={blog.image || defaultImage}
                         alt={blog.title}
                         onError={handleImageError}
                         className="blog-img h-full w-full object-cover inset-0 transform transition-transform duration-300 hover:scale-110"
