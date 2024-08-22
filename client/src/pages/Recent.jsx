@@ -275,7 +275,7 @@ function Recent({ filterMode }) {
                   </div>
                 )}
                 {allBlogsVisible && filteredBlogs.length > 0 && (
-                  <div className="container py-5 text-center">
+                  <div className="container mb-8 md:mb-2 py-5 text-center">
                     <p className="w-full px-4 py-2 border border-gray-100 dark:text-spot-light dark:border-spot-light ">
                       End of results
                     </p>
