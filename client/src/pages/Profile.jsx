@@ -425,7 +425,7 @@ function Profile() {
               />
             )}
 
-            {activeTab === "settings" && <UserDetails />}
+            {activeTab === "settings" && <UserDetails avatar={avatar} />}
           </div>
         </div>
       </section>

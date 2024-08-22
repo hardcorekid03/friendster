@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { IF, IFFF } from "./url";
 import { format } from "date-fns";
-import Trending from "./Trending";
 import { useAuthContext } from "../hooks/useAuthContext";
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import useDeleteBlog from "../hooks/useDeleteBlog";
@@ -191,7 +189,7 @@ function PostDetails() {
                   <div className="mb-4 w-[100%] md:h-[400px] h-[250px] p-4 sm:p-2">
                     <img
                       className="h-full w-full object-cover"
-                      alt="hero"
+                      alt="banner"
                       onError={handleImageError}
                       src={blogDetails.image}
                     />
@@ -204,7 +202,7 @@ function PostDetails() {
                       <div className="font-semibold text-blue-400 cursor-pointer flex items-center justify-between mb-4">
                         <div>
                           <img
-                            src={IFFF + blogDetails.authorImage}
+                            src={blogDetails.authorImage}
                             alt="Avatar"
                             className="inline-block h-8 w-8 object-cover rounded-full mr-2"
                             onError={handleImageError}

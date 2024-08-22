@@ -26,7 +26,6 @@ function Signup() {
     e.preventDefault();
 
     if (password !== password2) {
-      // toast.error("Passwords do not match");
       return;
     }
 
@@ -40,13 +39,9 @@ function Signup() {
     });
 
     if (!error) {
-      alert(error);
+      toast.success("Welcome");
     }
   };
-
-  // const handleLogout = () => {
-  //   logout();
-  // };
 
   return (
     <>

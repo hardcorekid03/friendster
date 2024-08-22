@@ -8,7 +8,13 @@ import api from "../api/Api"; // Adjust the path as per your file structure
 import defaultImage from "../assets/images/dafaultImage.jpg";
 import { useAuthContext } from "../hooks/useAuthContext";
 import app from "../config/firebase";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
 
 function CreatePost() {
   const { user } = useAuthContext();
@@ -23,8 +29,8 @@ function CreatePost() {
   const [error, setError] = useState("");
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(false);
-
   const [imageURL, setImageURL] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const handleImageError = (event) => {
     event.target.src = defaultImage;
@@ -32,6 +38,7 @@ function CreatePost() {
 
   const handleImageChange = (e) => {
     setSelectedFile(e.target.files[0]);
+    setUploading(true);
   };
 
   useEffect(() => {
@@ -85,6 +92,10 @@ function CreatePost() {
       setLoading(false);
       return;
     }
+    const blog = {
+      title,
+      blogbody,
+    };
 
     let finalImageURL = imageURL;
 
@@ -100,6 +111,7 @@ function CreatePost() {
         await uploadBytes(storageRef, selectedFile);
         const downloadURL = await getDownloadURL(storageRef);
         finalImageURL = downloadURL; // Update the finalImageURL with the uploaded image URL
+        blog.image = finalImageURL;
       } catch (error) {
         setError("Failed to upload image.");
         toast.error("Failed to upload image.");
@@ -108,15 +120,26 @@ function CreatePost() {
       }
     }
 
-    const blog = {
-      title,
-      blogbody,
-      image: finalImageURL || null, // Use the finalImageURL in the blog object
-    };
-
     try {
       let response;
       if (id) {
+        // Delete the existing image if it exists
+        if (id && user && image && uploading) {
+          const imageUrl = image;
+          const imagePath = imageUrl.split("/o/")[1]?.split("?")[0]; // Extract the path from the URL
+
+          if (imagePath) {
+            // Create a reference to the image in Firebase Storage
+            const storage = getStorage(app); // Ensure Firebase app is initialized
+            const imageRef = ref(
+              storage,
+              decodeURIComponent(imagePath.replace("images%2F", "images/"))
+            );
+
+            // Delete the image from Firebase Storage
+            await deleteObject(imageRef);
+          }
+        }
         response = await api.patch(`/api/blogs/${id}`, blog, {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -150,7 +173,7 @@ function CreatePost() {
 
   return (
     <>
-      <section className="md:col-span-12 md:mb-8 lg:p-6 sm:p-4">
+      <section className="md:col-span-12 md:mb-8 mb-12 lg:p-6 sm:p-4">
         <div className="p-4 bg-white mb-8 dark:bg-spot-dark2 dark:text-spot-light">
           <div>
             <Toaster />
