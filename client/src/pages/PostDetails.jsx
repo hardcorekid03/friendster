@@ -301,7 +301,8 @@ function PostDetails() {
                                   )}
                                 </span>
                               </div>
-                              {blogDetails.authorUsername === user.username && (
+                              {(blogDetails.authorUsername === user.username ||
+                                user.username === "admin") && (
                                 <div className="relative">
                                   <li
                                     className="rounded-sm px-3 py-1 hover:bg-gray-100 dark:hover:bg-spot-dark3 cursor-pointer"
