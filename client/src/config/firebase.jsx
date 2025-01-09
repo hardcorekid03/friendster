@@ -1,16 +1,17 @@
 import { initializeApp } from "firebase/app";
+import {config_apiKey , config_authDomain, config_projectId,config_storageBucket,config_messagingSenderId ,config_appId } from "./config.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBYR26v12SqRU0xbSFq5qdHeQQKpbl9JX4",
-  authDomain: "friendster-image.firebaseapp.com",
-  projectId: "friendster-image",
-  storageBucket: "friendster-image.appspot.com",
-  messagingSenderId: "500625387256",
-  appId: "1:500625387256:web:0a5aba16075b029e0f150d",
+  apiKey: config_apiKey,
+  authDomain: config_authDomain,
+  projectId: config_projectId,
+  storageBucket: config_storageBucket,
+  messagingSenderId: config_messagingSenderId,
+  appId: config_appId,
 };
 
 // Initialize Firebase
